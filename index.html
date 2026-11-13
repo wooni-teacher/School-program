@@ -110,6 +110,9 @@
   .gc4{background:var(--g4s);border-color:var(--g4);color:#7c2a08}
   .gc5{background:var(--g5s);border-color:var(--g5);color:#132f86}
   .gc6{background:var(--g6s);border-color:var(--g6);color:#43188a}
+  .gc0{background:#e9e7e1;border-color:#3a3f46;color:#22262c}
+  .seg.grades button.on.g0{background:#3a3f46;border-color:#3a3f46}
+  .slot-help{width:100%;color:var(--ink-3);font-size:14px;margin-top:2px}
 
   .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;color:var(--ink-2);font-size:15px;align-items:center}
   .legend .dot{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:5px}
@@ -276,6 +279,7 @@
     <div class="grid-wrap"><table class="grid" id="grid"></table></div>
 
     <div class="legend">
+      <span><span class="dot" style="background:#3a3f46"></span>전 학년</span>
       <span><span class="dot" style="background:var(--g1)"></span>1학년</span>
       <span><span class="dot" style="background:var(--g2)"></span>2학년</span>
       <span><span class="dot" style="background:var(--g3)"></span>3학년</span>
@@ -456,6 +460,7 @@ const slotById = id => { const s = (cfg.slots||{})[id]; return s ? {id, ...s} : 
 const roomName = id => ((cfg.rooms||{})[id]||{}).name || "(삭제된 특별실)";
 function slotsFor(grade, dow){
   if (dow < 1 || dow > 5) return [];
+  if (Number(grade) === 0) return slotList().filter(s => GRADES.some(g => String((s.avail||{})["g"+g]||"").includes(String(dow)))).map(s => s.id);
   return slotList().filter(s => String((s.avail||{})["g"+grade]||"").includes(String(dow))).map(s => s.id);
 }
 function gradesFor(slotId, dow){ return GRADES.filter(g => slotsFor(g, dow).includes(slotId)); }
@@ -549,6 +554,12 @@ const store = {
   async add(obj){ if (DEMO){ data["d"+Date.now()] = obj; return this._saveDemo(); } await ref.push(obj); },
   async update(id,obj){ if (DEMO){ data[id] = obj; return this._saveDemo(); } await ref.child(id).set(obj); },
   async remove(id){ if (DEMO){ delete data[id]; return this._saveDemo(); } await ref.child(id).remove(); },
+  // 여러 교시 묶음을 한 번에 바꾸기: oldIds 지우고 recs 새로 쓰기
+  async replace(oldIds, recs){
+    if (DEMO){ oldIds.forEach(k => delete data[k]); recs.forEach((r,i) => data["d"+Date.now()+"_"+i] = r); return this._saveDemo(); }
+    const up = {}; oldIds.forEach(k => up[k] = null); recs.forEach(r => up[ref.push().key] = r);
+    await ref.update(up);
+  },
 
   // 관리자: 비밀번호 경로에 서버 시각을 써 보고, 규칙이 허락하면 맞는 비밀번호
   async adminLogin(pw){
@@ -586,9 +597,10 @@ function conflictGroups(items){
   });
   return groups.filter(g => g.items.length >= 2);
 }
-function conflictsWith(rec, exceptId){
+function conflictsWith(rec, except){
   const s = slotById(rec.slot); if (!s) return [];
-  return dayItems(rec.room, rec.date).filter(o => o.id !== exceptId && overlap(o, s));
+  const ex = new Set([].concat(except || []));
+  return dayItems(rec.room, rec.date).filter(o => !ex.has(o.id) && overlap(o, s));
 }
 function weekConflicts(room, mon){
   const out = [];
@@ -609,7 +621,8 @@ let curRoom = null;
 let curMon = mondayOf(new Date());
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const whoText = it => `${it.grade}학년${it.cls ? " " + esc(it.cls) : ""}`;
+const gradeName = g => Number(g) === 0 ? "전 학년" : `${g}학년`;
+const whoText = it => `${gradeName(it.grade)}${it.cls ? " " + esc(it.cls) : ""}`;
 
 function render(){
   const rooms = roomList();
@@ -649,7 +662,8 @@ function render(){
       h += `<td class="cell ${conflict?"conflict":""} ${isToday?"today":""}" data-date="${date}" data-slot="${s.id}">`;
       if (conflict) h += `<span class="warn">⚠ 시간 겹침</span>`;
       items.forEach(it => {
-        const sub = [it.name, it.memo].filter(Boolean).map(esc).join(" · ");
+        const gl = it.group ? groupSlotLabel(groupIdsOf(it.id)) : "";
+        const sub = [gl && `${gl} 함께 예약`, it.name, it.memo].filter(Boolean).map(esc).join(" · ");
         h += `<span class="chip gc${it.grade}" data-id="${it.id}">${whoText(it)}${sub?`<small>${sub}</small>`:""}</span>`;
       });
       if (!items.length) h += `<span class="hint">${gradeRangeText(allowed)}</span>`;
@@ -680,11 +694,24 @@ function render(){
 /* ════════════════════════════════════════════════
    7) 예약 입력창
    ════════════════════════════════════════════════ */
-let form = {}, editId = null;
+let form = {}, editIds = [];   // editIds: 수정 중인 예약 묶음(연속 교시)의 id들
+
+// 같은 묶음(연속 교시로 한 번에 예약한 것)의 예약 id들
+function groupIdsOf(id){
+  const v = data[id]; if (!v) return [];
+  if (!v.group) return [id];
+  return Object.keys(data).filter(k => data[k].group === v.group);
+}
+function groupSlotLabel(ids){
+  const labels = slotList().filter(s => ids.some(k => data[k] && data[k].slot === s.id)).map(s => s.label.replace("교시",""));
+  return labels.length > 1 ? labels.join("·") + "교시" : "";
+}
 
 function openForm(preset = {}, id = null){
-  editId = id;
-  form = { room: curRoom, date: "", grade: null, slot: null, cls:"", name:"", memo:"", ...preset };
+  editIds = id ? groupIdsOf(id) : [];
+  const slots = id ? editIds.map(k => data[k].slot) : (preset.slot ? [preset.slot] : []);
+  form = { room: curRoom, date: "", grade: null, cls:"", name:"", memo:"", ...preset, slots };
+  delete form.slot; delete form.group;
   if (!form.date){ const t = new Date(); const d = (t.getDay()===0||t.getDay()===6) ? addDays(mondayOf(t),7) : t; form.date = fmt(d); }
   if (!id) form.name = form.name || localStorage.getItem("tbs-name") || "";
   $("mTitle").textContent = id ? "예약 수정" : "예약하기";
@@ -694,15 +721,16 @@ function openForm(preset = {}, id = null){
   $("overlay").classList.remove("hidden");
 }
 function closeForm(){ $("overlay").classList.add("hidden"); }
+const hasGrade = () => form.grade !== null && form.grade !== undefined;
 
 function drawForm(){
   $("fRoom").innerHTML = roomList().map(r => `<button type="button" class="${form.room===r.id?"on":""}" data-v="${r.id}">${esc(r.name)}</button>`).join("");
-  $("fGrade").innerHTML = GRADES.map(g => `<button type="button" class="g${g} ${form.grade===g?"on":""}" data-v="${g}">${g}학년</button>`).join("");
+  $("fGrade").innerHTML = [0, ...GRADES].map(g => `<button type="button" class="g${g} ${form.grade===g?"on":""}" data-v="${g}">${gradeName(g)}</button>`).join("");
 
   const dow = form.date ? parse(form.date).getDay() : -1;
-  const avail = form.grade ? slotsFor(form.grade, dow) : [];
-  if (form.grade && form.slot && !avail.includes(form.slot)) form.slot = null;
-  if (!form.grade){
+  const avail = hasGrade() ? slotsFor(form.grade, dow) : [];
+  if (hasGrade()) form.slots = form.slots.filter(id => avail.includes(id));
+  if (!hasGrade()){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">학년을 먼저 골라 주세요. 학년·요일에 맞는 교시만 보여요.</div>`;
   } else if (dow === 0 || dow === 6){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">주말에는 예약할 수 없어요.</div>`;
@@ -710,20 +738,22 @@ function drawForm(){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">이 학년은 이 요일에 예약할 수 있는 교시가 없어요.</div>`;
   } else {
     $("fSlot").innerHTML = slotList().filter(s => avail.includes(s.id)).map(s =>
-      `<button type="button" class="${form.slot===s.id?"on":""}" data-v="${s.id}">${esc(s.label)}<small>${s.start}~${s.end}</small></button>`).join("");
+      `<button type="button" class="${form.slots.includes(s.id)?"on":""}" data-v="${s.id}">${esc(s.label)}<small>${s.start}~${s.end}</small></button>`).join("") +
+      `<div class="slot-help">여러 교시를 한 번에 고를 수 있어요 (예: 1·2교시 연속). 다시 누르면 빠져요.</div>`;
   }
 
   let msg = "";
-  if (form.grade && form.slot && form.date && form.room){
-    const c = conflictsWith(form, editId);
-    const s = slotById(form.slot);
+  if (hasGrade() && form.slots.length && form.date && form.room){
+    const seen = new Set(), c = [];
+    form.slots.forEach(sid => conflictsWith({ room:form.room, date:form.date, slot:sid }, editIds).forEach(o => { if (!seen.has(o.id)){ seen.add(o.id); c.push(o); } }));
+    c.sort((a,b) => toMin(a.start) - toMin(b.start));
     if (c.length){
-      msg = `<div class="msg bad">⚠ 같은 시간(${s.start}~${s.end})에 ${esc(roomName(form.room))}을(를) 이미 예약한 학급이 있어요<br>` +
+      msg = `<div class="msg bad">⚠ 고른 시간에 ${esc(roomName(form.room))}을(를) 이미 예약한 학급이 있어요<br>` +
         c.map(o => `· ${whoText(o)} ${esc(o.slotLabel)} ${o.start}~${o.end}${o.name?` (${esc(o.name)})`:""}`).join("<br>") +
         `<br><span style="font-weight:500">다른 교시를 고르거나, 해당 선생님과 협의 후 저장해 주세요.</span></div>`;
       $("saveBtn").textContent = "겹쳐도 저장";
     } else {
-      msg = `<div class="msg good">✓ 이 시간은 비어 있어요</div>`;
+      msg = `<div class="msg good">✓ 고른 시간은 모두 비어 있어요</div>`;
       $("saveBtn").textContent = "저장";
     }
   } else $("saveBtn").textContent = "저장";
@@ -732,7 +762,12 @@ function drawForm(){
 
 $("fRoom").onclick = e => { const b = e.target.closest("button"); if (b){ form.room = b.dataset.v; drawForm(); } };
 $("fGrade").onclick = e => { const b = e.target.closest("button"); if (b){ form.grade = +b.dataset.v; drawForm(); } };
-$("fSlot").onclick = e => { const b = e.target.closest("button"); if (b){ form.slot = b.dataset.v; drawForm(); } };
+$("fSlot").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const v = b.dataset.v;
+  form.slots = form.slots.includes(v) ? form.slots.filter(x => x !== v) : [...form.slots, v];
+  drawForm();
+};
 $("fDate").onchange = e => { form.date = e.target.value; drawForm(); };
 $("cancelBtn").onclick = closeForm;
 $("overlay").onclick = e => { if (e.target.id === "overlay") closeForm(); };
@@ -741,24 +776,30 @@ $("saveBtn").onclick = async () => {
   form.cls = $("fCls").value.trim(); form.name = $("fName").value.trim(); form.memo = $("fMemo").value.trim();
   if (!form.room) return toast("특별실을 골라 주세요");
   if (!form.date) return toast("날짜를 골라 주세요");
-  if (!form.grade) return toast("학년을 골라 주세요");
-  if (!form.slot) return toast("교시를 골라 주세요");
-  const rec = { room:form.room, date:form.date, grade:form.grade, slot:form.slot,
-    cls:form.cls, name:form.name, memo:form.memo,
-    createdAt: editId ? (data[editId]?.createdAt || Date.now()) : Date.now(), updatedAt: Date.now() };
+  if (!hasGrade()) return toast("학년을 골라 주세요");
+  if (!form.slots.length) return toast("교시를 하나 이상 골라 주세요");
+  const hit = form.slots.some(sid => conflictsWith({ room:form.room, date:form.date, slot:sid }, editIds).length);
+  const createdAt = editIds.length ? (data[editIds[0]]?.createdAt || Date.now()) : Date.now();
+  const group = form.slots.length > 1 ? newId("g") : null;
+  const recs = slotList().filter(s => form.slots.includes(s.id)).map(s => {
+    const r = { room:form.room, date:form.date, grade:form.grade, slot:s.id, cls:form.cls, name:form.name, memo:form.memo, createdAt, updatedAt: Date.now() };
+    if (group) r.group = group;
+    return r;
+  });
   try {
-    if (editId) await store.update(editId, rec); else await store.add(rec);
+    await store.replace(editIds, recs);
     if (form.name) localStorage.setItem("tbs-name", form.name);
     closeForm();
-    toast(conflictsWith(rec, editId).length ? "저장했어요 — 겹침이 표시됩니다" : "저장했어요");
-    curRoom = rec.room; curMon = mondayOf(parse(rec.date)); render();
+    toast(hit ? "저장했어요 — 겹침이 표시됩니다" : "저장했어요");
+    curRoom = form.room; curMon = mondayOf(parse(form.date)); render();
   } catch(e){ toast("저장하지 못했어요. 다시 로그인해 주세요."); }
 };
 $("delBtn").onclick = async () => {
-  if (!editId) return;
-  const it = data[editId]; const s = slotById(it.slot);
-  if (!confirm(`${it.grade}학년${it.cls?" "+it.cls:""} ${s ? s.label : ""} 예약을 삭제할까요?`)) return;
-  try { await store.remove(editId); closeForm(); toast("삭제했어요"); } catch(e){ toast("삭제하지 못했어요."); }
+  if (!editIds.length) return;
+  const it = data[editIds[0]];
+  const label = groupSlotLabel(editIds) || (slotById(it.slot)||{}).label || "";
+  if (!confirm(`${gradeName(it.grade)}${it.cls?" "+it.cls:""} ${label} 예약을 삭제할까요?`)) return;
+  try { await store.replace(editIds, []); closeForm(); toast("삭제했어요"); } catch(e){ toast("삭제하지 못했어요."); }
 };
 
 /* ════════════════════════════════════════════════
@@ -1120,8 +1161,10 @@ const INTENTS = [
     `특별실을 추가하거나 교시 시간을 바꾸는 건 <b>관리자 모드</b>에서만 할 수 있어요. 관리자 비밀번호를 모르시면 요청으로 남겨 주세요.<br><button class="act" data-bot="req" data-type="특별실·시간 변경">특별실·시간 변경 요청하기</button>` },
   { keys:["겹","빨간","중복","충돌","⚠"], a:() =>
     `<b>빨간 칸</b>은 같은 특별실을 같은 시간에 두 학급 이상이 예약했다는 뜻이에요.<ul><li>학년마다 교시 시각이 달라서, 시간표는 <b>실제 시각</b>으로 겹침을 판단해요. 예를 들어 저학년 5교시와 고학년 5교시는 둘 다 13:00~13:40이라 겹쳐요.</li><li>화면 위 빨간 상자의 항목을 누르면 그 칸으로 이동해요.</li><li>협의가 끝나면 한쪽 예약을 눌러 교시를 바꾸거나 삭제해 주세요.</li></ul>` + weekConflictHTML(mondayOf(new Date())) },
+  { keys:["연속","여러교시","두교시","블록","묶어","1~2교시","1·2교시","12교시","전학년","행사","전교"], a:() =>
+    `<b>여러 교시 연속 예약</b>: 예약 창의 교시 버튼을 여러 개 누르면 돼요(예: 1교시+2교시). 한 묶음으로 저장되고, 시간표에는 칸마다 "1·2교시 함께 예약"이라고 표시돼요. 수정·삭제할 때도 묶음 전체가 함께 바뀌어요.<br><br><b>전 학년 예약</b>: 학교 행사처럼 모든 학년이 쓰는 경우 학년에서 <b>전 학년</b>을 고르세요. 그날 어느 학년이든 수업이 있는 교시가 모두 나와요.<br><button class="act" data-bot="reserve">지금 예약하기</button>` },
   { keys:["수정","고치","바꾸","변경","삭제","지우","취소"], a:() =>
-    `시간표에서 <b>예약(색깔 칸)</b>을 누르면 수정 창이 열려요.<ol><li>날짜·학년·교시·특별실을 바꾸고 <b>저장</b>을 누르면 돼요.</li><li>지우려면 왼쪽 아래 <b>삭제</b>를 누르세요.</li></ol>모든 선생님이 수정할 수 있으니 다른 반 예약은 꼭 협의 후에 바꿔 주세요.` },
+    `시간표에서 <b>예약(색깔 칸)</b>을 누르면 수정 창이 열려요. 여러 교시를 묶어 예약했다면 묶음 전체가 함께 열려요.<ol><li>날짜·학년·교시·특별실을 바꾸고 <b>저장</b>을 누르면 돼요.</li><li>지우려면 왼쪽 아래 <b>삭제</b>를 누르세요.</li></ol>모든 선생님이 수정할 수 있으니 다른 반 예약은 꼭 협의 후에 바꿔 주세요.` },
   { keys:["안보","안나","없어","없네","선택이안","선택안","못골","비활성"], a:() =>
     `예약 창에서는 <b>고른 학년이 그 요일에 실제로 있는 교시만</b> 보여요. 예를 들어 1·2학년은 월·금에 5교시가 없어서 안 보여요.<br>지금 시간표는 이래요.${slotTimeTable()}시간표가 실제와 다르면 요청으로 알려 주세요.` },
   { keys:["빗금","수업없음","회색","줄무늬"], a:() =>
@@ -1135,7 +1178,7 @@ const INTENTS = [
   { keys:["태블릿","휴대폰","핸드폰","모바일","폰","링크","주소","공유"], a:() =>
     `휴대폰·태블릿에서도 같은 주소로 들어오면 돼요. 화면이 좁으면 시간표를 <b>옆으로 밀어서</b> 볼 수 있어요. 예약은 모든 기기에 바로 반영돼요.` },
   { w:0.4, keys:["예약","신청","등록","잡","쓰고싶","사용하","하는법","방법","어떻게"], a:() =>
-    `예약은 두 가지 방법이 있어요.<ol><li>시간표에서 <b>빈칸을 누르면</b> 날짜와 교시가 미리 채워진 예약 창이 열려요.</li><li>위쪽 <b>+ 예약하기</b> 버튼을 눌러 처음부터 고를 수도 있어요.</li></ol>예약 창에서 <b>특별실 → 날짜 → 학년 → 교시</b> 순서로 고르고 저장하면 끝이에요. 교시를 고르면 겹치는 예약이 있는지 바로 알려 줘요.<br><button class="act" data-bot="reserve">지금 예약하기</button>` },
+    `예약은 두 가지 방법이 있어요.<ol><li>시간표에서 <b>빈칸을 누르면</b> 날짜와 교시가 미리 채워진 예약 창이 열려요.</li><li>위쪽 <b>+ 예약하기</b> 버튼을 눌러 처음부터 고를 수도 있어요.</li></ol>예약 창에서 <b>특별실 → 날짜 → 학년 → 교시</b> 순서로 고르고 저장하면 끝이에요. 1·2교시처럼 <b>여러 교시를 한 번에</b> 고를 수 있고, 학교 행사는 학년에서 <b>전 학년</b>을 고르면 돼요. 교시를 고르면 겹치는 예약이 있는지 바로 알려 줘요.<br><button class="act" data-bot="reserve">지금 예약하기</button>` },
 ];
 
 function botAnswer(raw){
