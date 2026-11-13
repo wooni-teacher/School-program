@@ -151,6 +151,81 @@
     .tab{padding:10px 18px;font-size:17px}
     .row2{grid-template-columns:1fr}
   }
+  /* 관리자 */
+  .admin-badge{background:#2b2f36;color:#fff;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:700}
+  .modal.wide{max-width:1040px}
+  .atabs{display:flex;gap:6px;border-bottom:2px solid var(--line);margin-bottom:18px}
+  .atab{border:none;background:none;padding:10px 18px;font-size:17px;font-weight:700;color:var(--ink-3);border-bottom:3px solid transparent;margin-bottom:-2px}
+  .atab.on{color:var(--accent);border-bottom-color:var(--accent)}
+  .atab .cnt{background:var(--danger);color:#fff;border-radius:999px;font-size:12px;padding:1px 7px;margin-left:4px}
+  .atable{width:100%;border-collapse:collapse}
+  .atable th{text-align:left;font-size:14px;color:var(--ink-3);font-weight:600;padding:6px 6px;border-bottom:1px solid var(--line)}
+  .atable td{padding:8px 6px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+  .atable .inp{padding:9px 10px;font-size:16px}
+  .atable input[type=time]{width:100%;min-width:140px}
+  .atable td.acts{white-space:nowrap}
+  .ibtn{white-space:nowrap;border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:7px 11px;font-weight:700;font-size:15px}
+  .ibtn:hover{border-color:var(--ink-3)}
+  .ibtn.del{color:var(--danger);border-color:#f0bcbc}
+  .ibtn:disabled{opacity:.3;cursor:not-allowed}
+  .avail-sum{font-size:14px;color:var(--ink-2);line-height:1.4}
+  tr.matrix-row td{background:#faf9f6;padding:12px 14px}
+  .matrix{border-collapse:collapse}
+  .matrix th,.matrix td{padding:4px 6px;text-align:center;font-size:15px}
+  .matrix th{color:var(--ink-2)}
+  .mbox{width:44px;height:36px;border:2px solid var(--line);border-radius:8px;background:#fff;font-weight:800;color:transparent}
+  .mbox.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .addrow{display:flex;gap:8px;margin-top:14px}
+  .addrow .inp{max-width:280px}
+  .help{color:var(--ink-3);font-size:14.5px;margin:0 0 14px}
+  .orphan{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line-2)}
+  .orphan .spacer{flex:1}
+  /* 요청사항 */
+  .req{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fff}
+  .req-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .req-head .spacer{flex:1}
+  .rtype{background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:2px 10px;font-size:13.5px;font-weight:700}
+  .rdate{color:var(--ink-3);font-size:13.5px}
+  .rstat{border-radius:999px;padding:2px 10px;font-size:13.5px;font-weight:700}
+  .st-new{background:#fff3dc!important;color:#8a5300!important;border-color:#f0d199!important}
+  .st-doing{background:var(--accent-soft)!important;color:var(--accent)!important;border-color:#b9c9e4!important}
+  .st-done{background:#eef7ee!important;color:var(--ok)!important;border-color:#b9dcbb!important}
+  .req-text{margin-top:6px;white-space:pre-wrap;word-break:break-word}
+  .req-reply{margin-top:8px;background:#f6f4ef;border-radius:10px;padding:8px 12px;font-size:15.5px}
+  .req-reply b{color:var(--accent)}
+  .seg.small button{padding:5px 11px;font-size:14px;min-width:0;border-width:1.5px}
+  textarea.inp{resize:vertical;min-height:110px;line-height:1.5}
+  .hbadge{background:var(--danger);color:#fff;border-radius:999px;font-size:12px;padding:1px 7px;margin-left:4px}
+
+  /* 사용 도우미 챗봇 */
+  #chatFab{position:fixed;right:22px;bottom:22px;z-index:40;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:15px 22px;font-size:17px;font-weight:700;box-shadow:0 8px 24px rgba(43,76,126,.35)}
+  #chatFab:hover{filter:brightness(1.08)}
+  #chat{position:fixed;right:22px;bottom:22px;z-index:45;width:400px;max-width:calc(100vw - 24px);height:600px;max-height:calc(100vh - 44px);background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.2);display:flex;flex-direction:column;overflow:hidden}
+  .chat-head{background:var(--accent);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px}
+  .chat-head b{font-family:var(--font-title);font-size:20px}
+  .chat-head span{font-size:13.5px;opacity:.85}
+  .chat-head .spacer{flex:1}
+  .chat-head button{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;width:34px;height:34px;font-size:18px}
+  #chatLog{flex:1;overflow-y:auto;padding:16px 14px;background:#faf9f6}
+  .bubble{max-width:88%;padding:10px 14px;border-radius:14px;margin-bottom:10px;line-height:1.55;font-size:16px;word-break:break-word}
+  .bubble.bot{background:#fff;border:1px solid var(--line);border-top-left-radius:4px}
+  .bubble.me{background:var(--accent);color:#fff;margin-left:auto;border-top-right-radius:4px}
+  .bubble ol,.bubble ul{margin:6px 0;padding-left:20px}
+  .bubble li{margin:3px 0}
+  .bubble table{border-collapse:collapse;margin-top:6px;font-size:14.5px;width:100%}
+  .bubble td{padding:3px 6px;border-bottom:1px solid var(--line-2);vertical-align:top}
+  .bubble .free{color:var(--ok);font-weight:700}
+  .bubble .busy{font-weight:700}
+  .bubble .bad{color:var(--danger);font-weight:700}
+  .bubble .act{display:inline-block;margin:6px 6px 0 0;border:1.5px solid var(--accent);color:var(--accent);background:#fff;border-radius:999px;padding:5px 12px;font-weight:700;font-size:14.5px}
+  .quick{display:flex;gap:6px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--line-2);background:#fff}
+  .quick button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 11px;font-size:14px;font-weight:600;color:var(--ink-2)}
+  .quick button:hover{border-color:var(--accent);color:var(--accent)}
+  .chat-in{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:#fff}
+  .chat-in input{flex:1;padding:11px 14px;border:2px solid var(--line);border-radius:12px;font-size:16px;outline:none}
+  .chat-in input:focus{border-color:var(--accent)}
+  .chat-in button{border:none;background:var(--accent);color:#fff;border-radius:12px;padding:0 16px;font-weight:700}
+  @media (max-width:720px){ #chat{right:12px;bottom:12px;height:calc(100vh - 24px)} #chatFab{right:14px;bottom:14px;padding:13px 18px} }
 </style>
 </head>
 <body>
@@ -160,7 +235,7 @@
   <div class="login-card">
     <div class="school">반월초등학교</div>
     <h1>특별실 예약</h1>
-    <p>컴퓨터실 · 강당 사용 일정을 함께 확인해요</p>
+    <p>특별실 사용 일정을 함께 확인해요</p>
     <form id="loginForm">
       <input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" autofocus>
       <button class="btn btn-primary" type="submit">들어가기</button>
@@ -177,8 +252,11 @@
       <div class="sub">반월초등학교 교직원 공유</div>
     </div>
     <span class="demo-badge hidden" id="demoBadge">미리보기 모드 · 이 기기에만 저장</span>
+    <span class="admin-badge hidden" id="adminBadge">관리자 모드</span>
     <div class="spacer"></div>
     <button class="btn btn-primary" id="newBtn" style="padding:12px 20px;font-size:17px">+ 예약하기</button>
+    <button class="btn" id="reqBtn">요청하기</button>
+    <button class="btn" id="adminBtn">관리자</button>
     <button class="btn" id="logoutBtn">나가기</button>
   </header>
 
@@ -264,14 +342,72 @@
   </div>
 </div>
 
+<!-- 관리자 로그인 -->
+<div class="overlay hidden" id="aLoginOv">
+  <div class="modal" style="max-width:440px;text-align:center">
+    <h2>관리자 모드</h2>
+    <p class="help">특별실과 교시 시간을 바꿀 수 있어요</p>
+    <form id="aLoginForm">
+      <input id="aPw" type="password" class="inp" placeholder="관리자 비밀번호" style="text-align:center;font-size:19px">
+      <div class="login-err" id="aErr"></div>
+      <div class="modal-actions"><div class="spacer"></div>
+        <button type="button" class="btn" id="aCancel">취소</button>
+        <button type="submit" class="btn btn-primary">확인</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 관리자 설정 -->
+<div class="overlay hidden" id="adminOv">
+  <div class="modal wide">
+    <h2>관리자 설정</h2>
+    <div class="atabs" id="aTabs"></div>
+    <div id="aBody"></div>
+    <div id="aMsg"></div>
+    <div class="modal-actions">
+      <button class="btn" id="aReset">기본 시간표로 되돌리기</button>
+      <button class="btn" id="aExit">관리자 모드 끝내기</button>
+      <div class="spacer"></div>
+      <button class="btn" id="aClose">닫기</button>
+      <button class="btn btn-primary" id="aSave">설정 저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 요청하기 -->
+<div class="overlay hidden" id="reqOv">
+  <div class="modal" style="max-width:680px">
+    <h2>요청하기</h2>
+    <p class="help">불편한 점, 필요한 기능, 특별실 추가 요청 등을 남겨 주세요. 관리자가 확인하고 답변을 남겨요.</p>
+    <div class="field"><label>종류</label><div class="seg" id="rType"></div></div>
+    <div class="field"><label for="rName">이름 <span class="opt">(선택)</span></label><input id="rName" class="inp" maxlength="20" placeholder="예: 신동운"></div>
+    <div class="field"><label for="rText">내용</label><textarea id="rText" class="inp" maxlength="1000" placeholder="예: 과학실도 예약할 수 있게 해 주세요"></textarea></div>
+    <div class="modal-actions"><div class="spacer"></div>
+      <button class="btn" id="rCancel">닫기</button>
+      <button class="btn btn-primary" id="rSend">요청 보내기</button>
+    </div>
+    <h3 style="margin:26px 0 10px;font-size:18px">지금까지 들어온 요청</h3>
+    <div id="rList"></div>
+  </div>
+</div>
+
+<!-- 사용 도우미 챗봇 -->
+<button id="chatFab" class="hidden">💬 사용 도우미</button>
+<div id="chat" class="hidden">
+  <div class="chat-head"><div><b>사용 도우미</b><br><span>사용법·예약 현황을 물어보세요</span></div><div class="spacer"></div><button id="chatClose" aria-label="닫기">✕</button></div>
+  <div id="chatLog"></div>
+  <div class="quick" id="chatQuick"></div>
+  <form class="chat-in" id="chatForm"><input id="chatIn" placeholder="예: 오늘 컴퓨터실 비어 있어?" autocomplete="off"><button>보내기</button></form>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
 /* ════════════════════════════════════════════════
-   1) Firebase 설정 — 'school' 프로젝트의 웹 앱 설정값을 붙여넣으세요.
-      값이 비어 있으면 '미리보기 모드'로 이 기기에만 저장됩니다.
+   1) Firebase 설정 (school 프로젝트)
    ════════════════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyDPg8nclz-OoVhUMAcJuMoPvvQBOeHN4Hg",
@@ -283,54 +419,68 @@ const firebaseConfig = {
   messagingSenderId: "229836109104",
   appId: "1:229836109104:web:9c3215ea4d9435612cc4f5"
 };
-const ROOT = "teukbyeolsil";   // DB 최상위 경로 (규칙 파일과 같아야 함)
+const ROOT = "teukbyeolsil";            // 교직원 데이터 경로 (규칙과 같아야 함)
+const ADMIN_ROOT = "teukbyeolsil_admin"; // 관리자 확인용 경로 (규칙과 같아야 함)
 
 /* ════════════════════════════════════════════════
-   2) 학교 시간표
+   2) 기본 설정 — 관리자가 저장하기 전까지 이 값을 씁니다
+      avail: 학년별로 그 교시가 있는 요일 (1=월 … 5=금)
    ════════════════════════════════════════════════ */
-const ROOMS = [
-  { id: "computer", name: "컴퓨터실" },
-  { id: "hall",     name: "강당" }
-];
-// 실제 시간 순서대로 나열. 같은 줄 = 같은 시간대 → 같은 칸에 두 개 이상이면 겹침
-const SLOTS = [
-  { id:"p1",  label:"1교시", start:"09:00", end:"09:40", who:"전 학년" },
-  { id:"p2",  label:"2교시", start:"09:50", end:"10:30", who:"전 학년" },
-  { id:"p3",  label:"3교시", start:"10:40", end:"11:20", who:"전 학년" },
-  { id:"p4h", label:"4교시", start:"11:30", end:"12:10", who:"고학년", cls:"high", note:"저학년 점심시간" },
-  { id:"p4l", label:"4교시", start:"12:10", end:"12:50", who:"저학년", cls:"low",  note:"고학년 점심시간", lunch:true },
-  { id:"p5",  label:"5교시", start:"13:00", end:"13:40", who:"전 학년 공통" },
-  { id:"p6",  label:"6교시", start:"13:50", end:"14:30", who:"고학년", cls:"high" }
-];
+const ALL = "12345";
+const DEFAULT_CONFIG = {
+  rooms: {
+    computer: { name: "컴퓨터실", order: 0 },
+    hall:     { name: "강당",     order: 1 }
+  },
+  slots: {
+    p1:  { label:"1교시", start:"09:00", end:"09:40", who:"전 학년", avail:{g1:ALL,g2:ALL,g3:ALL,g4:ALL,g5:ALL,g6:ALL} },
+    p2:  { label:"2교시", start:"09:50", end:"10:30", who:"전 학년", avail:{g1:ALL,g2:ALL,g3:ALL,g4:ALL,g5:ALL,g6:ALL} },
+    p3:  { label:"3교시", start:"10:40", end:"11:20", who:"전 학년", avail:{g1:ALL,g2:ALL,g3:ALL,g4:ALL,g5:ALL,g6:ALL} },
+    p4h: { label:"4교시", start:"11:30", end:"12:10", who:"고학년", note:"저학년 점심시간", avail:{g3:ALL,g4:ALL,g5:ALL,g6:ALL} },
+    p4l: { label:"4교시", start:"12:10", end:"12:50", who:"저학년", note:"고학년 점심시간", avail:{g1:ALL,g2:ALL} },
+    p5:  { label:"5교시", start:"13:00", end:"13:40", who:"전 학년 공통", avail:{g1:"234",g2:"234",g3:ALL,g4:ALL,g5:ALL,g6:ALL} },
+    p6:  { label:"6교시", start:"13:50", end:"14:30", who:"고학년", avail:{g3:"2",g4:"2",g5:"1245",g6:"1245"} }
+  }
+};
 const DOW = ["일","월","화","수","목","금","토"];
+const GRADES = [1,2,3,4,5,6];
 
-// 해당 학년이 그 요일에 쓸 수 있는 교시
+let cfg = clone(DEFAULT_CONFIG);
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+
+/* ── 설정 읽기 도우미 ── */
+const toMin = t => { const [h,m] = String(t).split(":").map(Number); return h*60+m; };
+function roomList(){ return Object.entries(cfg.rooms||{}).map(([id,r]) => ({id, ...r})).sort((a,b) => (a.order??0)-(b.order??0)); }
+function slotList(c = cfg){ return Object.entries(c.slots||{}).map(([id,s]) => ({id, ...s})).sort((a,b) => toMin(a.start)-toMin(b.start) || String(a.label).localeCompare(b.label)); }
+const slotById = id => { const s = (cfg.slots||{})[id]; return s ? {id, ...s} : null; };
+const roomName = id => ((cfg.rooms||{})[id]||{}).name || "(삭제된 특별실)";
 function slotsFor(grade, dow){
   if (dow < 1 || dow > 5) return [];
-  if (grade <= 2){                                  // 저학년
-    const s = ["p1","p2","p3","p4l"];
-    if ([2,3,4].includes(dow)) s.push("p5");        // 5교시: 화·수·목
-    return s;
-  }
-  const s = ["p1","p2","p3","p4h","p5"];           // 고학년
-  if ((grade === 3 || grade === 4) && dow === 2) s.push("p6");          // 3·4학년 6교시: 화
-  if ((grade === 5 || grade === 6) && [1,2,4,5].includes(dow)) s.push("p6"); // 5·6학년: 월·화·목·금
-  return s;
+  return slotList().filter(s => String((s.avail||{})["g"+grade]||"").includes(String(dow))).map(s => s.id);
 }
-function gradesFor(slotId, dow){
-  return [1,2,3,4,5,6].filter(g => slotsFor(g, dow).includes(slotId));
-}
-function gradeRangeText(gs){
+function gradesFor(slotId, dow){ return GRADES.filter(g => slotsFor(g, dow).includes(slotId)); }
+function gradeRangeText(gs, allText = ""){
   if (!gs.length) return "";
-  if (gs.length === 6) return "";
+  if (gs.length === 6) return allText;
   const contiguous = gs.every((g,i) => i === 0 || g === gs[i-1] + 1);
   if (contiguous && gs.length > 2) return `${gs[0]}~${gs[gs.length-1]}학년`;
   return gs.join("·") + "학년";
 }
-const slotById = id => SLOTS.find(s => s.id === id);
-const roomName = id => (ROOMS.find(r => r.id === id) || {}).name || id;
-const toMin = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
-const overlap = (a,b) => toMin(a.start) < toMin(b.end) && toMin(b.start) < toMin(a.end);
+function slotGrades(s){ return GRADES.filter(g => ((s.avail||{})["g"+g]||"").length); }
+function slotBadgeClass(s){ const gs = slotGrades(s); if (!gs.length || gs.length === 6) return ""; if (gs.every(g => g <= 2)) return "low"; if (gs.every(g => g >= 3)) return "high"; return ""; }
+function slotWho(s){ return s.who || gradeRangeText(slotGrades(s), "전 학년") || "수업 없음"; }
+function daysText(str){
+  const d = String(str||"").split("").map(Number).sort();
+  if (!d.length) return "";
+  if (d.join("") === "12345") return "월~금";
+  return d.map(n => DOW[n]).join("·");
+}
+function availSummary(s){
+  const groups = {};
+  GRADES.forEach(g => { const v = (s.avail||{})["g"+g]; if (v) (groups[daysText(v)] ||= []).push(g); });
+  const parts = Object.entries(groups).map(([days, gs]) => `${gradeRangeText(gs, "전 학년")} ${days}`);
+  return parts.length ? parts.join(" / ") : "사용하는 학년 없음";
+}
 
 /* ════════════════════════════════════════════════
    3) 날짜 도우미
@@ -342,7 +492,6 @@ function mondayOf(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDat
 function addDays(d,n){ const x = new Date(d); x.setDate(x.getDate()+n); return x; }
 const md = d => `${d.getMonth()+1}/${d.getDate()}`;
 function weekOfMonthLabel(mon){
-  // 그 주의 목요일이 속한 달 기준
   const thu = addDays(mon, 3);
   const first = new Date(thu.getFullYear(), thu.getMonth(), 1);
   const firstThu = addDays(first, (4 - first.getDay() + 7) % 7);
@@ -354,110 +503,151 @@ function weekOfMonthLabel(mon){
    4) 저장소 (Firebase / 미리보기)
    ════════════════════════════════════════════════ */
 const DEMO = !firebaseConfig.apiKey || !firebaseConfig.databaseURL;
-let ref = null, data = {}, unsub = null;
+const BAD_KEY = /[.#$\[\]\/]/;
+let db = null, ref = null, cfgRef = null, reqRef = null, data = {}, reqs = {}, unsubs = [];
+let staffPw = null, adminPw = null;
 
 const store = {
   async login(pw){
-    if (DEMO) return true;
-    if (!pw || /[.#$\[\]\/]/.test(pw)) return false;
+    if (DEMO){ staffPw = pw; return true; }
+    if (!pw || BAD_KEY.test(pw)) return false;
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const r = firebase.database().ref(`${ROOT}/${pw}/reservations`);
-    try { await r.limitToFirst(1).once("value"); ref = r; return true; }
-    catch(e){ return false; }   // 규칙에서 막힘 = 비밀번호 틀림
+    db = firebase.database();
+    const r = db.ref(`${ROOT}/${pw}/reservations`);
+    try { await r.limitToFirst(1).once("value"); } catch(e){ return false; }   // 규칙에서 막힘 = 비밀번호 틀림
+    ref = r; cfgRef = db.ref(`${ROOT}/${pw}/config`); reqRef = db.ref(`${ROOT}/${pw}/requests`); staffPw = pw;
+    return true;
   },
   listen(cb){
     if (DEMO){
-      const load = () => { try { data = JSON.parse(localStorage.getItem("tbs-demo") || "{}"); } catch(e){ data = {}; } cb(); };
+      const load = () => {
+        try { data = JSON.parse(localStorage.getItem("tbs-demo") || "{}"); } catch(e){ data = {}; }
+        try { const c = JSON.parse(localStorage.getItem("tbs-demo-cfg") || "null"); cfg = c && c.rooms ? c : clone(DEFAULT_CONFIG); } catch(e){ cfg = clone(DEFAULT_CONFIG); }
+        try { reqs = JSON.parse(localStorage.getItem("tbs-demo-req") || "{}"); } catch(e){ reqs = {}; }
+        cb();
+      };
       load(); window.addEventListener("storage", load);
-      unsub = () => window.removeEventListener("storage", load);
+      unsubs.push(() => window.removeEventListener("storage", load));
       return;
     }
-    const h = ref.on("value", s => { data = s.val() || {}; cb(); },
-      e => toast("연결이 끊겼어요. 다시 로그인해 주세요."));
-    unsub = () => ref.off("value", h);
+    const h1 = ref.on("value", s => { data = s.val() || {}; cb(); }, () => toast("연결이 끊겼어요. 다시 로그인해 주세요."));
+    const h2 = cfgRef.on("value", s => { const c = s.val(); cfg = c && c.rooms && c.slots ? c : clone(DEFAULT_CONFIG); cb(); });
+    const h3 = reqRef.on("value", s => { reqs = s.val() || {}; cb(); }, () => {});
+    unsubs.push(() => ref.off("value", h1), () => cfgRef.off("value", h2), () => reqRef.off("value", h3));
+  },
+  // 요청사항: 교직원은 새로 쓰기만, 상태 변경·답변·삭제는 관리자만
+  _saveDemoReq(){ localStorage.setItem("tbs-demo-req", JSON.stringify(reqs)); render(); },
+  async addRequest(obj){ if (DEMO){ reqs["q"+Date.now()] = obj; return this._saveDemoReq(); } await reqRef.push(obj); },
+  async adminSetRequest(id, patch){   // patch === null 이면 삭제
+    if (DEMO){ if (patch === null) delete reqs[id]; else Object.assign(reqs[id], patch); return this._saveDemoReq(); }
+    const up = { [`${ADMIN_ROOT}/${adminPw}/stamp`]: firebase.database.ServerValue.TIMESTAMP };
+    if (patch === null) up[`${ROOT}/${staffPw}/requests/${id}`] = null;
+    else Object.entries(patch).forEach(([k,v]) => up[`${ROOT}/${staffPw}/requests/${id}/${k}`] = v);
+    await db.ref().update(up);
   },
   _saveDemo(){ localStorage.setItem("tbs-demo", JSON.stringify(data)); render(); },
-  async add(obj){
-    if (DEMO){ data["d"+Date.now()] = obj; return this._saveDemo(); }
-    await ref.push(obj);
+  async add(obj){ if (DEMO){ data["d"+Date.now()] = obj; return this._saveDemo(); } await ref.push(obj); },
+  async update(id,obj){ if (DEMO){ data[id] = obj; return this._saveDemo(); } await ref.child(id).set(obj); },
+  async remove(id){ if (DEMO){ delete data[id]; return this._saveDemo(); } await ref.child(id).remove(); },
+
+  // 관리자: 비밀번호 경로에 서버 시각을 써 보고, 규칙이 허락하면 맞는 비밀번호
+  async adminLogin(pw){
+    if (DEMO) return !!pw;
+    if (!pw || BAD_KEY.test(pw)) return false;
+    try { await db.ref().update({ [`${ADMIN_ROOT}/${pw}/stamp`]: firebase.database.ServerValue.TIMESTAMP }); return true; }
+    catch(e){ return false; }
   },
-  async update(id,obj){
-    if (DEMO){ data[id] = obj; return this._saveDemo(); }
-    await ref.child(id).set(obj);
-  },
-  async remove(id){
-    if (DEMO){ delete data[id]; return this._saveDemo(); }
-    await ref.child(id).remove();
+  // 설정 저장: 설정 + 관리자 확인 도장을 한 번에 기록 (규칙이 둘을 함께 검사)
+  async saveConfig(c){
+    if (DEMO){ cfg = c; localStorage.setItem("tbs-demo-cfg", JSON.stringify(c)); render(); return; }
+    await db.ref().update({
+      [`${ROOT}/${staffPw}/config`]: c,
+      [`${ADMIN_ROOT}/${adminPw}/stamp`]: firebase.database.ServerValue.TIMESTAMP
+    });
   }
 };
 
 /* ════════════════════════════════════════════════
-   5) 겹침 찾기
+   5) 겹침 찾기 (실제 시각 기준)
    ════════════════════════════════════════════════ */
-function itemsOf(room, date){
+function dayItems(room, date){
   return Object.entries(data)
     .filter(([,v]) => v.room === room && v.date === date)
-    .map(([id,v]) => ({ id, ...v, ...pick(slotById(v.slot)) }))
-    .sort((a,b) => a.grade - b.grade);
+    .map(([id,v]) => { const s = slotById(v.slot); return s ? { id, ...v, start:s.start, end:s.end, slotLabel:s.label } : null; })
+    .filter(Boolean);
 }
-const pick = s => s ? { start:s.start, end:s.end } : { start:"00:00", end:"00:00" };
+const overlap = (a,b) => toMin(a.start) < toMin(b.end) && toMin(b.start) < toMin(a.end);
+function conflictGroups(items){
+  const arr = [...items].sort((a,b) => toMin(a.start)-toMin(b.start));
+  const groups = []; let cur = null;
+  arr.forEach(it => {
+    if (cur && toMin(it.start) < cur.endMin){ cur.items.push(it); cur.endMin = Math.max(cur.endMin, toMin(it.end)); }
+    else { cur = { items:[it], endMin: toMin(it.end) }; groups.push(cur); }
+  });
+  return groups.filter(g => g.items.length >= 2);
+}
 function conflictsWith(rec, exceptId){
   const s = slotById(rec.slot); if (!s) return [];
-  return itemsOf(rec.room, rec.date).filter(o => o.id !== exceptId && overlap(o, s));
+  return dayItems(rec.room, rec.date).filter(o => o.id !== exceptId && overlap(o, s));
 }
 function weekConflicts(room, mon){
   const out = [];
   for (let i=0;i<5;i++){
     const date = fmt(addDays(mon,i));
-    const items = itemsOf(room, date);
-    SLOTS.forEach(s => {
-      const hit = items.filter(it => overlap(it, s));
-      if (hit.length >= 2) out.push({ date, slot:s, items:hit });
-    });
+    conflictGroups(dayItems(room, date)).forEach(g => out.push({ date, items: g.items }));
   }
   return out;
+}
+function orphans(){
+  return Object.entries(data).filter(([,v]) => !(cfg.rooms||{})[v.room] || !(cfg.slots||{})[v.slot]).map(([id,v]) => ({id, ...v}));
 }
 
 /* ════════════════════════════════════════════════
    6) 화면 그리기
    ════════════════════════════════════════════════ */
-let curRoom = "computer";
+let curRoom = null;
 let curMon = mondayOf(new Date());
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const whoText = it => `${it.grade}학년${it.cls ? " " + esc(it.cls) : ""}`;
 
 function render(){
-  // 탭
-  $("tabs").innerHTML = ROOMS.map(r => {
+  const rooms = roomList();
+  if (!rooms.find(r => r.id === curRoom)) curRoom = rooms[0]?.id;
+
+  $("tabs").innerHTML = rooms.map(r => {
     const n = weekConflicts(r.id, curMon).length;
-    return `<button class="tab ${r.id===curRoom?"on":""}" data-room="${r.id}">${r.name}${n?`<span class="cnt">겹침 ${n}</span>`:""}</button>`;
+    return `<button class="tab ${r.id===curRoom?"on":""}" data-room="${r.id}">${esc(r.name)}${n?`<span class="cnt">겹침 ${n}</span>`:""}</button>`;
   }).join("");
 
-  // 주 표시
   const fri = addDays(curMon, 4);
   $("weekLabel").textContent = `${curMon.getFullYear()}년 ${weekOfMonthLabel(curMon)} (${md(curMon)}~${md(fri)})`;
 
-  // 표
   const today = fmt(new Date());
   const days = [0,1,2,3,4].map(i => addDays(curMon, i));
+  const perDay = {};
+  days.forEach(d => {
+    const date = fmt(d); const items = dayItems(curRoom, date);
+    const bad = new Set(); conflictGroups(items).forEach(g => g.items.forEach(it => bad.add(it.id)));
+    perDay[date] = { items, bad };
+  });
+
   let h = `<thead><tr><th class="slot">시간</th>` + days.map(d =>
     `<th class="${fmt(d)===today?"today":""}">${DOW[d.getDay()]}요일<span class="d">${md(d)}${fmt(d)===today?" · 오늘":""}</span></th>`
   ).join("") + `</tr></thead><tbody>`;
 
-  SLOTS.forEach(s => {
-    h += `<tr class="${s.lunch?"lunch-row":""}"><th class="slot"><b>${s.label}</b><span class="t">${s.start} ~ ${s.end}</span><br><span class="w ${s.cls||""}">${s.who}</span>${s.note?`<span class="n">${s.note}</span>`:""}</th>`;
+  slotList().forEach(s => {
+    h += `<tr><th class="slot"><b>${esc(s.label)}</b><span class="t">${s.start} ~ ${s.end}</span><br><span class="w ${slotBadgeClass(s)}">${esc(slotWho(s))}</span>${s.note?`<span class="n">${esc(s.note)}</span>`:""}</th>`;
     days.forEach(d => {
       const date = fmt(d), dow = d.getDay();
       const allowed = gradesFor(s.id, dow);
-      const items = itemsOf(curRoom, date).filter(it => overlap(it, s));
+      const { items:all, bad } = perDay[date];
+      const items = all.filter(it => it.slot === s.id).sort((a,b) => a.grade-b.grade);
       const isToday = date === today;
-      if (!allowed.length && !items.length){
-        h += `<td class="cell none"><span class="hint">수업 없음</span></td>`; return;
-      }
-      const conflict = items.length >= 2;
+      if (!allowed.length && !items.length){ h += `<td class="cell none"><span class="hint">수업 없음</span></td>`; return; }
+      const conflict = items.some(it => bad.has(it.id));
       h += `<td class="cell ${conflict?"conflict":""} ${isToday?"today":""}" data-date="${date}" data-slot="${s.id}">`;
-      if (conflict) h += `<span class="warn">⚠ ${items.length}개 학급 겹침</span>`;
+      if (conflict) h += `<span class="warn">⚠ 시간 겹침</span>`;
       items.forEach(it => {
         const sub = [it.name, it.memo].filter(Boolean).map(esc).join(" · ");
         h += `<span class="chip gc${it.grade}" data-id="${it.id}">${whoText(it)}${sub?`<small>${sub}</small>`:""}</span>`;
@@ -469,17 +659,22 @@ function render(){
   });
   $("grid").innerHTML = h + `</tbody>`;
 
-  // 겹침 알림
   const cf = weekConflicts(curRoom, curMon);
   if (cf.length){
-    $("alertBox").innerHTML = `<div class="alert"><h3>⚠ ${roomName(curRoom)} — 이번 주 시간이 겹치는 예약 ${cf.length}건</h3><ul>` +
+    $("alertBox").innerHTML = `<div class="alert"><h3>⚠ ${esc(roomName(curRoom))} — 이번 주 시간이 겹치는 예약 ${cf.length}건</h3><ul>` +
       cf.map(c => { const d = parse(c.date);
-        return `<li data-date="${c.date}" data-slot="${c.slot.id}"><b>${md(d)}(${DOW[d.getDay()]}) ${c.slot.label} ${c.slot.start}~${c.slot.end}</b> — ${c.items.map(whoText).join(", ")}</li>`; }).join("") +
+        const st = c.items.reduce((m,i) => toMin(i.start) < toMin(m) ? i.start : m, c.items[0].start);
+        const en = c.items.reduce((m,i) => toMin(i.end) > toMin(m) ? i.end : m, c.items[0].end);
+        return `<li data-date="${c.date}" data-slot="${c.items[0].slot}"><b>${md(d)}(${DOW[d.getDay()]}) ${st}~${en}</b> — ${c.items.map(i => `${whoText(i)}(${esc(i.slotLabel)})`).join(", ")}</li>`; }).join("") +
       `</ul></div>`;
   } else {
-    const any = days.some(d => itemsOf(curRoom, fmt(d)).length);
-    $("alertBox").innerHTML = any ? `<div class="okbar">✓ ${roomName(curRoom)} — 이번 주는 겹치는 예약이 없어요</div>` : "";
+    const any = days.some(d => perDay[fmt(d)].items.length);
+    $("alertBox").innerHTML = any ? `<div class="okbar">✓ ${esc(roomName(curRoom))} — 이번 주는 겹치는 예약이 없어요</div>` : "";
   }
+
+  $("adminBadge").classList.toggle("hidden", !adminPw);
+  if (typeof renderReqExtras === "function") renderReqExtras();
+  $("adminBtn").textContent = adminPw ? "관리자 설정" : "관리자";
 }
 
 /* ════════════════════════════════════════════════
@@ -501,29 +696,30 @@ function openForm(preset = {}, id = null){
 function closeForm(){ $("overlay").classList.add("hidden"); }
 
 function drawForm(){
-  $("fRoom").innerHTML = ROOMS.map(r => `<button type="button" class="${form.room===r.id?"on":""}" data-v="${r.id}">${r.name}</button>`).join("");
-  $("fGrade").innerHTML = [1,2,3,4,5,6].map(g => `<button type="button" class="g${g} ${form.grade===g?"on":""}" data-v="${g}">${g}학년</button>`).join("");
+  $("fRoom").innerHTML = roomList().map(r => `<button type="button" class="${form.room===r.id?"on":""}" data-v="${r.id}">${esc(r.name)}</button>`).join("");
+  $("fGrade").innerHTML = GRADES.map(g => `<button type="button" class="g${g} ${form.grade===g?"on":""}" data-v="${g}">${g}학년</button>`).join("");
 
   const dow = form.date ? parse(form.date).getDay() : -1;
   const avail = form.grade ? slotsFor(form.grade, dow) : [];
   if (form.grade && form.slot && !avail.includes(form.slot)) form.slot = null;
   if (!form.grade){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">학년을 먼저 골라 주세요. 학년·요일에 맞는 교시만 보여요.</div>`;
-  } else if (!avail.length){
+  } else if (dow === 0 || dow === 6){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">주말에는 예약할 수 없어요.</div>`;
+  } else if (!avail.length){
+    $("fSlot").innerHTML = `<div class="msg info" style="margin:0">이 학년은 이 요일에 예약할 수 있는 교시가 없어요.</div>`;
   } else {
-    $("fSlot").innerHTML = SLOTS.filter(s => avail.includes(s.id)).map(s =>
-      `<button type="button" class="${form.slot===s.id?"on":""}" data-v="${s.id}">${s.label}<small>${s.start}~${s.end}</small></button>`).join("");
+    $("fSlot").innerHTML = slotList().filter(s => avail.includes(s.id)).map(s =>
+      `<button type="button" class="${form.slot===s.id?"on":""}" data-v="${s.id}">${esc(s.label)}<small>${s.start}~${s.end}</small></button>`).join("");
   }
 
-  // 겹침 실시간 확인
   let msg = "";
-  if (form.grade && form.slot && form.date){
+  if (form.grade && form.slot && form.date && form.room){
     const c = conflictsWith(form, editId);
     const s = slotById(form.slot);
     if (c.length){
-      msg = `<div class="msg bad">⚠ 같은 시간(${s.start}~${s.end})에 ${roomName(form.room)}을(를) 이미 예약한 학급이 있어요<br>` +
-        c.map(o => `· ${whoText(o)} ${o.label||slotById(o.slot).label}${o.name?` (${esc(o.name)})`:""}`).join("<br>") +
+      msg = `<div class="msg bad">⚠ 같은 시간(${s.start}~${s.end})에 ${esc(roomName(form.room))}을(를) 이미 예약한 학급이 있어요<br>` +
+        c.map(o => `· ${whoText(o)} ${esc(o.slotLabel)} ${o.start}~${o.end}${o.name?` (${esc(o.name)})`:""}`).join("<br>") +
         `<br><span style="font-weight:500">다른 교시를 고르거나, 해당 선생님과 협의 후 저장해 주세요.</span></div>`;
       $("saveBtn").textContent = "겹쳐도 저장";
     } else {
@@ -540,13 +736,13 @@ $("fSlot").onclick = e => { const b = e.target.closest("button"); if (b){ form.s
 $("fDate").onchange = e => { form.date = e.target.value; drawForm(); };
 $("cancelBtn").onclick = closeForm;
 $("overlay").onclick = e => { if (e.target.id === "overlay") closeForm(); };
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeForm(); });
 
 $("saveBtn").onclick = async () => {
   form.cls = $("fCls").value.trim(); form.name = $("fName").value.trim(); form.memo = $("fMemo").value.trim();
-  if (!form.date){ return toast("날짜를 골라 주세요"); }
-  if (!form.grade){ return toast("학년을 골라 주세요"); }
-  if (!form.slot){ return toast("교시를 골라 주세요"); }
+  if (!form.room) return toast("특별실을 골라 주세요");
+  if (!form.date) return toast("날짜를 골라 주세요");
+  if (!form.grade) return toast("학년을 골라 주세요");
+  if (!form.slot) return toast("교시를 골라 주세요");
   const rec = { room:form.room, date:form.date, grade:form.grade, slot:form.slot,
     cls:form.cls, name:form.name, memo:form.memo,
     createdAt: editId ? (data[editId]?.createdAt || Date.now()) : Date.now(), updatedAt: Date.now() };
@@ -554,20 +750,231 @@ $("saveBtn").onclick = async () => {
     if (editId) await store.update(editId, rec); else await store.add(rec);
     if (form.name) localStorage.setItem("tbs-name", form.name);
     closeForm();
-    const c = conflictsWith(rec, editId);
-    toast(c.length ? "저장했어요 — 겹침이 표시됩니다" : "저장했어요");
+    toast(conflictsWith(rec, editId).length ? "저장했어요 — 겹침이 표시됩니다" : "저장했어요");
     curRoom = rec.room; curMon = mondayOf(parse(rec.date)); render();
   } catch(e){ toast("저장하지 못했어요. 다시 로그인해 주세요."); }
 };
 $("delBtn").onclick = async () => {
   if (!editId) return;
-  const it = data[editId];
-  if (!confirm(`${it.grade}학년${it.cls?" "+it.cls:""} ${slotById(it.slot).label} 예약을 삭제할까요?`)) return;
+  const it = data[editId]; const s = slotById(it.slot);
+  if (!confirm(`${it.grade}학년${it.cls?" "+it.cls:""} ${s ? s.label : ""} 예약을 삭제할까요?`)) return;
   try { await store.remove(editId); closeForm(); toast("삭제했어요"); } catch(e){ toast("삭제하지 못했어요."); }
 };
 
 /* ════════════════════════════════════════════════
-   8) 화면 조작
+   8) 관리자 모드
+   ════════════════════════════════════════════════ */
+let draft = null, aTab = "rooms", openMatrix = null;
+
+$("adminBtn").onclick = () => {
+  if (adminPw) return openAdmin();
+  $("aPw").value = ""; $("aErr").textContent = "";
+  $("aLoginOv").classList.remove("hidden"); setTimeout(() => $("aPw").focus(), 50);
+};
+$("aCancel").onclick = () => $("aLoginOv").classList.add("hidden");
+$("aLoginForm").onsubmit = async e => {
+  e.preventDefault();
+  const pw = $("aPw").value.trim();
+  $("aErr").textContent = "확인 중…";
+  if (await store.adminLogin(pw)){
+    adminPw = pw; $("aLoginOv").classList.add("hidden"); render(); openAdmin(); toast("관리자 모드로 들어왔어요");
+  } else $("aErr").textContent = "관리자 비밀번호가 맞지 않아요";
+};
+
+function openAdmin(){ draft = clone(cfg); aTab = "requests"; openMatrix = null; $("aMsg").innerHTML = ""; drawAdmin(); $("adminOv").classList.remove("hidden"); }
+function closeAdmin(){ $("adminOv").classList.add("hidden"); }
+$("aClose").onclick = () => closeAdmin();
+$("aExit").onclick = () => { adminPw = null; closeAdmin(); render(); toast("관리자 모드를 끝냈어요"); };
+$("aReset").onclick = () => {
+  if (!confirm("교시 시간표를 처음 기본값으로 되돌릴까요? (특별실 목록은 그대로 두고, '설정 저장'을 눌러야 반영돼요)")) return;
+  draft.slots = clone(DEFAULT_CONFIG.slots); aTab = "slots"; drawAdmin();
+};
+
+function countBy(key, val){ return Object.values(data).filter(v => v[key] === val).length; }
+const newId = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+
+function drawAdmin(){
+  const orph = orphans();
+  $("aTabs").innerHTML = [["requests","요청사항"],["rooms","특별실 관리"],["slots","교시 시간 관리"],["orphans","정리할 예약"]].map(([k,t]) => {
+    const n = k === "orphans" ? orph.length : k === "requests" ? reqList().filter(r => r.status !== "done").length : 0;
+    return `<button class="atab ${aTab===k?"on":""}" data-t="${k}">${t}${n?`<span class="cnt">${n}</span>`:""}</button>`; }).join("");
+  $("aSave").classList.toggle("hidden", aTab === "requests" || aTab === "orphans");
+  $("aReset").classList.toggle("hidden", aTab !== "slots");
+
+  if (aTab === "requests"){
+    const list = reqList();
+    $("aBody").innerHTML = `<p class="help">선생님들이 남긴 요청이에요. 상태를 바꾸거나 답변을 남기면 모든 선생님이 '요청하기' 화면에서 볼 수 있어요.</p>` +
+      (list.length ? list.map(r => `<div class="req admin" data-rid="${r.id}">
+        <div class="req-head"><span class="rtype">${esc(r.type)}</span><b>${esc(r.name || "이름 없음")}</b><span class="rdate">${fmtDT(r.createdAt)}</span><div class="spacer"></div>
+          <div class="seg small">${Object.entries(REQ_STATUS).map(([k,v]) => `<button type="button" class="${r.status===k?"on st-"+k:""}" data-act="rstatus" data-v="${k}">${v}</button>`).join("")}</div></div>
+        <div class="req-text">${esc(r.text)}</div>
+        <div class="addrow" style="margin-top:8px"><input class="inp" data-reply value="${esc(r.reply||"")}" placeholder="답변 (선택)" maxlength="300" style="max-width:none">
+          <button class="ibtn" data-act="rreply">답변 저장</button><button class="ibtn del" data-act="rdel">삭제</button></div>
+      </div>`).join("") : `<div class="msg info">아직 들어온 요청이 없어요.</div>`);
+  }
+
+  if (aTab === "rooms"){
+    const rooms = Object.entries(draft.rooms||{}).map(([id,r]) => ({id,...r})).sort((a,b) => (a.order??0)-(b.order??0));
+    $("aBody").innerHTML = `<p class="help">이름을 바꾸거나 순서를 옮길 수 있어요. 특별실을 지우면 그 특별실의 예약은 '정리할 예약'으로 옮겨져요.</p>
+      <table class="atable"><thead><tr><th style="width:70px">순서</th><th>특별실 이름</th><th style="width:120px">예약 수</th><th style="width:200px"></th></tr></thead><tbody>` +
+      rooms.map((r,i) => `<tr data-id="${r.id}">
+        <td>${i+1}</td>
+        <td><input class="inp" data-f="name" value="${esc(r.name)}" maxlength="20"></td>
+        <td>${countBy("room", r.id)}건</td>
+        <td class="acts"><button class="ibtn" data-act="up" ${i===0?"disabled":""}>▲</button> <button class="ibtn" data-act="down" ${i===rooms.length-1?"disabled":""}>▼</button> <button class="ibtn del" data-act="del">삭제</button></td>
+      </tr>`).join("") +
+      `</tbody></table>
+      <div class="addrow"><input class="inp" id="newRoom" placeholder="새 특별실 이름 (예: 과학실)" maxlength="20"><button class="btn btn-primary" id="addRoom">+ 특별실 추가</button></div>`;
+  }
+
+  if (aTab === "slots"){
+    const slots = slotList(draft);
+    $("aBody").innerHTML = `<p class="help">시작·끝 시각을 바꾸면 이미 들어간 예약도 새 시각으로 계산돼요. 시간표는 시작 시각 순서로 자동 정렬돼요. '사용 학년·요일'에서 그 교시가 있는 학년과 요일을 정해 주세요.</p>
+      <table class="atable"><thead><tr><th style="width:110px">이름</th><th style="width:155px">시작</th><th style="width:155px">끝</th><th style="width:140px">대상 표시</th><th>메모</th><th>사용 학년·요일</th><th style="width:70px"></th></tr></thead><tbody>` +
+      slots.map(s => `<tr data-id="${s.id}">
+        <td><input class="inp" data-f="label" value="${esc(s.label)}" maxlength="20"></td>
+        <td><input class="inp" type="time" data-f="start" value="${s.start}"></td>
+        <td><input class="inp" type="time" data-f="end" value="${s.end}"></td>
+        <td><input class="inp" data-f="who" value="${esc(s.who||"")}" placeholder="자동" maxlength="20"></td>
+        <td><input class="inp" data-f="note" value="${esc(s.note||"")}" placeholder="예: 저학년 점심" maxlength="30"></td>
+        <td><div class="avail-sum">${esc(availSummary(s))}</div><button class="ibtn" data-act="matrix" style="margin-top:4px">${openMatrix===s.id?"접기":"고치기"}</button></td>
+        <td><button class="ibtn del" data-act="del">삭제</button></td>
+      </tr>` + (openMatrix === s.id ? `<tr class="matrix-row" data-id="${s.id}"><td colspan="7">
+        <table class="matrix"><thead><tr><th></th>${[1,2,3,4,5].map(d => `<th>${DOW[d]}</th>`).join("")}<th></th></tr></thead><tbody>` +
+        GRADES.map(g => `<tr><th>${g}학년</th>${[1,2,3,4,5].map(d => {
+          const on = String((s.avail||{})["g"+g]||"").includes(String(d));
+          return `<td><button class="mbox ${on?"on":""}" data-act="cell" data-g="${g}" data-d="${d}">✓</button></td>`; }).join("")}
+          <td><button class="ibtn" data-act="rowall" data-g="${g}">월~금</button> <button class="ibtn" data-act="rownone" data-g="${g}">비우기</button></td></tr>`).join("") +
+        `</tbody></table></td></tr>` : "")).join("") +
+      `</tbody></table>
+      <div class="addrow"><button class="btn btn-primary" id="addSlot">+ 교시 추가</button></div>`;
+  }
+
+  if (aTab === "orphans"){
+    $("aBody").innerHTML = `<p class="help">특별실이나 교시가 지워져서 시간표에 보이지 않는 예약이에요. 필요 없으면 지워 주세요.</p>` +
+      (orph.length ? orph.sort((a,b) => a.date.localeCompare(b.date)).map(o => {
+        const d = parse(o.date);
+        return `<div class="orphan"><b>${md(d)}(${DOW[d.getDay()]})</b> ${esc(roomName(o.room))} · ${whoText(o)} · ${esc((slotById(o.slot)||{}).label || "(삭제된 교시)")}${o.name?` · ${esc(o.name)}`:""}<div class="spacer"></div><button class="ibtn del" data-act="delres" data-id="${o.id}">예약 삭제</button></div>`;
+      }).join("") : `<div class="msg good">✓ 정리할 예약이 없어요</div>`);
+  }
+}
+
+$("aTabs").onclick = e => { const b = e.target.closest(".atab"); if (b){ aTab = b.dataset.t; drawAdmin(); } };
+
+// 입력값 바로 반영
+$("aBody").oninput = e => {
+  const inp = e.target.closest("[data-f]"); if (!inp || !draft) return;
+  const id = inp.closest("tr[data-id]").dataset.id;
+  const obj = aTab === "rooms" ? draft.rooms[id] : draft.slots[id];
+  obj[inp.dataset.f] = inp.value;
+};
+$("aBody").onchange = e => { if (aTab === "slots" && e.target.type === "time") drawAdmin(); };
+
+$("aBody").onclick = async e => {
+  const t = e.target;
+  if (t.id === "addRoom"){
+    const name = $("newRoom").value.trim(); if (!name) return toast("특별실 이름을 적어 주세요");
+    const max = Math.max(-1, ...Object.values(draft.rooms).map(r => r.order ?? 0));
+    draft.rooms[newId("r")] = { name, order: max + 1 }; drawAdmin(); return;
+  }
+  if (t.id === "addSlot"){
+    const last = slotList(draft).slice(-1)[0];
+    const start = last ? last.end : "09:00";
+    const endM = Math.min(toMin(start) + 40, 23*60+59);
+    const id = newId("s");
+    draft.slots[id] = { label:"새 교시", start, end:`${pad(Math.floor(endM/60))}:${pad(endM%60)}`, who:"", note:"", avail:{} };
+    openMatrix = id; drawAdmin(); return;
+  }
+  const b = t.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act;
+  if (act.startsWith("r") && b.closest("[data-rid]")){
+    const box = b.closest("[data-rid]"), rid = box.dataset.rid;
+    try {
+      if (act === "rstatus") await store.adminSetRequest(rid, { status: b.dataset.v });
+      if (act === "rreply"){ await store.adminSetRequest(rid, { reply: box.querySelector("[data-reply]").value.trim() }); toast("답변을 저장했어요"); }
+      if (act === "rdel"){ if (!confirm("이 요청을 삭제할까요?")) return; await store.adminSetRequest(rid, null); toast("삭제했어요"); }
+    } catch(err){ toast("저장하지 못했어요. 관리자 모드로 다시 들어와 주세요."); }
+    drawAdmin(); return;
+  }
+
+  if (act === "delres"){
+    if (!confirm("이 예약을 삭제할까요?")) return;
+    try { await store.remove(b.dataset.id); toast("삭제했어요"); drawAdmin(); } catch(err){ toast("삭제하지 못했어요"); }
+    return;
+  }
+  const id = b.closest("tr[data-id]").dataset.id;
+
+  if (aTab === "rooms"){
+    const rooms = Object.entries(draft.rooms).map(([k,r]) => ({k,...r})).sort((a,b) => (a.order??0)-(b.order??0));
+    const i = rooms.findIndex(r => r.k === id);
+    if (act === "up" || act === "down"){
+      const j = act === "up" ? i-1 : i+1; [rooms[i], rooms[j]] = [rooms[j], rooms[i]];
+      rooms.forEach((r,n) => draft.rooms[r.k].order = n);
+    }
+    if (act === "del"){
+      if (rooms.length <= 1) return toast("특별실은 하나 이상 있어야 해요");
+      const n = countBy("room", id);
+      if (!confirm(`'${draft.rooms[id].name}'을(를) 지울까요?${n ? `\n이 특별실 예약 ${n}건은 '정리할 예약'으로 옮겨져요.` : ""}`)) return;
+      delete draft.rooms[id];
+    }
+  }
+
+  if (aTab === "slots"){
+    const s = draft.slots[id];
+    if (act === "matrix") openMatrix = openMatrix === id ? null : id;
+    if (act === "del"){
+      const n = countBy("slot", id);
+      if (!confirm(`'${s.label} ${s.start}~${s.end}'을(를) 지울까요?${n ? `\n이 교시 예약 ${n}건은 '정리할 예약'으로 옮겨져요.` : ""}`)) return;
+      delete draft.slots[id];
+    }
+    const setDays = (g, str) => { s.avail ||= {}; if (str) s.avail["g"+g] = str; else delete s.avail["g"+g]; };
+    if (act === "cell"){
+      const g = b.dataset.g, d = b.dataset.d;
+      const cur = new Set(String((s.avail||{})["g"+g]||"").split("").filter(Boolean));
+      cur.has(d) ? cur.delete(d) : cur.add(d);
+      setDays(g, [...cur].sort().join(""));
+    }
+    if (act === "rowall") setDays(b.dataset.g, ALL);
+    if (act === "rownone") setDays(b.dataset.g, "");
+  }
+  drawAdmin();
+};
+
+$("aSave").onclick = async () => {
+  // 검사
+  const rooms = Object.values(draft.rooms||{});
+  if (!rooms.length) return aMsg("특별실은 하나 이상 있어야 해요");
+  if (rooms.some(r => !String(r.name).trim())) return aMsg("이름이 비어 있는 특별실이 있어요");
+  const slots = Object.values(draft.slots||{});
+  if (!slots.length) return aMsg("교시는 하나 이상 있어야 해요");
+  for (const s of slots){
+    if (!String(s.label).trim()) return aMsg("이름이 비어 있는 교시가 있어요");
+    if (!/^\d{2}:\d{2}$/.test(s.start) || !/^\d{2}:\d{2}$/.test(s.end)) return aMsg(`'${s.label}'의 시각을 확인해 주세요`);
+    if (toMin(s.end) <= toMin(s.start)) return aMsg(`'${s.label}'의 끝 시각이 시작 시각보다 늦어야 해요`);
+  }
+  // 정리해서 저장
+  const clean = { rooms:{}, slots:{}, updatedAt: Date.now() };
+  Object.entries(draft.rooms).forEach(([id,r]) => clean.rooms[id] = { name: String(r.name).trim(), order: Number(r.order)||0 });
+  Object.entries(draft.slots).forEach(([id,s]) => {
+    const o = { label: String(s.label).trim(), start: s.start, end: s.end };
+    if (String(s.who||"").trim()) o.who = String(s.who).trim();
+    if (String(s.note||"").trim()) o.note = String(s.note).trim();
+    const av = {}; GRADES.forEach(g => { const v = (s.avail||{})["g"+g]; if (v) av["g"+g] = v; });
+    if (Object.keys(av).length) o.avail = av;
+    clean.slots[id] = o;
+  });
+  try {
+    await store.saveConfig(clean);
+    $("aMsg").innerHTML = `<div class="msg good">✓ 저장했어요. 모든 선생님 화면에 바로 반영돼요.</div>`;
+    toast("설정을 저장했어요");
+  } catch(err){
+    aMsg("저장하지 못했어요. 관리자 모드를 끝내고 다시 들어와 주세요.");
+  }
+};
+function aMsg(t){ $("aMsg").innerHTML = `<div class="msg bad">${esc(t)}</div>`; }
+
+/* ════════════════════════════════════════════════
+   9) 화면 조작
    ════════════════════════════════════════════════ */
 $("tabs").onclick = e => { const b = e.target.closest(".tab"); if (b){ curRoom = b.dataset.room; render(); } };
 $("prevW").onclick = () => { curMon = addDays(curMon,-7); render(); };
@@ -580,9 +987,7 @@ $("grid").onclick = e => {
   if (chip){ const v = data[chip.dataset.id]; if (v) openForm({ ...v }, chip.dataset.id); return; }
   const td = e.target.closest("td.cell");
   if (td && !td.classList.contains("none")){
-    const dow = parse(td.dataset.date).getDay();
-    const allowed = gradesFor(td.dataset.slot, dow);
-    // 저학년 전용/고학년 전용 칸이면 학년을 비워 두고 교시만 미리 채움
+    const allowed = gradesFor(td.dataset.slot, parse(td.dataset.date).getDay());
     openForm({ date: td.dataset.date, slot: td.dataset.slot, grade: allowed.length === 1 ? allowed[0] : null });
   }
 };
@@ -591,12 +996,219 @@ $("alertBox").onclick = e => {
   const td = document.querySelector(`td.cell[data-date="${li.dataset.date}"][data-slot="${li.dataset.slot}"]`);
   if (td){ td.scrollIntoView({ behavior:"smooth", block:"center", inline:"center" }); td.classList.remove("flash"); void td.offsetWidth; td.classList.add("flash"); }
 };
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  closeForm(); $("aLoginOv").classList.add("hidden"); closeAdmin(); $("reqOv").classList.add("hidden");
+});
 
 let toastT;
 function toast(t){ const el = $("toast"); el.textContent = t; el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 2200); }
 
 /* ════════════════════════════════════════════════
-   9) 로그인
+   요청사항 수합
+   ════════════════════════════════════════════════ */
+const REQ_TYPES = ["기능 요청", "오류 신고", "특별실·시간 변경", "기타"];
+const REQ_STATUS = { new:"접수", doing:"처리 중", done:"완료" };
+let reqType = REQ_TYPES[0];
+
+function reqList(){
+  return Object.entries(reqs || {}).map(([id,r]) => ({id, ...r}))
+    .sort((a,b) => (a.status === "done") - (b.status === "done") || (b.createdAt||0) - (a.createdAt||0));
+}
+function fmtDT(t){ if (!t) return ""; const d = new Date(t); return `${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+
+function drawReq(){
+  $("rType").innerHTML = REQ_TYPES.map(t => `<button type="button" class="${reqType===t?"on":""}" data-v="${t}">${t}</button>`).join("");
+  const list = reqList();
+  $("rList").innerHTML = list.length ? list.map(r => `<div class="req">
+      <div class="req-head"><span class="rtype">${esc(r.type)}</span><b>${esc(r.name || "이름 없음")}</b><span class="rdate">${fmtDT(r.createdAt)}</span><div class="spacer"></div>
+        <span class="rstat st-${r.status||"new"}">${REQ_STATUS[r.status] || "접수"}</span></div>
+      <div class="req-text">${esc(r.text)}</div>
+      ${r.reply ? `<div class="req-reply"><b>관리자 답변</b> ${esc(r.reply)}</div>` : ""}
+    </div>`).join("") : `<div class="msg info">아직 들어온 요청이 없어요.</div>`;
+}
+function openReq(preset = {}){
+  if (preset.type) reqType = preset.type;
+  $("rName").value = localStorage.getItem("tbs-name") || "";
+  $("rText").value = preset.text || "";
+  drawReq(); $("reqOv").classList.remove("hidden");
+  setTimeout(() => $("rText").focus(), 50);
+}
+$("reqBtn").onclick = () => openReq();
+$("rCancel").onclick = () => $("reqOv").classList.add("hidden");
+$("reqOv").onclick = e => { if (e.target.id === "reqOv") $("reqOv").classList.add("hidden"); };
+$("rType").onclick = e => { const b = e.target.closest("button"); if (b){ reqType = b.dataset.v; drawReq(); } };
+$("rSend").onclick = async () => {
+  const text = $("rText").value.trim(), name = $("rName").value.trim();
+  if (!text) return toast("내용을 적어 주세요");
+  try {
+    await store.addRequest({ type: reqType, name, text, status: "new", createdAt: Date.now() });
+    if (name) localStorage.setItem("tbs-name", name);
+    $("rText").value = ""; drawReq(); toast("요청을 보냈어요. 고마워요!");
+  } catch(e){ toast("보내지 못했어요. 다시 로그인해 주세요."); }
+};
+
+// 데이터가 바뀔 때마다: 헤더 배지, 열려 있는 창 새로 그리기
+function renderReqExtras(){
+  const open = reqList().filter(r => r.status !== "done").length;
+  $("reqBtn").innerHTML = `요청하기${adminPw && open ? `<span class="hbadge">${open}</span>` : ""}`;
+  if (!$("reqOv").classList.contains("hidden")) drawReq();
+  const typing = document.activeElement && document.activeElement.closest && document.activeElement.closest("#adminOv");
+  if (!$("adminOv").classList.contains("hidden") && aTab === "requests" && !typing) drawAdmin();
+}
+
+/* ════════════════════════════════════════════════
+   사용 도우미 챗봇 (앱 안에서 바로 답하는 방식)
+   ════════════════════════════════════════════════ */
+const norm = t => String(t).toLowerCase().replace(/\s+/g, "");
+const has = (t, words) => words.some(w => t.includes(w));
+const QUICK = ["예약하는 방법", "수정·삭제", "빨간 칸이 뭐예요?", "교시 시간표", "오늘 비어 있는 시간", "이번 주 겹침 확인", "요청 남기기"];
+
+function slotTimeTable(){
+  return `<table>${slotList().map(s => `<tr><td><b>${esc(s.label)}</b></td><td>${s.start}~${s.end}</td><td>${esc(availSummary(s))}</td></tr>`).join("")}</table>`;
+}
+
+// 날짜 알아듣기: 오늘/내일/모레, (다음주) 화요일, 11/17, 11월 17일
+function parseDateQ(raw){
+  const t = norm(raw), now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  let m = raw.match(/(\d{1,2})\s*[\/.월]\s*(\d{1,2})/);
+  if (m){ let y = today.getFullYear(); const d = new Date(y, +m[1]-1, +m[2]); if (d < addDays(today,-180)) d.setFullYear(y+1); return d; }
+  if (t.includes("모레")) return addDays(today, 2);
+  if (t.includes("내일")) return addDays(today, 1);
+  if (t.includes("오늘")) return today;
+  m = t.match(/(월|화|수|목|금)(요일|욜)/);
+  if (m){ const w = "일월화수목금토".indexOf(m[1]); let base = mondayOf(today); if (t.includes("다음주")) base = addDays(base, 7); if (t.includes("지난주")) base = addDays(base, -7); return addDays(base, w - 1); }
+  return null;
+}
+function parseRoomsQ(raw){
+  const t = norm(raw);
+  const found = roomList().filter(r => t.includes(norm(r.name)));
+  return found.length ? found : roomList();
+}
+function dayStatusHTML(room, d){
+  const date = fmt(d), dow = d.getDay();
+  const head = `<b>${esc(room.name)} · ${md(d)}(${DOW[dow]})</b>`;
+  if (dow === 0 || dow === 6) return `${head}<br>주말이라 수업이 없어요.`;
+  const items = dayItems(room.id, date);
+  const bad = new Set(); conflictGroups(items).forEach(g => g.items.forEach(i => bad.add(i.id)));
+  const rows = slotList().map(s => {
+    const here = items.filter(i => i.slot === s.id);
+    const allowed = gradesFor(s.id, dow);
+    if (!allowed.length && !here.length) return "";
+    const val = here.length
+      ? here.map(i => `<span class="${bad.has(i.id)?"bad":"busy"}">${bad.has(i.id)?"⚠ ":""}${whoText(i)}</span>`).join(", ")
+      : `<span class="free">비어 있음</span>`;
+    return `<tr><td>${esc(s.label)}</td><td>${s.start}~${s.end}</td><td>${val}</td></tr>`;
+  }).join("");
+  return `${head}<table>${rows}</table><button class="act" data-bot="reserve" data-date="${date}" data-room="${room.id}">이 날 예약하기</button>`;
+}
+function weekConflictHTML(mon){
+  const parts = roomList().map(r => {
+    const cf = weekConflicts(r.id, mon);
+    if (!cf.length) return "";
+    return `<b>${esc(r.name)}</b><ul>` + cf.map(c => { const d = parse(c.date);
+      return `<li>${md(d)}(${DOW[d.getDay()]}) — ${c.items.map(i => `${whoText(i)} ${esc(i.slotLabel)}`).join(", ")}</li>`; }).join("") + `</ul>`;
+  }).join("");
+  return parts ? `이번 주(${md(mon)}~${md(addDays(mon,4))}) <span class="bad">겹치는 예약</span>이에요.<br>${parts}해당 선생님끼리 협의해서 한쪽을 다른 교시로 옮겨 주세요.`
+               : `이번 주(${md(mon)}~${md(addDays(mon,4))})에는 <span class="free">겹치는 예약이 없어요.</span> 👍`;
+}
+
+const INTENTS = [
+  { keys:["요청","건의","오류","버그","고장","안돼","안되","불편","제안"], a:() =>
+    `불편한 점이나 필요한 기능은 <b>요청하기</b>로 남겨 주세요. 관리자가 확인하고 답변을 달아 드려요.<br><button class="act" data-bot="req">요청하기 열기</button>` },
+  { keys:["특별실추가","교실추가","과학실","음악실","도서실","시간바꾸","시간변경","시간수정","시간표바꾸","시간표수정","관리자"], a:() =>
+    `특별실을 추가하거나 교시 시간을 바꾸는 건 <b>관리자 모드</b>에서만 할 수 있어요. 관리자 비밀번호를 모르시면 요청으로 남겨 주세요.<br><button class="act" data-bot="req" data-type="특별실·시간 변경">특별실·시간 변경 요청하기</button>` },
+  { keys:["겹","빨간","중복","충돌","⚠"], a:() =>
+    `<b>빨간 칸</b>은 같은 특별실을 같은 시간에 두 학급 이상이 예약했다는 뜻이에요.<ul><li>학년마다 교시 시각이 달라서, 시간표는 <b>실제 시각</b>으로 겹침을 판단해요. 예를 들어 저학년 5교시와 고학년 5교시는 둘 다 13:00~13:40이라 겹쳐요.</li><li>화면 위 빨간 상자의 항목을 누르면 그 칸으로 이동해요.</li><li>협의가 끝나면 한쪽 예약을 눌러 교시를 바꾸거나 삭제해 주세요.</li></ul>` + weekConflictHTML(mondayOf(new Date())) },
+  { keys:["수정","고치","바꾸","변경","삭제","지우","취소"], a:() =>
+    `시간표에서 <b>예약(색깔 칸)</b>을 누르면 수정 창이 열려요.<ol><li>날짜·학년·교시·특별실을 바꾸고 <b>저장</b>을 누르면 돼요.</li><li>지우려면 왼쪽 아래 <b>삭제</b>를 누르세요.</li></ol>모든 선생님이 수정할 수 있으니 다른 반 예약은 꼭 협의 후에 바꿔 주세요.` },
+  { keys:["안보","안나","없어","없네","선택이안","선택안","못골","비활성"], a:() =>
+    `예약 창에서는 <b>고른 학년이 그 요일에 실제로 있는 교시만</b> 보여요. 예를 들어 1·2학년은 월·금에 5교시가 없어서 안 보여요.<br>지금 시간표는 이래요.${slotTimeTable()}시간표가 실제와 다르면 요청으로 알려 주세요.` },
+  { keys:["빗금","수업없음","회색","줄무늬"], a:() =>
+    `빗금 칸은 그 요일, 그 교시에 <b>어떤 학년도 수업이 없는 시간</b>이에요. 예약할 수 없어요.` },
+  { keys:["시간표","몇시","교시시간","시간알려","시각","점심"], a:() =>
+    `지금 설정된 교시 시간표예요.${slotTimeTable()}` },
+  { keys:["다음주","지난주","이전주","다른주","날짜이동","주넘기"], a:() =>
+    `시간표 오른쪽 위의 <b>◀ 이전 주 / 다음 주 ▶</b> 버튼으로 주를 옮기고, <b>이번 주</b>를 누르면 오늘이 있는 주로 돌아와요.` },
+  { keys:["비밀번호","로그인","들어가"], a:() =>
+    `교직원 비밀번호는 학교에서 안내받은 것을 쓰시면 돼요. 한 번 들어오면 브라우저 창을 닫기 전까지 다시 묻지 않아요. 비밀번호를 모르시면 관리자 선생님께 여쭤 주세요.` },
+  { keys:["태블릿","휴대폰","핸드폰","모바일","폰","링크","주소","공유"], a:() =>
+    `휴대폰·태블릿에서도 같은 주소로 들어오면 돼요. 화면이 좁으면 시간표를 <b>옆으로 밀어서</b> 볼 수 있어요. 예약은 모든 기기에 바로 반영돼요.` },
+  { w:0.4, keys:["예약","신청","등록","잡","쓰고싶","사용하","하는법","방법","어떻게"], a:() =>
+    `예약은 두 가지 방법이 있어요.<ol><li>시간표에서 <b>빈칸을 누르면</b> 날짜와 교시가 미리 채워진 예약 창이 열려요.</li><li>위쪽 <b>+ 예약하기</b> 버튼을 눌러 처음부터 고를 수도 있어요.</li></ol>예약 창에서 <b>특별실 → 날짜 → 학년 → 교시</b> 순서로 고르고 저장하면 끝이에요. 교시를 고르면 겹치는 예약이 있는지 바로 알려 줘요.<br><button class="act" data-bot="reserve">지금 예약하기</button>` },
+];
+
+function botAnswer(raw){
+  const t = norm(raw);
+  if (!t) return "";
+  if (has(t, ["안녕","하이","hello","hi"])) return `안녕하세요, 선생님! 특별실 예약 사용법이나 예약 현황을 물어보세요. 아래 버튼을 눌러도 돼요.`;
+  if (has(t, ["고마","감사","땡큐"])) return `천만에요! 더 궁금한 게 있으면 언제든 물어보세요.`;
+
+  // 예약 현황 질문: 날짜가 있고 (비었/현황/누가/사용/예약 등)
+  const d = parseDateQ(raw);
+  if (d && !has(t, ["어떻게","방법","하는법"])){
+    if (has(t, ["겹"])){ return weekConflictHTML(mondayOf(d)); }
+    return parseRoomsQ(raw).map(r => dayStatusHTML(r, d)).join("<br><br>");
+  }
+  if (has(t, ["비어","빈시간","빈교시","비었","현황","누가","언제"])){
+    const today = new Date(), wd = today.getDay();
+    const day = (wd === 0 || wd === 6) ? mondayOf(addDays(today, 7)) : today;
+    return parseRoomsQ(raw).map(r => dayStatusHTML(r, day)).join("<br><br>") +
+      `<br><br><span style="color:var(--ink-3);font-size:14px">다른 날은 "내일 강당", "다음주 화요일 컴퓨터실", "11/20"처럼 물어보세요.</span>`;
+  }
+  if (has(t, ["이번주겹","겹침확인","겹치는거있","겹치는예약있"])) return weekConflictHTML(mondayOf(new Date()));
+
+  let best = null, score = 0;
+  INTENTS.forEach(it => { const n = it.keys.filter(k => t.includes(k)).length * (it.w || 1); if (n > score){ score = n; best = it; } });
+  if (best) return best.a();
+  return `음, 그 질문은 아직 잘 모르겠어요. 😅<br>아래 버튼에서 골라 보시거나, 따로 알려 주실 내용이 있으면 요청으로 남겨 주세요.<br><button class="act" data-bot="req" data-text="${esc(raw)}">이 내용으로 요청 남기기</button>`;
+}
+
+function chatPush(html, who){
+  const div = document.createElement("div");
+  div.className = `bubble ${who}`; div.innerHTML = html;
+  $("chatLog").appendChild(div); $("chatLog").scrollTop = $("chatLog").scrollHeight;
+}
+function ask(text){
+  chatPush(esc(text), "me");
+  setTimeout(() => chatPush(botAnswer(text), "bot"), 250);
+}
+let chatStarted = false;
+function openChat(){
+  $("chat").classList.remove("hidden"); $("chatFab").classList.add("hidden");
+  if (!chatStarted){
+    chatStarted = true;
+    $("chatQuick").innerHTML = QUICK.map(q => `<button type="button">${q}</button>`).join("");
+    chatPush(`안녕하세요! <b>특별실 예약 사용 도우미</b>예요.<br>사용법을 물어보시거나, "<b>오늘 컴퓨터실 비어 있어?</b>", "<b>다음주 화요일 강당</b>"처럼 예약 현황을 물어보세요.`, "bot");
+  }
+  setTimeout(() => $("chatIn").focus(), 50);
+}
+$("chatFab").onclick = openChat;
+$("chatClose").onclick = () => { $("chat").classList.add("hidden"); $("chatFab").classList.remove("hidden"); };
+$("chatForm").onsubmit = e => { e.preventDefault(); const v = $("chatIn").value.trim(); if (!v) return; $("chatIn").value = ""; ask(v); };
+$("chatQuick").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const q = b.textContent;
+  if (q === "요청 남기기") return ask("요청을 남기고 싶어요");
+  if (q === "오늘 비어 있는 시간") return ask("오늘 비어 있는 시간");
+  if (q === "이번 주 겹침 확인") return ask("이번 주 겹침 확인");
+  if (q === "교시 시간표") return ask("교시 시간표 알려줘");
+  if (q === "수정·삭제") return ask("예약 수정이나 삭제는 어떻게 해요?");
+  ask(q);
+};
+$("chatLog").onclick = e => {
+  const b = e.target.closest("[data-bot]"); if (!b) return;
+  if (b.dataset.bot === "req") openReq({ type: b.dataset.type, text: b.dataset.text });
+  if (b.dataset.bot === "reserve"){
+    const preset = {};
+    if (b.dataset.date){ preset.date = b.dataset.date; curMon = mondayOf(parse(b.dataset.date)); }
+    if (b.dataset.room){ preset.room = b.dataset.room; curRoom = b.dataset.room; }
+    render(); openForm(preset);
+  }
+};
+
+/* ════════════════════════════════════════════════
+   10) 로그인
    ════════════════════════════════════════════════ */
 async function enter(pw){
   $("loginErr").textContent = "확인 중…";
@@ -606,12 +1218,14 @@ async function enter(pw){
   $("loginErr").textContent = "";
   $("login").classList.add("hidden"); $("app").classList.remove("hidden");
   $("demoBadge").classList.toggle("hidden", !DEMO);
+  $("chatFab").classList.remove("hidden");
   store.listen(render);
   render();
 }
 $("loginForm").onsubmit = e => { e.preventDefault(); enter($("pw").value.trim()); };
-$("logoutBtn").onclick = () => { sessionStorage.removeItem("tbs-pw"); if (unsub) unsub(); location.reload(); };
+$("logoutBtn").onclick = () => { sessionStorage.removeItem("tbs-pw"); unsubs.forEach(f => f()); location.reload(); };
 const saved = sessionStorage.getItem("tbs-pw"); if (saved) enter(saved);
 </script>
+
 </body>
 </html>
