@@ -114,6 +114,31 @@
   .chip.multi{border-left-style:double;border-left-width:7px}
   .seg.grades button.on.g0{background:#3a3f46;border-color:#3a3f46}
   .slot-help{width:100%;color:var(--ink-3);font-size:14px;margin-top:2px}
+  /* 반복 예약 */
+  .repeat-opts{margin-top:12px;background:#faf9f6;border:1.5px solid var(--line-2);border-radius:12px;padding:14px}
+  .ropt{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+  .rlabel{font-weight:700;font-size:15px;min-width:70px}
+  .plan-head{font-size:15.5px;margin:4px 0 8px}
+  .plan{display:flex;flex-wrap:wrap;gap:6px}
+  .rchip{border:1.5px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:5px 9px;font-size:14px;font-weight:700}
+  .rchip.off{background:#fff;border-color:var(--line);color:var(--ink-3);text-decoration:line-through}
+  .rchip.bad{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
+  .rchip.none{background:#f3f2ee;border:1.5px dashed var(--line);color:#b5b1a8;cursor:not-allowed}
+  .series-box{background:var(--accent-soft);border:1.5px solid #c9d6ec;border-radius:12px;padding:12px 14px;font-size:15.5px}
+  .chk{display:flex;align-items:center;gap:8px;margin-top:8px;font-weight:600;cursor:pointer}
+  .chk input{width:20px;height:20px}
+  .chk .opt{color:var(--ink-3);font-weight:500;font-size:14px}
+  .del-choice{background:var(--danger-soft);border:2px solid var(--danger);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .del-choice .delq{width:100%;font-weight:700;color:var(--danger)}
+  .inp:disabled{background:#f3f2ee;color:var(--ink-3)}
+  /* 업데이트 내역 */
+  .log-item{border-left:4px solid var(--line);padding:4px 0 4px 16px;margin-bottom:18px}
+  .log-item.new{border-left-color:var(--accent)}
+  .log-item h3{margin:0 0 4px;font-size:18px;display:flex;align-items:center;gap:8px}
+  .log-item .ldate{color:var(--ink-3);font-size:14px;font-weight:500}
+  .log-item .lnew{background:var(--accent);color:#fff;border-radius:999px;font-size:12px;padding:1px 9px}
+  .log-item ul{margin:6px 0 0;padding-left:20px}
+  .log-item li{margin:3px 0}
 
   .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;color:var(--ink-2);font-size:15px;align-items:center}
   .legend .dot{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:5px}
@@ -259,6 +284,7 @@
     <span class="admin-badge hidden" id="adminBadge">관리자 모드</span>
     <div class="spacer"></div>
     <button class="btn btn-primary" id="newBtn" style="padding:12px 20px;font-size:17px">+ 예약하기</button>
+    <button class="btn" id="logBtn">업데이트 내역</button>
     <button class="btn" id="reqBtn">요청하기</button>
     <button class="btn" id="adminBtn">관리자</button>
     <button class="btn" id="logoutBtn">나가기</button>
@@ -325,6 +351,23 @@
       <div class="seg slots" id="fSlot"></div>
     </div>
 
+    <div class="field hidden" id="fRepeatBox">
+      <label>반복</label>
+      <div class="seg" id="fRepeat"></div>
+      <div id="fRepeatOpts" class="repeat-opts hidden">
+        <div class="ropt"><span class="rlabel">요일</span><div class="seg small" id="fRdays"></div></div>
+        <div class="ropt"><span class="rlabel">끝나는 날</span><input type="date" id="fUntil" class="inp" style="max-width:220px"></div>
+        <div id="fPlan"></div>
+      </div>
+    </div>
+
+    <div class="field hidden" id="fSeriesBox">
+      <div class="series-box">
+        <div id="fSeriesInfo"></div>
+        <label class="chk"><input type="checkbox" id="fApplyAll"> 이 날 이후의 반복 일정에도 모두 적용 <span class="opt">(체크하지 않으면 이 날만 바뀌어요)</span></label>
+      </div>
+    </div>
+
     <div class="row2">
       <div class="field">
         <label for="fName">신청 선생님 <span class="opt">(선택)</span></label>
@@ -337,6 +380,7 @@
     </div>
 
     <div id="fMsg"></div>
+    <div id="fDelChoice" class="del-choice hidden"></div>
 
     <div class="modal-actions">
       <button class="btn btn-danger hidden" id="delBtn">삭제</button>
@@ -394,6 +438,15 @@
     </div>
     <h3 style="margin:26px 0 10px;font-size:18px">지금까지 들어온 요청</h3>
     <div id="rList"></div>
+  </div>
+</div>
+
+<!-- 업데이트 내역 -->
+<div class="overlay hidden" id="logOv">
+  <div class="modal" style="max-width:640px">
+    <h2 id="logTitle">업데이트 내역</h2>
+    <div id="logBody"></div>
+    <div class="modal-actions"><div class="spacer"></div><button class="btn btn-primary" id="logClose">확인</button></div>
   </div>
 </div>
 
@@ -667,7 +720,7 @@ function render(){
       if (conflict) h += `<span class="warn">⚠ 시간 겹침</span>`;
       items.forEach(it => {
         const gl = it.group ? groupSlotLabel(groupIdsOf(it.id)) : "";
-        const sub = [gl && `${gl} 함께 예약`, it.name, it.memo].filter(Boolean).map(esc).join(" · ");
+        const sub = [it.series && "🔁 반복", gl && `${gl} 함께 예약`, it.name, it.memo].filter(Boolean).map(esc).join(" · ");
         h += `<span class="chip gc${gradesOfRec(it)[0]} ${it.grades?"multi":""}" data-id="${it.id}">${whoText(it)}${sub?`<small>${sub}</small>`:""}</span>`;
       });
       if (!items.length) h += `<span class="hint">${gradeRangeText(allowed)}</span>`;
@@ -698,9 +751,10 @@ function render(){
 /* ════════════════════════════════════════════════
    7) 예약 입력창
    ════════════════════════════════════════════════ */
-let form = {}, editIds = [];   // editIds: 수정 중인 예약 묶음(연속 교시)의 id들
+let form = {}, editIds = [];   // editIds: 수정 중인 예약 묶음(같은 날 여러 교시)의 id들
+const MAX_REPEAT = 80;          // 반복 예약 최대 횟수
 
-// 같은 묶음(연속 교시로 한 번에 예약한 것)의 예약 id들
+// 같은 묶음(같은 날 여러 교시를 한 번에 예약한 것)의 예약 id들
 function groupIdsOf(id){
   const v = data[id]; if (!v) return [];
   if (!v.group) return [id];
@@ -710,17 +764,27 @@ function groupSlotLabel(ids){
   const labels = slotList().filter(s => ids.some(k => data[k] && data[k].slot === s.id)).map(s => s.label.replace("교시",""));
   return labels.length > 1 ? labels.join("·") + "교시" : "";
 }
+// 같은 반복 예약에 속한 예약 id들 (fromDate가 있으면 그 날짜부터)
+function seriesIds(series, fromDate){
+  return Object.keys(data).filter(k => data[k].series === series && (!fromDate || data[k].date >= fromDate));
+}
+function seriesDates(series){ return [...new Set(seriesIds(series).map(k => data[k].date))].sort(); }
+
+// 학년들이 그 요일에 쓸 수 있는 교시 (한 학년이라도 수업이 있으면 포함)
+function availFor(grades, dow){ return slotList().map(s => s.id).filter(id => grades.some(g => slotsFor(g, dow).includes(id))); }
 
 function openForm(preset = {}, id = null){
   editIds = id ? groupIdsOf(id) : [];
   const slots = id ? editIds.map(k => data[k].slot) : (preset.slot ? [preset.slot] : []);
   const grades = preset.grades ? gradesOfRec(preset) : (preset.grade !== null && preset.grade !== undefined ? [Number(preset.grade)] : []);
-  form = { room: curRoom, date: "", cls:"", name:"", memo:"", ...preset, slots, grades };
+  form = { room: curRoom, date: "", cls:"", name:"", memo:"", ...preset, slots, grades,
+           repeat:"none", rdays:[], until:"", skip:new Set(), applyAll:false, series: id ? (data[id].series || null) : null, seriesInfo: id ? (data[id].seriesInfo || "") : "" };
   delete form.slot; delete form.group; delete form.grade;
   if (!form.date){ const t = new Date(); const d = (t.getDay()===0||t.getDay()===6) ? addDays(mondayOf(t),7) : t; form.date = fmt(d); }
   if (!id) form.name = form.name || localStorage.getItem("tbs-name") || "";
-  $("mTitle").textContent = id ? "예약 수정" : "예약하기";
+  $("mTitle").textContent = id ? (form.series ? "반복 예약 수정" : "예약 수정") : "예약하기";
   $("delBtn").classList.toggle("hidden", !id);
+  $("fDelChoice").classList.add("hidden");
   $("fDate").value = form.date; $("fCls").value = form.cls || ""; $("fName").value = form.name || ""; $("fMemo").value = form.memo || "";
   drawForm();
   $("overlay").classList.remove("hidden");
@@ -728,18 +792,42 @@ function openForm(preset = {}, id = null){
 function closeForm(){ $("overlay").classList.add("hidden"); }
 const hasGrade = () => form.grades.length > 0;
 
+// 반복할 날짜 목록 만들기
+function repeatPlan(){
+  if (form.repeat === "none" || !form.date || !form.until || !form.rdays.length) return [];
+  const start = parse(form.date), end = parse(form.until), mon0 = mondayOf(start);
+  const out = [];
+  for (let d = new Date(start); d <= end && out.length < MAX_REPEAT; d = addDays(d, 1)){
+    const dow = d.getDay();
+    if (!form.rdays.includes(dow)) continue;
+    if (form.repeat === "biweekly" && Math.round((mondayOf(d) - mon0) / (7*864e5)) % 2 !== 0) continue;
+    const date = fmt(d);
+    const av = availFor(form.grades, dow);
+    const slots = form.slots.filter(s => av.includes(s));
+    const conflict = !form.skip.has(date) && slots.some(sid => conflictsWith({ room:form.room, date, slot:sid }, editIds).length);
+    out.push({ date, slots, skipped: form.skip.has(date), none: !slots.length, conflict });
+  }
+  return out;
+}
+function seriesInfoText(){
+  const days = [...form.rdays].sort().map(n => DOW[n]).join("·");
+  return `${form.repeat === "biweekly" ? "격주" : "매주"} ${days} · ${md(parse(form.date))}~${md(parse(form.until))}`;
+}
+
 function drawForm(){
+  const editing = editIds.length > 0;
   $("fRoom").innerHTML = roomList().map(r => `<button type="button" class="${form.room===r.id?"on":""}" data-v="${r.id}">${esc(r.name)}</button>`).join("");
   $("fGrade").innerHTML = [0, ...GRADES].map(g => `<button type="button" class="g${g} ${form.grades.includes(g)?"on":""}" data-v="${g}">${gradeName(g)}</button>`).join("") +
     `<div class="slot-help">여러 학년을 함께 고를 수 있어요 (예: 3·4학년 합동 수업). 다시 누르면 빠져요.</div>`;
 
   const dow = form.date ? parse(form.date).getDay() : -1;
-  // 여러 학년이면 어느 한 학년이라도 수업이 있는 교시를 모두 보여 줌
-  const avail = hasGrade() ? slotList().map(s => s.id).filter(id => form.grades.some(g => slotsFor(g, dow).includes(id))) : [];
+  // 반복 요일이 여러 개면 그 요일들 중 하나라도 수업이 있는 교시를 모두 보여 줌
+  const dows = form.repeat !== "none" && form.rdays.length ? form.rdays : [dow];
+  const avail = hasGrade() ? slotList().map(s => s.id).filter(id => dows.some(d => availFor(form.grades, d).includes(id))) : [];
   if (hasGrade()) form.slots = form.slots.filter(id => avail.includes(id));
   if (!hasGrade()){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">학년을 먼저 골라 주세요. 학년·요일에 맞는 교시만 보여요.</div>`;
-  } else if (dow === 0 || dow === 6){
+  } else if ((dow === 0 || dow === 6) && form.repeat === "none"){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">주말에는 예약할 수 없어요.</div>`;
   } else if (!avail.length){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">이 학년은 이 요일에 예약할 수 있는 교시가 없어요.</div>`;
@@ -749,19 +837,61 @@ function drawForm(){
       `<div class="slot-help">여러 교시를 한 번에 고를 수 있어요 (예: 1·2교시 연속). 다시 누르면 빠져요.</div>`;
   }
 
+  // ── 반복 설정 (새 예약일 때만) ──
+  $("fRepeatBox").classList.toggle("hidden", editing);
+  $("fSeriesBox").classList.toggle("hidden", !(editing && form.series));
+  let plan = [];
+  if (!editing){
+    $("fRepeat").innerHTML = [["none","반복 안 함"],["weekly","매주"],["biweekly","격주"]].map(([k,t]) =>
+      `<button type="button" class="${form.repeat===k?"on":""}" data-v="${k}">${t}</button>`).join("");
+    const show = form.repeat !== "none";
+    $("fRepeatOpts").classList.toggle("hidden", !show);
+    if (show){
+      $("fRdays").innerHTML = [1,2,3,4,5].map(n => `<button type="button" class="${form.rdays.includes(n)?"on":""}" data-v="${n}">${DOW[n]}</button>`).join("");
+      $("fUntil").value = form.until;
+      plan = repeatPlan();
+      const use = plan.filter(p => !p.skipped && !p.none);
+      const bad = use.filter(p => p.conflict).length;
+      $("fPlan").innerHTML = !plan.length ? `<div class="slot-help">요일과 끝나는 날을 고르면 예약될 날짜가 여기 보여요.</div>` :
+        `<div class="plan-head">총 <b>${use.length}회</b> 예약돼요${bad?` · <span style="color:var(--danger)">⚠ ${bad}회 겹침</span>`:""}</div>
+         <div class="plan">${plan.map(p => {
+           const d = parse(p.date);
+           const cls = p.none ? "none" : p.skipped ? "off" : p.conflict ? "bad" : "";
+           const tip = p.none ? "이 요일엔 고른 교시가 없어요" : p.skipped ? "누르면 다시 넣어요" : p.conflict ? "겹치는 예약이 있어요 · 누르면 이 날만 빼요" : "누르면 이 날만 빼요";
+           return `<button type="button" class="rchip ${cls}" data-v="${p.date}" title="${tip}" ${p.none?"disabled":""}>${md(d)}(${DOW[d.getDay()]})</button>`; }).join("")}</div>
+         <div class="slot-help">날짜를 누르면 <b>그 날만 빼고</b> 예약할 수 있어요 (휴업일·행사일 등). 줄 그어진 날은 빠져요.${plan.length >= MAX_REPEAT ? ` 한 번에 최대 ${MAX_REPEAT}회까지 만들 수 있어요.` : ""}</div>`;
+    }
+  } else if (form.series){
+    const dates = seriesDates(form.series);
+    $("fSeriesInfo").innerHTML = `🔁 <b>반복 예약</b> · ${esc(form.seriesInfo || "")} · 남은 일정 ${dates.filter(d => d >= form.date).length}회 / 전체 ${dates.length}회`;
+    $("fApplyAll").checked = form.applyAll;
+  }
+  $("fDate").disabled = editing && form.series && form.applyAll;
+
+  // ── 겹침 안내 ──
   let msg = "";
   if (hasGrade() && form.slots.length && form.date && form.room){
-    const seen = new Set(), c = [];
-    form.slots.forEach(sid => conflictsWith({ room:form.room, date:form.date, slot:sid }, editIds).forEach(o => { if (!seen.has(o.id)){ seen.add(o.id); c.push(o); } }));
-    c.sort((a,b) => toMin(a.start) - toMin(b.start));
-    if (c.length){
-      msg = `<div class="msg bad">⚠ 고른 시간에 ${esc(roomName(form.room))}을(를) 이미 예약한 학급이 있어요<br>` +
-        c.map(o => `· ${whoText(o)} ${esc(o.slotLabel)} ${o.start}~${o.end}${o.name?` (${esc(o.name)})`:""}`).join("<br>") +
-        `<br><span style="font-weight:500">다른 교시를 고르거나, 해당 선생님과 협의 후 저장해 주세요.</span></div>`;
-      $("saveBtn").textContent = "겹쳐도 저장";
+    if (!editing && form.repeat !== "none"){
+      const use = plan.filter(p => !p.skipped && !p.none);
+      const bad = use.filter(p => p.conflict);
+      msg = !use.length ? `<div class="msg info">예약될 날짜가 없어요. 요일과 끝나는 날을 확인해 주세요.</div>`
+        : bad.length ? `<div class="msg bad">⚠ ${bad.length}회는 이미 예약한 학급과 시간이 겹쳐요: ${bad.map(p => md(parse(p.date))).join(", ")}<br><span style="font-weight:500">빨간 날짜를 눌러 빼거나, 해당 선생님과 협의 후 저장해 주세요.</span></div>`
+        : `<div class="msg good">✓ ${use.length}회 모두 비어 있어요</div>`;
+      $("saveBtn").textContent = bad.length ? `겹쳐도 ${use.length}회 저장` : `${use.length}회 저장`;
     } else {
-      msg = `<div class="msg good">✓ 고른 시간은 모두 비어 있어요</div>`;
-      $("saveBtn").textContent = "저장";
+      const seen = new Set(), c = [];
+      form.slots.forEach(sid => conflictsWith({ room:form.room, date:form.date, slot:sid }, editIds).forEach(o => { if (!seen.has(o.id)){ seen.add(o.id); c.push(o); } }));
+      c.sort((a,b) => toMin(a.start) - toMin(b.start));
+      if (c.length){
+        msg = `<div class="msg bad">⚠ 고른 시간에 ${esc(roomName(form.room))}을(를) 이미 예약한 학급이 있어요<br>` +
+          c.map(o => `· ${whoText(o)} ${esc(o.slotLabel)} ${o.start}~${o.end}${o.name?` (${esc(o.name)})`:""}`).join("<br>") +
+          `<br><span style="font-weight:500">다른 교시를 고르거나, 해당 선생님과 협의 후 저장해 주세요.</span></div>`;
+        $("saveBtn").textContent = "겹쳐도 저장";
+      } else {
+        msg = `<div class="msg good">✓ 고른 시간은 모두 비어 있어요</div>`;
+        $("saveBtn").textContent = "저장";
+      }
+      if (editing && form.series && form.applyAll) $("saveBtn").textContent = "이후 일정 모두 저장";
     }
   } else $("saveBtn").textContent = "저장";
   $("fMsg").innerHTML = msg;
@@ -784,9 +914,51 @@ $("fSlot").onclick = e => {
   form.slots = form.slots.includes(v) ? form.slots.filter(x => x !== v) : [...form.slots, v];
   drawForm();
 };
-$("fDate").onchange = e => { form.date = e.target.value; drawForm(); };
+$("fDate").onchange = e => {
+  form.date = e.target.value;
+  if (form.repeat !== "none"){
+    const w = parse(form.date).getDay();
+    if (!form.rdays.length && w >= 1 && w <= 5) form.rdays = [w];
+    if (form.until && form.until < form.date) form.until = fmt(addDays(parse(form.date), 28));
+  }
+  drawForm();
+};
+$("fRepeat").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  form.repeat = b.dataset.v;
+  if (form.repeat !== "none"){
+    const w = parse(form.date).getDay();
+    if (!form.rdays.length && w >= 1 && w <= 5) form.rdays = [w];
+    if (!form.until) form.until = fmt(addDays(parse(form.date), 28));
+  }
+  drawForm();
+};
+$("fRdays").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const n = +b.dataset.v;
+  form.rdays = form.rdays.includes(n) ? form.rdays.filter(x => x !== n) : [...form.rdays, n].sort();
+  drawForm();
+};
+$("fUntil").onchange = e => { form.until = e.target.value; drawForm(); };
+$("fPlan").onclick = e => {
+  const b = e.target.closest(".rchip"); if (!b || b.disabled) return;
+  const d = b.dataset.v; form.skip.has(d) ? form.skip.delete(d) : form.skip.add(d);
+  drawForm();
+};
+$("fApplyAll").onchange = e => { form.applyAll = e.target.checked; if (form.applyAll){ form.date = data[editIds[0]].date; $("fDate").value = form.date; } drawForm(); };
 $("cancelBtn").onclick = closeForm;
 $("overlay").onclick = e => { if (e.target.id === "overlay") closeForm(); };
+
+function makeRecs(date, slots, base){
+  const group = slots.length > 1 ? newId("g") : null;
+  return slotList().filter(s => slots.includes(s.id)).map(s => {
+    const r = { room:form.room, date, grade:form.grades[0], slot:s.id, cls:form.cls, name:form.name, memo:form.memo, createdAt: base.createdAt, updatedAt: Date.now() };
+    if (group) r.group = group;
+    if (form.grades.length > 1) r.grades = form.grades.join("");
+    if (base.series){ r.series = base.series; if (base.seriesInfo) r.seriesInfo = base.seriesInfo; }
+    return r;
+  });
+}
 
 $("saveBtn").onclick = async () => {
   form.cls = $("fCls").value.trim(); form.name = $("fName").value.trim(); form.memo = $("fMemo").value.trim();
@@ -794,29 +966,72 @@ $("saveBtn").onclick = async () => {
   if (!form.date) return toast("날짜를 골라 주세요");
   if (!hasGrade()) return toast("학년을 골라 주세요");
   if (!form.slots.length) return toast("교시를 하나 이상 골라 주세요");
-  const hit = form.slots.some(sid => conflictsWith({ room:form.room, date:form.date, slot:sid }, editIds).length);
-  const createdAt = editIds.length ? (data[editIds[0]]?.createdAt || Date.now()) : Date.now();
-  const group = form.slots.length > 1 ? newId("g") : null;
-  const recs = slotList().filter(s => form.slots.includes(s.id)).map(s => {
-    const r = { room:form.room, date:form.date, grade:form.grades[0], slot:s.id, cls:form.cls, name:form.name, memo:form.memo, createdAt, updatedAt: Date.now() };
-    if (group) r.group = group;
-    if (form.grades.length > 1) r.grades = form.grades.join("");
-    return r;
-  });
+  const editing = editIds.length > 0;
+  let removeIds = editIds, recs = [], hit = false, count = 1;
+
+  if (!editing && form.repeat !== "none"){
+    // 새 반복 예약
+    if (!form.rdays.length) return toast("반복할 요일을 골라 주세요");
+    if (!form.until || form.until < form.date) return toast("끝나는 날을 확인해 주세요");
+    const use = repeatPlan().filter(p => !p.skipped && !p.none);
+    if (!use.length) return toast("예약될 날짜가 없어요");
+    const base = { createdAt: Date.now(), series: newId("s"), seriesInfo: seriesInfoText() };
+    use.forEach(p => recs.push(...makeRecs(p.date, p.slots, base)));
+    hit = use.some(p => p.conflict); count = use.length; removeIds = [];
+  } else if (editing && form.series && form.applyAll){
+    // 반복 예약: 이 날 이후 일정 모두 바꾸기 (날짜는 그대로)
+    const from = data[editIds[0]].date;
+    removeIds = seriesIds(form.series, from);
+    const base = { createdAt: data[editIds[0]]?.createdAt || Date.now(), series: form.series, seriesInfo: form.seriesInfo };
+    const dates = [...new Set(removeIds.map(k => data[k].date))].sort();
+    dates.forEach(date => {
+      const av = availFor(form.grades, parse(date).getDay());
+      const slots = form.slots.filter(s => av.includes(s));
+      if (slots.length) recs.push(...makeRecs(date, slots, base));
+    });
+    hit = recs.some(r => conflictsWith(r, removeIds).length); count = dates.length;
+  } else {
+    // 한 번짜리 예약 또는 반복 예약 중 이 날만 바꾸기
+    hit = form.slots.some(sid => conflictsWith({ room:form.room, date:form.date, slot:sid }, editIds).length);
+    const base = { createdAt: editing ? (data[editIds[0]]?.createdAt || Date.now()) : Date.now(), series: form.series, seriesInfo: form.seriesInfo };
+    recs = makeRecs(form.date, form.slots, base);
+  }
   try {
-    await store.replace(editIds, recs);
+    await store.replace(removeIds, recs);
     if (form.name) localStorage.setItem("tbs-name", form.name);
     closeForm();
-    toast(hit ? "저장했어요 — 겹침이 표시됩니다" : "저장했어요");
+    const what = count > 1 ? `${count}회 ` : "";
+    toast(hit ? `${what}저장했어요 — 겹침이 표시됩니다` : `${what}저장했어요`);
     curRoom = form.room; curMon = mondayOf(parse(form.date)); render();
   } catch(e){ toast("저장하지 못했어요. 다시 로그인해 주세요."); }
 };
+
+// 삭제: 반복 예약이면 '이 날만 / 이후 모두 / 전체' 중 고르기
 $("delBtn").onclick = async () => {
   if (!editIds.length) return;
   const it = data[editIds[0]];
+  if (it.series){
+    const dates = seriesDates(it.series);
+    $("fDelChoice").innerHTML = `<div class="delq">반복 예약이에요. 어떻게 지울까요?</div>
+      <button class="btn btn-danger" data-del="one">이 날(${md(parse(it.date))})만 빼기</button>
+      <button class="btn btn-danger" data-del="after">이 날부터 이후 모두 (${dates.filter(d => d >= it.date).length}회)</button>
+      <button class="btn btn-danger" data-del="all">반복 전체 (${dates.length}회)</button>
+      <button class="btn" data-del="cancel">그만두기</button>`;
+    $("fDelChoice").classList.remove("hidden");
+    return;
+  }
   const label = groupSlotLabel(editIds) || (slotById(it.slot)||{}).label || "";
   if (!confirm(`${whoText(it)} ${label} 예약을 삭제할까요?`)) return;
   try { await store.replace(editIds, []); closeForm(); toast("삭제했어요"); } catch(e){ toast("삭제하지 못했어요."); }
+};
+$("fDelChoice").onclick = async e => {
+  const b = e.target.closest("[data-del]"); if (!b) return;
+  const k = b.dataset.del, it = data[editIds[0]];
+  if (k === "cancel") return $("fDelChoice").classList.add("hidden");
+  const ids = k === "one" ? editIds : k === "after" ? seriesIds(it.series, it.date) : seriesIds(it.series);
+  const n = new Set(ids.map(x => data[x].date)).size;
+  try { await store.replace(ids, []); closeForm(); toast(k === "one" ? `${md(parse(it.date))}만 뺐어요` : `${n}회 삭제했어요`); }
+  catch(err){ toast("삭제하지 못했어요."); }
 };
 
 /* ════════════════════════════════════════════════
@@ -1056,7 +1271,7 @@ $("alertBox").onclick = e => {
 };
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape") return;
-  closeForm(); $("aLoginOv").classList.add("hidden"); closeAdmin(); $("reqOv").classList.add("hidden");
+  closeForm(); $("aLoginOv").classList.add("hidden"); closeAdmin(); $("logOv").classList.add("hidden"); $("reqOv").classList.add("hidden");
 });
 
 let toastT;
@@ -1178,6 +1393,12 @@ const INTENTS = [
     `특별실을 추가하거나 교시 시간을 바꾸는 건 <b>관리자 모드</b>에서만 할 수 있어요. 관리자 비밀번호를 모르시면 요청으로 남겨 주세요.<br><button class="act" data-bot="req" data-type="특별실·시간 변경">특별실·시간 변경 요청하기</button>` },
   { keys:["겹","빨간","중복","충돌","⚠"], a:() =>
     `<b>빨간 칸</b>은 같은 특별실을 같은 시간에 두 학급 이상이 예약했다는 뜻이에요.<ul><li>학년마다 교시 시각이 달라서, 시간표는 <b>실제 시각</b>으로 겹침을 판단해요. 예를 들어 저학년 5교시와 고학년 5교시는 둘 다 13:00~13:40이라 겹쳐요.</li><li>화면 위 빨간 상자의 항목을 누르면 그 칸으로 이동해요.</li><li>협의가 끝나면 한쪽 예약을 눌러 교시를 바꾸거나 삭제해 주세요.</li></ul>` + weekConflictHTML(mondayOf(new Date())) },
+  { keys:["반복","매주","격주","정기","매번","학기내내","계속"], a:() =>
+    `<b>반복 예약</b>은 예약 창의 <b>반복</b>에서 매주·격주를 고르고, 요일과 끝나는 날을 정하면 돼요.<ul><li>예약될 날짜가 미리 보이고, 겹치는 날은 빨간색이에요.</li><li>날짜를 누르면 <b>그 날만 빼고</b> 예약돼요.</li><li>나중에 고칠 때 '이 날 이후의 반복 일정에도 모두 적용'을 체크하면 남은 일정이 한꺼번에 바뀌어요.</li></ul><button class="act" data-bot="reserve">반복 예약하러 가기</button>` },
+  { keys:["빼기","빼고","이날만","그날만","휴업","휴일","공휴일","재량","제외"], a:() =>
+    `반복 예약에서 특정 날만 빼는 방법은 두 가지예요.<ol><li><b>예약할 때</b>: 반복 날짜 목록에서 뺄 날짜를 누르면 줄이 그어지고 그 날은 예약되지 않아요.</li><li><b>예약한 뒤</b>: 시간표에서 그 날 예약을 누르고 <b>삭제 → 이 날만 빼기</b>를 고르세요.</li></ol>` },
+  { keys:["업데이트","새기능","바뀐","변경내역","새로운","패치"], a:() =>
+    `최근 업데이트: <b>${esc(CHANGELOG[0].title)}</b><br>전체 내역은 아래 버튼이나 위쪽 <b>업데이트 내역</b>에서 볼 수 있어요.<br><button class="act" data-bot="log">업데이트 내역 보기</button>` },
   { keys:["연속","여러교시","두교시","블록","묶어","1~2교시","1·2교시","12교시","전학년","행사","전교","여러학년","합동","같이","함께","동시"], a:() =>
     `<b>여러 교시 연속 예약</b>: 예약 창의 교시 버튼을 여러 개 누르면 돼요(예: 1교시+2교시). 한 묶음으로 저장되고, 시간표에는 칸마다 "1·2교시 함께 예약"이라고 표시돼요. 수정·삭제할 때도 묶음 전체가 함께 바뀌어요.<br><br><b>전 학년 예약</b>: 학교 행사처럼 모든 학년이 쓰는 경우 학년에서 <b>전 학년</b>을 고르세요. 그날 어느 학년이든 수업이 있는 교시가 모두 나와요.<br><br><b>여러 학년 함께 예약</b>: 학년 버튼을 여러 개 누르면 돼요(예: 3학년+4학년). 한 예약으로 저장되니 서로 겹침으로 잡히지 않아요.<br><button class="act" data-bot="reserve">지금 예약하기</button>` },
   { keys:["수정","고치","바꾸","변경","삭제","지우","취소"], a:() =>
@@ -1258,6 +1479,7 @@ $("chatQuick").onclick = e => {
 };
 $("chatLog").onclick = e => {
   const b = e.target.closest("[data-bot]"); if (!b) return;
+  if (b.dataset.bot === "log") openLog(false);
   if (b.dataset.bot === "req") openReq({ type: b.dataset.type, text: b.dataset.text });
   if (b.dataset.bot === "reserve"){
     const preset = {};
@@ -1266,6 +1488,46 @@ $("chatLog").onclick = e => {
     render(); openForm(preset);
   }
 };
+
+/* ════════════════════════════════════════════════
+   사이트 업데이트 내역 — 새로 바꿀 때마다 맨 위에 추가하세요
+   ════════════════════════════════════════════════ */
+const CHANGELOG = [
+  { v:"2026-11-18", title:"반복 예약 · 이 날만 빼기", items:[
+    "예약할 때 <b>반복</b>(매주·격주)과 요일, 끝나는 날을 고르면 한 번에 여러 주를 예약할 수 있어요.",
+    "예약될 날짜가 미리 보이고, 날짜를 누르면 <b>그 날만 빼고</b> 예약돼요(휴업일·행사일 등). 겹치는 날은 빨간색으로 표시돼요.",
+    "반복 예약을 지울 때 <b>이 날만 빼기 / 이 날부터 이후 모두 / 반복 전체</b> 중에서 고를 수 있어요.",
+    "반복 예약을 고칠 때 '이 날 이후의 반복 일정에도 모두 적용'을 체크하면 남은 일정이 한꺼번에 바뀌어요.",
+    "위쪽 <b>업데이트 내역</b> 버튼에서 언제든 바뀐 점을 다시 볼 수 있어요." ]},
+  { v:"2026-11-13d", title:"여러 학년 함께 예약", date:"2026-11-13", items:[
+    "학년을 여러 개 골라 3·4학년 합동 수업처럼 한 예약으로 저장할 수 있어요. 서로 겹침으로 잡히지 않아요." ]},
+  { v:"2026-11-13c", title:"여러 교시 · 전 학년", date:"2026-11-13", items:[
+    "1·2교시처럼 여러 교시를 한 번에 예약할 수 있어요.",
+    "학교 행사용으로 <b>전 학년</b>을 고를 수 있어요." ]},
+  { v:"2026-11-13b", title:"관리자 모드 · 사용 도우미 · 요청하기", date:"2026-11-13", items:[
+    "관리자 모드에서 특별실 추가와 교시 시간 조정을 할 수 있어요.",
+    "오른쪽 아래 <b>사용 도우미</b>에게 사용법과 예약 현황을 물어볼 수 있어요.",
+    "<b>요청하기</b>로 불편한 점이나 필요한 기능을 남길 수 있어요." ]},
+  { v:"2026-11-13a", title:"특별실 예약 첫 공개", date:"2026-11-13", items:[
+    "컴퓨터실·강당을 날짜·학년·교시별로 예약하고, 같은 시간에 겹치는 학급을 빨간 칸으로 확인할 수 있어요." ]}
+];
+function openLog(onlyNew){
+  const seen = localStorage.getItem("tbs-log-seen");
+  const idx = CHANGELOG.findIndex(c => c.v === seen);
+  const newOnes = idx === -1 ? 1 : idx;   // 처음 온 분은 최신 1개만 '새 소식'으로
+  $("logTitle").textContent = onlyNew ? "새로 바뀐 점이 있어요 ✨" : "업데이트 내역";
+  const list = onlyNew ? CHANGELOG.slice(0, Math.max(1, newOnes)) : CHANGELOG;
+  $("logBody").innerHTML = list.map((c,i) => {
+    const d = parse((c.date || c.v).slice(0,10));
+    return `<div class="log-item ${i < newOnes ? "new" : ""}"><h3>${esc(c.title)} <span class="ldate">${d.getMonth()+1}월 ${d.getDate()}일</span>${i < newOnes ? `<span class="lnew">NEW</span>` : ""}</h3><ul>${c.items.map(t => `<li>${t}</li>`).join("")}</ul></div>`;
+  }).join("") + (onlyNew ? `<p class="help" style="margin-top:6px">지난 내역은 위쪽 <b>업데이트 내역</b> 버튼에서 볼 수 있어요.</p>` : "");
+  $("logOv").classList.remove("hidden");
+  localStorage.setItem("tbs-log-seen", CHANGELOG[0].v);
+}
+$("logBtn").onclick = () => openLog(false);
+$("logClose").onclick = () => $("logOv").classList.add("hidden");
+$("logOv").onclick = e => { if (e.target.id === "logOv") $("logOv").classList.add("hidden"); };
+function maybeShowLog(){ if (localStorage.getItem("tbs-log-seen") !== CHANGELOG[0].v) openLog(true); }
 
 /* ════════════════════════════════════════════════
    10) 로그인
@@ -1279,6 +1541,7 @@ async function enter(pw){
   $("login").classList.add("hidden"); $("app").classList.remove("hidden");
   $("demoBadge").classList.toggle("hidden", !DEMO);
   $("chatFab").classList.remove("hidden");
+  maybeShowLog();
   store.listen(render);
   render();
 }
