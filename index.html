@@ -131,6 +131,13 @@
   .del-choice{background:var(--danger-soft);border:2px solid var(--danger);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .del-choice .delq{width:100%;font-weight:700;color:var(--danger)}
   .inp:disabled{background:#f3f2ee;color:var(--ink-3)}
+  /* 공휴일 */
+  .grid thead th.hol{color:#b42318}
+  .grid thead th .hname{display:block;font-size:13px;font-weight:700;color:#b42318;margin-top:2px}
+  td.cell.none.hol{background:repeating-linear-gradient(135deg,#fdeeee 0 8px,#fbf5f4 8px 16px)}
+  td.cell.none.hol .hint{color:#c0504d;font-weight:700}
+  .rchip.none.hol{border-color:#f0bcbc;color:#c0504d;background:#fdf3f3;text-decoration:none}
+  .hol-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px 14px;font-size:14.5px;color:var(--ink-2);margin-top:8px}
   /* 업데이트 내역 */
   .log-item{border-left:4px solid var(--line);padding:4px 0 4px 16px;margin-bottom:18px}
   .log-item.new{border-left-color:var(--accent)}
@@ -315,6 +322,7 @@
       <span><span class="dot" style="background:var(--g6)"></span>6학년</span>
       <span><span class="dot" style="background:var(--danger-soft);box-shadow:inset 0 0 0 2px var(--danger)"></span>시간 겹침</span>
       <span><span class="dot" style="background:repeating-linear-gradient(135deg,#e4e1da 0 3px,#f6f4ef 3px 6px)"></span>수업 없음</span>
+      <span><span class="dot" style="background:repeating-linear-gradient(135deg,#f6caca 0 3px,#fbf5f4 3px 6px)"></span>공휴일·휴업일</span>
       <span style="margin-left:auto">빈칸을 누르면 바로 예약, 예약을 누르면 수정·삭제</span>
     </div>
   </main>
@@ -561,6 +569,28 @@ function weekOfMonthLabel(mon){
 /* ════════════════════════════════════════════════
    4) 저장소 (Firebase / 미리보기)
    ════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════
+   대한민국 공휴일 (인사혁신처·우주항공청 월력요항 기준)
+   — 2028년 이후나 새 임시공휴일은 관리자 모드 '휴일 관리'에서 추가하세요
+   ════════════════════════════════════════════════ */
+const KR_HOLIDAYS = {
+  "2026-01-01":"신정", "2026-02-16":"설날 연휴", "2026-02-17":"설날", "2026-02-18":"설날 연휴",
+  "2026-03-01":"삼일절", "2026-03-02":"대체공휴일(삼일절)", "2026-05-01":"노동절", "2026-05-05":"어린이날",
+  "2026-05-24":"부처님오신날", "2026-05-25":"대체공휴일(부처님오신날)", "2026-06-03":"전국동시지방선거",
+  "2026-06-06":"현충일", "2026-07-17":"제헌절", "2026-08-15":"광복절", "2026-08-17":"대체공휴일(광복절)",
+  "2026-09-24":"추석 연휴", "2026-09-25":"추석", "2026-09-26":"추석 연휴", "2026-10-03":"개천절",
+  "2026-10-05":"대체공휴일(개천절)", "2026-10-09":"한글날", "2026-12-25":"성탄절",
+  "2027-01-01":"신정", "2027-02-06":"설날 연휴", "2027-02-07":"설날", "2027-02-08":"설날 연휴",
+  "2027-02-09":"대체공휴일(설날)", "2027-03-01":"삼일절", "2027-05-01":"노동절", "2027-05-03":"대체공휴일(노동절)",
+  "2027-05-05":"어린이날", "2027-05-13":"부처님오신날", "2027-06-06":"현충일", "2027-07-17":"제헌절",
+  "2027-07-19":"대체공휴일(제헌절)", "2027-08-15":"광복절", "2027-08-16":"대체공휴일(광복절)",
+  "2027-09-14":"추석 연휴", "2027-09-15":"추석", "2027-09-16":"추석 연휴", "2027-10-03":"개천절",
+  "2027-10-04":"대체공휴일(개천절)", "2027-10-09":"한글날", "2027-10-11":"대체공휴일(한글날)",
+  "2027-12-25":"성탄절", "2027-12-27":"대체공휴일(성탄절)"
+};
+// 학교 휴업일 등 관리자가 추가한 날이 공휴일보다 우선
+function holidayOf(date){ return ((cfg && cfg.holidays) || {})[date] || KR_HOLIDAYS[date] || ""; }
+
 const DEMO = !firebaseConfig.apiKey || !firebaseConfig.databaseURL;
 const BAD_KEY = /[.#$\[\]\/]/;
 let db = null, ref = null, cfgRef = null, reqRef = null, data = {}, reqs = {}, unsubs = [];
@@ -703,7 +733,7 @@ function render(){
   });
 
   let h = `<thead><tr><th class="slot">시간</th>` + days.map(d =>
-    `<th class="${fmt(d)===today?"today":""}">${DOW[d.getDay()]}요일<span class="d">${md(d)}${fmt(d)===today?" · 오늘":""}</span></th>`
+    `<th class="${fmt(d)===today?"today":""} ${holidayOf(fmt(d))?"hol":""}">${DOW[d.getDay()]}요일<span class="d">${md(d)}${fmt(d)===today?" · 오늘":""}</span>${holidayOf(fmt(d))?`<span class="hname">${esc(holidayOf(fmt(d)))}</span>`:""}</th>`
   ).join("") + `</tr></thead><tbody>`;
 
   slotList().forEach(s => {
@@ -714,6 +744,8 @@ function render(){
       const { items:all, bad } = perDay[date];
       const items = all.filter(it => it.slot === s.id).sort((a,b) => a.grade-b.grade);
       const isToday = date === today;
+      const hol = holidayOf(date);
+      if (hol && !items.length){ h += `<td class="cell none hol"><span class="hint">${esc(hol)}</span></td>`; return; }
       if (!allowed.length && !items.length){ h += `<td class="cell none"><span class="hint">수업 없음</span></td>`; return; }
       const conflict = items.some(it => bad.has(it.id));
       h += `<td class="cell ${conflict?"conflict":""} ${isToday?"today":""}" data-date="${date}" data-slot="${s.id}">`;
@@ -802,6 +834,8 @@ function repeatPlan(){
     if (!form.rdays.includes(dow)) continue;
     if (form.repeat === "biweekly" && Math.round((mondayOf(d) - mon0) / (7*864e5)) % 2 !== 0) continue;
     const date = fmt(d);
+    const hol = holidayOf(date);
+    if (hol){ out.push({ date, slots:[], skipped:false, none:true, hol, conflict:false }); continue; }
     const av = availFor(form.grades, dow);
     const slots = form.slots.filter(s => av.includes(s));
     const conflict = !form.skip.has(date) && slots.some(sid => conflictsWith({ room:form.room, date, slot:sid }, editIds).length);
@@ -827,6 +861,9 @@ function drawForm(){
   if (hasGrade()) form.slots = form.slots.filter(id => avail.includes(id));
   if (!hasGrade()){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">학년을 먼저 골라 주세요. 학년·요일에 맞는 교시만 보여요.</div>`;
+  } else if (form.repeat === "none" && holidayOf(form.date) && !editIds.length){
+    $("fSlot").innerHTML = `<div class="msg info" style="margin:0">${md(parse(form.date))}은(는) <b>${esc(holidayOf(form.date))}</b>(휴일)이라 예약할 수 없어요.</div>`;
+    form.slots = [];
   } else if ((dow === 0 || dow === 6) && form.repeat === "none"){
     $("fSlot").innerHTML = `<div class="msg info" style="margin:0">주말에는 예약할 수 없어요.</div>`;
   } else if (!avail.length){
@@ -853,12 +890,12 @@ function drawForm(){
       const use = plan.filter(p => !p.skipped && !p.none);
       const bad = use.filter(p => p.conflict).length;
       $("fPlan").innerHTML = !plan.length ? `<div class="slot-help">요일과 끝나는 날을 고르면 예약될 날짜가 여기 보여요.</div>` :
-        `<div class="plan-head">총 <b>${use.length}회</b> 예약돼요${bad?` · <span style="color:var(--danger)">⚠ ${bad}회 겹침</span>`:""}</div>
+        `<div class="plan-head">총 <b>${use.length}회</b> 예약돼요${bad?` · <span style="color:var(--danger)">⚠ ${bad}회 겹침</span>`:""}${plan.some(p => p.hol)?` · <span style="color:var(--danger-ink,#b42318)">휴일 ${plan.filter(p => p.hol).length}일 자동 제외</span>`:""}</div>
          <div class="plan">${plan.map(p => {
            const d = parse(p.date);
-           const cls = p.none ? "none" : p.skipped ? "off" : p.conflict ? "bad" : "";
-           const tip = p.none ? "이 요일엔 고른 교시가 없어요" : p.skipped ? "누르면 다시 넣어요" : p.conflict ? "겹치는 예약이 있어요 · 누르면 이 날만 빼요" : "누르면 이 날만 빼요";
-           return `<button type="button" class="rchip ${cls}" data-v="${p.date}" title="${tip}" ${p.none?"disabled":""}>${md(d)}(${DOW[d.getDay()]})</button>`; }).join("")}</div>
+           const cls = p.hol ? "none hol" : p.none ? "none" : p.skipped ? "off" : p.conflict ? "bad" : "";
+           const tip = p.hol ? `${p.hol} — 휴일이라 자동으로 빠져요` : p.none ? "이 요일엔 고른 교시가 없어요" : p.skipped ? "누르면 다시 넣어요" : p.conflict ? "겹치는 예약이 있어요 · 누르면 이 날만 빼요" : "누르면 이 날만 빼요";
+           return `<button type="button" class="rchip ${cls}" data-v="${p.date}" title="${tip}" ${p.none?"disabled":""}>${md(d)}(${DOW[d.getDay()]})${p.hol?` ${esc(p.hol.replace(/^대체공휴일\(.*\)$/,"대체공휴일"))}`:""}</button>`; }).join("")}</div>
          <div class="slot-help">날짜를 누르면 <b>그 날만 빼고</b> 예약할 수 있어요 (휴업일·행사일 등). 줄 그어진 날은 빠져요.${plan.length >= MAX_REPEAT ? ` 한 번에 최대 ${MAX_REPEAT}회까지 만들 수 있어요.` : ""}</div>`;
     }
   } else if (form.series){
@@ -1068,7 +1105,7 @@ const newId = p => p + Date.now().toString(36) + Math.random().toString(36).slic
 
 function drawAdmin(){
   const orph = orphans();
-  $("aTabs").innerHTML = [["requests","요청사항"],["rooms","특별실 관리"],["slots","교시 시간 관리"],["orphans","정리할 예약"]].map(([k,t]) => {
+  $("aTabs").innerHTML = [["requests","요청사항"],["rooms","특별실 관리"],["slots","교시 시간 관리"],["holidays","휴일 관리"],["orphans","정리할 예약"]].map(([k,t]) => {
     const n = k === "orphans" ? orph.length : k === "requests" ? reqList().filter(r => r.status !== "done").length : 0;
     return `<button class="atab ${aTab===k?"on":""}" data-t="${k}">${t}${n?`<span class="cnt">${n}</span>`:""}</button>`; }).join("");
   $("aSave").classList.toggle("hidden", aTab === "requests" || aTab === "orphans");
@@ -1123,6 +1160,21 @@ function drawAdmin(){
       <div class="addrow"><button class="btn btn-primary" id="addSlot">+ 교시 추가</button></div>`;
   }
 
+  if (aTab === "holidays"){
+    const custom = Object.entries(draft.holidays || {}).sort(([a],[b]) => a.localeCompare(b));
+    const y = new Date().getFullYear();
+    const builtin = Object.entries(KR_HOLIDAYS).filter(([d]) => d >= `${y}-01-01`).filter(([d]) => { const w = parse(d).getDay(); return w >= 1 && w <= 5; });
+    $("aBody").innerHTML = `<p class="help">대한민국 공휴일(대체공휴일 포함)은 자동으로 반영돼요. 학교 <b>재량휴업일·개교기념일</b>이나 새로 정해진 임시공휴일은 여기서 추가해 주세요. 휴일에는 시간표 칸이 막히고, 반복 예약에서도 자동으로 빠져요.</p>
+      <table class="atable"><thead><tr><th style="width:190px">날짜</th><th>이름</th><th style="width:90px"></th></tr></thead><tbody>` +
+      (custom.length ? custom.map(([d,n]) => `<tr data-hd="${d}"><td>${md(parse(d))}(${DOW[parse(d).getDay()]}) <span style="color:var(--ink-3);font-size:13px">${d.slice(0,4)}</span></td><td>${esc(n)}${KR_HOLIDAYS[d]?` <span style="color:var(--ink-3);font-size:13px">(공휴일 ${esc(KR_HOLIDAYS[d])} 대신 표시)</span>`:""}</td><td><button class="ibtn del" data-act="hdel">삭제</button></td></tr>`).join("")
+        : `<tr><td colspan="3" style="color:var(--ink-3)">추가한 휴업일이 없어요.</td></tr>`) +
+      `</tbody></table>
+      <div class="addrow"><input type="date" class="inp" id="newHolDate" style="max-width:200px"><input class="inp" id="newHolName" placeholder="이름 (예: 재량휴업일)" maxlength="30"><button class="btn btn-primary" id="addHol">+ 휴일 추가</button></div>
+      <h3 style="margin:24px 0 4px;font-size:16px">자동 반영되는 평일 공휴일 (${y}년~)</h3>
+      <div class="hol-list">${builtin.map(([d,n]) => `<div>${d.slice(0,4)}. ${md(parse(d))}(${DOW[parse(d).getDay()]}) ${esc(n)}</div>`).join("")}</div>
+      <p class="help" style="margin-top:10px">${Object.keys(KR_HOLIDAYS).slice(-1)[0].slice(0,4)}년까지 들어 있어요. 그 뒤 공휴일은 위에서 추가하거나 업데이트를 요청해 주세요.</p>`;
+  }
+
   if (aTab === "orphans"){
     $("aBody").innerHTML = `<p class="help">특별실이나 교시가 지워져서 시간표에 보이지 않는 예약이에요. 필요 없으면 지워 주세요.</p>` +
       (orph.length ? orph.sort((a,b) => a.date.localeCompare(b.date)).map(o => {
@@ -1145,6 +1197,14 @@ $("aBody").onchange = e => { if (aTab === "slots" && e.target.type === "time") d
 
 $("aBody").onclick = async e => {
   const t = e.target;
+  if (t.id === "addHol"){
+    const d = $("newHolDate").value, n = $("newHolName").value.trim() || "휴업일";
+    if (!d) return toast("날짜를 골라 주세요");
+    (draft.holidays ||= {})[d] = n; drawAdmin(); return;
+  }
+  if (t.closest("[data-hd]") && t.closest("[data-act=hdel]")){
+    delete draft.holidays[t.closest("[data-hd]").dataset.hd]; drawAdmin(); return;
+  }
   if (t.id === "addRoom"){
     const name = $("newRoom").value.trim(); if (!name) return toast("특별실 이름을 적어 주세요");
     const max = Math.max(-1, ...Object.values(draft.rooms).map(r => r.order ?? 0));
@@ -1227,6 +1287,8 @@ $("aSave").onclick = async () => {
   }
   // 정리해서 저장
   const clean = { rooms:{}, slots:{}, updatedAt: Date.now() };
+  const hols = {}; Object.entries(draft.holidays || {}).forEach(([d,n]) => { if (/^\d{4}-\d{2}-\d{2}$/.test(d) && String(n).trim()) hols[d] = String(n).trim().slice(0,30); });
+  if (Object.keys(hols).length) clean.holidays = hols;
   Object.entries(draft.rooms).forEach(([id,r]) => clean.rooms[id] = { name: String(r.name).trim(), order: Number(r.order)||0 });
   Object.entries(draft.slots).forEach(([id,s]) => {
     const o = { label: String(s.label).trim(), start: s.start, end: s.end };
@@ -1362,6 +1424,7 @@ function dayStatusHTML(room, d){
   const date = fmt(d), dow = d.getDay();
   const head = `<b>${esc(room.name)} · ${md(d)}(${DOW[dow]})</b>`;
   if (dow === 0 || dow === 6) return `${head}<br>주말이라 수업이 없어요.`;
+  if (holidayOf(date) && !dayItems(room.id, date).length) return `${head}<br><b>${esc(holidayOf(date))}</b>(휴일)이라 수업이 없어요.`;
   const items = dayItems(room.id, date);
   const bad = new Set(); conflictGroups(items).forEach(g => g.items.forEach(i => bad.add(i.id)));
   const rows = slotList().map(s => {
@@ -1396,7 +1459,7 @@ const INTENTS = [
   { keys:["반복","매주","격주","정기","매번","학기내내","계속"], a:() =>
     `<b>반복 예약</b>은 예약 창의 <b>반복</b>에서 매주·격주를 고르고, 요일과 끝나는 날을 정하면 돼요.<ul><li>예약될 날짜가 미리 보이고, 겹치는 날은 빨간색이에요.</li><li>날짜를 누르면 <b>그 날만 빼고</b> 예약돼요.</li><li>나중에 고칠 때 '이 날 이후의 반복 일정에도 모두 적용'을 체크하면 남은 일정이 한꺼번에 바뀌어요.</li></ul><button class="act" data-bot="reserve">반복 예약하러 가기</button>` },
   { keys:["빼기","빼고","이날만","그날만","휴업","휴일","공휴일","재량","제외"], a:() =>
-    `반복 예약에서 특정 날만 빼는 방법은 두 가지예요.<ol><li><b>예약할 때</b>: 반복 날짜 목록에서 뺄 날짜를 누르면 줄이 그어지고 그 날은 예약되지 않아요.</li><li><b>예약한 뒤</b>: 시간표에서 그 날 예약을 누르고 <b>삭제 → 이 날만 빼기</b>를 고르세요.</li></ol>` },
+    `<b>공휴일·대체공휴일</b>과 관리자가 등록한 <b>학교 휴업일</b>은 시간표에 빨간색으로 표시되고, 반복 예약에서도 <b>자동으로 빠져요</b>.<br>그 밖에 특정 날만 빼는 방법은 두 가지예요.<ol><li><b>예약할 때</b>: 반복 날짜 목록에서 뺄 날짜를 누르면 줄이 그어지고 그 날은 예약되지 않아요.</li><li><b>예약한 뒤</b>: 시간표에서 그 날 예약을 누르고 <b>삭제 → 이 날만 빼기</b>를 고르세요.</li></ol>` },
   { keys:["업데이트","새기능","바뀐","변경내역","새로운","패치"], a:() =>
     `최근 업데이트: <b>${esc(CHANGELOG[0].title)}</b><br>전체 내역은 아래 버튼이나 위쪽 <b>업데이트 내역</b>에서 볼 수 있어요.<br><button class="act" data-bot="log">업데이트 내역 보기</button>` },
   { keys:["연속","여러교시","두교시","블록","묶어","1~2교시","1·2교시","12교시","전학년","행사","전교","여러학년","합동","같이","함께","동시"], a:() =>
@@ -1493,6 +1556,11 @@ $("chatLog").onclick = e => {
    사이트 업데이트 내역 — 새로 바꿀 때마다 맨 위에 추가하세요
    ════════════════════════════════════════════════ */
 const CHANGELOG = [
+  { v:"2026-11-19", title:"대한민국 공휴일 반영", items:[
+    "공휴일과 대체공휴일(2026~2027년)이 시간표에 빨간색으로 표시되고, 그 날은 예약 칸이 막혀요.",
+    "반복 예약을 만들 때 공휴일은 <b>자동으로 빠져요</b>.",
+    "학교 재량휴업일·개교기념일은 관리자가 <b>휴일 관리</b>에서 추가할 수 있어요.",
+    "사용 도우미에게 날짜를 물어보면 공휴일인지도 알려 줘요." ]},
   { v:"2026-11-18", title:"반복 예약 · 이 날만 빼기", items:[
     "예약할 때 <b>반복</b>(매주·격주)과 요일, 끝나는 날을 고르면 한 번에 여러 주를 예약할 수 있어요.",
     "예약될 날짜가 미리 보이고, 날짜를 누르면 <b>그 날만 빼고</b> 예약돼요(휴업일·행사일 등). 겹치는 날은 빨간색으로 표시돼요.",
