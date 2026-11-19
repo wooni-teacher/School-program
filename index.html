@@ -137,6 +137,7 @@
   td.cell.none.hol{background:repeating-linear-gradient(135deg,#fdeeee 0 8px,#fbf5f4 8px 16px)}
   td.cell.none.hol .hint{color:#c0504d;font-weight:700}
   .rchip.none.hol{border-color:#f0bcbc;color:#c0504d;background:#fdf3f3;text-decoration:none}
+  .hol-add{background:#faf9f6;border:1.5px solid var(--line-2);border-radius:12px;padding:14px}
   .hol-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px 14px;font-size:14.5px;color:var(--ink-2);margin-top:8px}
   /* 업데이트 내역 */
   .log-item{border-left:4px solid var(--line);padding:4px 0 4px 16px;margin-bottom:18px}
@@ -589,6 +590,20 @@ const KR_HOLIDAYS = {
   "2027-12-25":"성탄절", "2027-12-27":"대체공휴일(성탄절)"
 };
 // 학교 휴업일 등 관리자가 추가한 날이 공휴일보다 우선
+// 관리자 휴일을 기간으로 묶기 (같은 이름이고 사이에 주말·공휴일만 있으면 한 기간)
+function holidayRanges(map){
+  const ds = Object.keys(map).sort(), out = [];
+  ds.forEach(d => {
+    const last = out[out.length-1];
+    if (last && last.name === map[d]){
+      let ok = true, x = addDays(parse(last.dates[last.dates.length-1]), 1);
+      for (; fmt(x) < d; x = addDays(x, 1)){ const w = x.getDay(); if (!(w === 0 || w === 6 || KR_HOLIDAYS[fmt(x)])){ ok = false; break; } }
+      if (ok){ last.dates.push(d); return; }
+    }
+    out.push({ name: map[d], dates: [d] });
+  });
+  return out;
+}
 function holidayOf(date){ return ((cfg && cfg.holidays) || {})[date] || KR_HOLIDAYS[date] || ""; }
 
 const DEMO = !firebaseConfig.apiKey || !firebaseConfig.databaseURL;
@@ -1161,15 +1176,21 @@ function drawAdmin(){
   }
 
   if (aTab === "holidays"){
-    const custom = Object.entries(draft.holidays || {}).sort(([a],[b]) => a.localeCompare(b));
+    const ranges = holidayRanges(draft.holidays || {});
     const y = new Date().getFullYear();
     const builtin = Object.entries(KR_HOLIDAYS).filter(([d]) => d >= `${y}-01-01`).filter(([d]) => { const w = parse(d).getDay(); return w >= 1 && w <= 5; });
-    $("aBody").innerHTML = `<p class="help">대한민국 공휴일(대체공휴일 포함)은 자동으로 반영돼요. 학교 <b>재량휴업일·개교기념일</b>이나 새로 정해진 임시공휴일은 여기서 추가해 주세요. 휴일에는 시간표 칸이 막히고, 반복 예약에서도 자동으로 빠져요.</p>
-      <table class="atable"><thead><tr><th style="width:190px">날짜</th><th>이름</th><th style="width:90px"></th></tr></thead><tbody>` +
-      (custom.length ? custom.map(([d,n]) => `<tr data-hd="${d}"><td>${md(parse(d))}(${DOW[parse(d).getDay()]}) <span style="color:var(--ink-3);font-size:13px">${d.slice(0,4)}</span></td><td>${esc(n)}${KR_HOLIDAYS[d]?` <span style="color:var(--ink-3);font-size:13px">(공휴일 ${esc(KR_HOLIDAYS[d])} 대신 표시)</span>`:""}</td><td><button class="ibtn del" data-act="hdel">삭제</button></td></tr>`).join("")
-        : `<tr><td colspan="3" style="color:var(--ink-3)">추가한 휴업일이 없어요.</td></tr>`) +
+    const dl = d => `${d.slice(0,4)}. ${md(parse(d))}(${DOW[parse(d).getDay()]})`;
+    $("aBody").innerHTML = `<p class="help">대한민국 공휴일(대체공휴일 포함)은 자동으로 반영돼요. 학교 <b>재량휴업일·개교기념일·방학</b>이나 새로 정해진 임시공휴일은 여기서 추가해 주세요. 휴일에는 시간표 칸이 막히고, 반복 예약에서도 자동으로 빠져요.</p>
+      <div class="hol-add">
+        <div class="ropt"><span class="rlabel">시작일</span><input type="date" class="inp" id="newHolDate" style="max-width:200px">
+          <span class="rlabel" style="min-width:auto">~ 끝나는 날</span><input type="date" class="inp" id="newHolEnd" style="max-width:200px"><span class="opt" style="color:var(--ink-3);font-size:14px">하루면 비워 두세요</span></div>
+        <div class="ropt"><span class="rlabel">이름</span><input class="inp" id="newHolName" placeholder="예: 재량휴업일, 겨울방학" maxlength="30" style="max-width:320px"><button class="btn btn-primary" id="addHol">+ 휴일 추가</button></div>
+        <div class="slot-help">기간으로 넣으면 그 사이 평일이 모두 휴일이 돼요. 주말과 이미 공휴일인 날은 그대로 두어요.</div>
+      </div>
+      <table class="atable" style="margin-top:14px"><thead><tr><th>기간</th><th>이름</th><th style="width:90px">평일 수</th><th style="width:90px"></th></tr></thead><tbody>` +
+      (ranges.length ? ranges.map(r => `<tr data-hd="${r.dates.join(",")}"><td><b>${dl(r.dates[0])}</b>${r.dates.length > 1 ? ` ~ <b>${dl(r.dates[r.dates.length-1])}</b>` : ""}</td><td>${esc(r.name)}</td><td>${r.dates.length}일</td><td><button class="ibtn del" data-act="hdel">삭제</button></td></tr>`).join("")
+        : `<tr><td colspan="4" style="color:var(--ink-3)">추가한 휴업일이 없어요.</td></tr>`) +
       `</tbody></table>
-      <div class="addrow"><input type="date" class="inp" id="newHolDate" style="max-width:200px"><input class="inp" id="newHolName" placeholder="이름 (예: 재량휴업일)" maxlength="30"><button class="btn btn-primary" id="addHol">+ 휴일 추가</button></div>
       <h3 style="margin:24px 0 4px;font-size:16px">자동 반영되는 평일 공휴일 (${y}년~)</h3>
       <div class="hol-list">${builtin.map(([d,n]) => `<div>${d.slice(0,4)}. ${md(parse(d))}(${DOW[parse(d).getDay()]}) ${esc(n)}</div>`).join("")}</div>
       <p class="help" style="margin-top:10px">${Object.keys(KR_HOLIDAYS).slice(-1)[0].slice(0,4)}년까지 들어 있어요. 그 뒤 공휴일은 위에서 추가하거나 업데이트를 요청해 주세요.</p>`;
@@ -1198,12 +1219,25 @@ $("aBody").onchange = e => { if (aTab === "slots" && e.target.type === "time") d
 $("aBody").onclick = async e => {
   const t = e.target;
   if (t.id === "addHol"){
-    const d = $("newHolDate").value, n = $("newHolName").value.trim() || "휴업일";
-    if (!d) return toast("날짜를 골라 주세요");
-    (draft.holidays ||= {})[d] = n; drawAdmin(); return;
+    const d = $("newHolDate").value, e2 = $("newHolEnd").value || d, n = $("newHolName").value.trim() || "휴업일";
+    if (!d) return toast("시작일을 골라 주세요");
+    if (e2 < d) return toast("끝나는 날이 시작일보다 앞이에요");
+    if ((parse(e2) - parse(d)) / 864e5 > 200) return toast("한 번에 200일까지 넣을 수 있어요");
+    draft.holidays ||= {};
+    let added = 0;
+    for (let x = parse(d); x <= parse(e2); x = addDays(x, 1)){
+      const w = x.getDay(), k = fmt(x);
+      if (d !== e2 && (w === 0 || w === 6 || KR_HOLIDAYS[k])) continue;   // 기간이면 주말·공휴일은 건너뜀
+      draft.holidays[k] = n; added++;
+    }
+    if (!added) return toast("넣을 평일이 없어요");
+    $("aMsg").innerHTML = `<div class="msg info">${added}일을 추가했어요. <b>설정 저장</b>을 눌러야 반영돼요.</div>`;
+    drawAdmin(); return;
   }
   if (t.closest("[data-hd]") && t.closest("[data-act=hdel]")){
-    delete draft.holidays[t.closest("[data-hd]").dataset.hd]; drawAdmin(); return;
+    const ds = t.closest("[data-hd]").dataset.hd.split(",");
+    if (ds.length > 1 && !confirm(`이 기간의 휴일 ${ds.length}일을 모두 지울까요?`)) return;
+    ds.forEach(k => delete draft.holidays[k]); drawAdmin(); return;
   }
   if (t.id === "addRoom"){
     const name = $("newRoom").value.trim(); if (!name) return toast("특별실 이름을 적어 주세요");
@@ -1556,6 +1590,9 @@ $("chatLog").onclick = e => {
    사이트 업데이트 내역 — 새로 바꿀 때마다 맨 위에 추가하세요
    ════════════════════════════════════════════════ */
 const CHANGELOG = [
+  { v:"2026-11-19b", title:"휴일을 기간으로 설정", date:"2026-11-19", items:[
+    "관리자 모드 <b>휴일 관리</b>에서 시작일~끝나는 날을 정해 방학·연속 휴업일을 한 번에 넣을 수 있어요.",
+    "넣은 휴일은 기간별로 묶여 보이고, 기간째로 지울 수 있어요." ]},
   { v:"2026-11-19", title:"대한민국 공휴일 반영", items:[
     "공휴일과 대체공휴일(2026~2027년)이 시간표에 빨간색으로 표시되고, 그 날은 예약 칸이 막혀요.",
     "반복 예약을 만들 때 공휴일은 <b>자동으로 빠져요</b>.",
