@@ -1739,7 +1739,6 @@ function renderReqExtras(){
    ════════════════════════════════════════════════ */
 const norm = t => String(t).toLowerCase().replace(/\s+/g, "");
 const has = (t, words) => words.some(w => t.includes(w));
-const QUICK = ["예약하는 방법", "수정·삭제", "빨간 칸이 뭐예요?", "교시 시간표", "오늘 비어 있는 시간", "이번 주 겹침 확인", "요청 남기기"];
 
 function slotTimeTable(){
   return `<table>${slotList().map(s => `<tr><td><b>${esc(s.label)}</b></td><td>${s.start}~${s.end}</td><td>${esc(availSummary(s))}</td></tr>`).join("")}</table>`;
@@ -1824,11 +1823,9 @@ const INTENTS = [
     `예약은 두 가지 방법이 있어요.<ol><li>시간표에서 <b>빈칸을 누르면</b> 날짜와 교시가 미리 채워진 예약 창이 열려요.</li><li>위쪽 <b>+ 예약하기</b> 버튼을 눌러 처음부터 고를 수도 있어요.</li></ol>예약 창에서 <b>특별실 → 날짜 → 학년 → 교시</b> 순서로 고르고 저장하면 끝이에요. 1·2교시처럼 <b>여러 교시를 한 번에</b> 고를 수 있고, 학교 행사는 학년에서 <b>전 학년</b>을 고르면 돼요. 3·4학년 합동 수업처럼 <b>여러 학년을 함께</b> 고를 수도 있어요. 교시를 고르면 겹치는 예약이 있는지 바로 알려 줘요.<br><button class="act" data-bot="reserve">지금 예약하기</button>` },
 ];
 
-function botAnswer(raw){
+function roomAnswer(raw){
   const t = norm(raw);
   if (!t) return "";
-  if (has(t, ["안녕","하이","hello","hi"])) return `안녕하세요, 선생님! 특별실 예약 사용법이나 예약 현황을 물어보세요. 아래 버튼을 눌러도 돼요.`;
-  if (has(t, ["고마","감사","땡큐"])) return `천만에요! 더 궁금한 게 있으면 언제든 물어보세요.`;
 
   // 예약 현황 질문: 날짜가 있고 (비었/현황/누가/사용/예약 등)
   const d = parseDateQ(raw);
@@ -1847,8 +1844,172 @@ function botAnswer(raw){
   let best = null, score = 0;
   INTENTS.forEach(it => { const n = it.keys.filter(k => t.includes(k)).length * (it.w || 1); if (n > score){ score = n; best = it; } });
   if (best) return best.a();
-  return `음, 그 질문은 아직 잘 모르겠어요. 😅<br>아래 버튼에서 골라 보시거나, 따로 알려 주실 내용이 있으면 요청으로 남겨 주세요.<br><button class="act" data-bot="req" data-text="${esc(raw)}">이 내용으로 요청 남기기</button>`;
+  return null;
 }
+
+/* ════════════════════════════════════════════════
+   사용 도우미 — 탭마다 다른 도우미 (특별실 예약 · 협의록 · 투표)
+   ════════════════════════════════════════════════ */
+const QUICKS = {
+  room: [["예약하는 방법","예약하는 방법"],["수정·삭제","예약 수정이나 삭제는 어떻게 해요?"],["빨간 칸이 뭐예요?","빨간 칸이 뭐예요?"],["교시 시간표","교시 시간표 알려줘"],["오늘 비어 있는 시간","오늘 비어 있는 시간"],["이번 주 겹침 확인","이번 주 겹침 확인"],["요청 남기기","요청을 남기고 싶어요"]],
+  meet: [["협의록 쓰는 법","협의록은 어떻게 써요?"],["남은 할 일","남은 할 일 알려줘"],["내 할 일","내 할 일 알려줘"],["기한 지난 할 일","기한 지난 할 일"],["최근 협의록","최근 협의록 보여줘"],["인쇄하기","협의록 인쇄는 어떻게 해요?"],["수정·삭제","협의록 수정이나 삭제는 어떻게 해요?"]],
+  vote: [["투표 만드는 법","투표는 어떻게 만들어요?"],["진행 중인 투표","진행 중인 투표 현황"],["최근 결과","최근 투표 결과 보여줘"],["의견 먼저 받기","선택지를 의견으로 먼저 받으려면?"],["여러 학년 투표","여러 학년이 같이 투표하려면?"],["링크·QR 나눠 주기","링크나 QR은 어떻게 나눠 줘요?"],["마감·결과 공개","마감하고 결과 공개는 어떻게 해요?"]]
+};
+const BOT_INFO = {
+  room: { title:"특별실 예약 도우미", sub:"사용법·예약 현황을 물어보세요", ph:"예: 오늘 컴퓨터실 비어 있어?",
+    hello:`안녕하세요! <b>특별실 예약 도우미</b>예요.<br>사용법을 물어보시거나, "<b>오늘 컴퓨터실 비어 있어?</b>", "<b>다음주 화요일 강당</b>"처럼 예약 현황을 물어보세요.` },
+  meet: { title:"협의록 도우미", sub:"쓰는 법·할 일·지난 협의를 물어보세요", ph:"예: 내 할 일 알려줘, 학예회 협의 찾아줘",
+    hello:`안녕하세요! <b>협의록 도우미</b>예요.<br>"<b>내 할 일</b>", "<b>기한 지난 할 일</b>", "<b>학예회 협의 찾아줘</b>", "<b>11월 협의록</b>"처럼 물어보시거나 사용법을 물어보세요.` },
+  vote: { title:"투표 도우미", sub:"만드는 법·진행 현황·결과를 물어보세요", ph:"예: 진행 중인 투표, 의견 먼저 받으려면?",
+    hello:`안녕하세요! <b>투표 도우미</b>예요.<br>"<b>진행 중인 투표</b>", "<b>최근 결과</b>", "<b>교직원 투표 만드는 법</b>"처럼 물어보세요. 투표를 올리는 방법도 차근차근 알려 드려요.` }
+};
+const curSec = () => { const b = document.querySelector("#secNav button.on"); return b ? b.dataset.sec : "room"; };
+let botSec = null;
+function botSetSec(sec, announce){
+  if (botSec === sec) return;
+  botSec = sec;
+  const I = BOT_INFO[sec];
+  document.querySelector("#chat .chat-head b").textContent = I.title;
+  document.querySelector("#chat .chat-head span").textContent = I.sub;
+  $("chatFab").textContent = "💬 " + I.title;
+  $("chatIn").placeholder = I.ph;
+  $("chatQuick").innerHTML = QUICKS[sec].map(([l]) => `<button type="button">${l}</button>`).join("");
+  if (announce) chatPush(I.hello, "bot");
+}
+window.chatSwitch = sec => botSetSec(sec, chatStarted);
+
+/* ── 협의록 도우미 ── */
+const kdate = s => { if (!s) return ""; const d = parse(s); return `${d.getMonth()+1}/${d.getDate()}(${DOW[d.getDay()]})`; };
+const KIND_NAME = { subject:"교과 협의", work:"업무 협의", staff:"교직원 회의" };
+function hyTaskRows(list){
+  const today = fmt(new Date());
+  return `<table>${list.map(t => {
+    const over = t.due && t.due < today, dd = t.due ? Math.round((parse(t.due) - parse(today)) / 864e5) : null;
+    const due = !t.due ? `<span style="color:var(--ink-3)">기한 없음</span>` : over ? `<span class="bad">${kdate(t.due)} · ${-dd}일 지남</span>` : dd === 0 ? `<span class="bad">오늘까지</span>` : `${kdate(t.due)}${dd <= 3 ? ` · D-${dd}` : ""}`;
+    return `<tr><td><b>${esc(t.text)}</b>${t.who ? `<br><span style="color:var(--ink-3);font-size:13.5px">👤 ${esc(t.who)}</span>` : ""}</td><td style="white-space:nowrap">${due}</td></tr>`;
+  }).join("")}</table>`;
+}
+function hyMeetList(ms, max = 6){
+  if (!ms.length) return "";
+  return `<ul>${ms.slice(0, max).map(m => `<li>${kdate(m.date)} <b>${esc(m.title)}</b> <span style="color:var(--ink-3);font-size:13.5px">${esc(KIND_NAME[m.kind] || "")}</span><br><button class="act" data-bot="hy-open" data-id="${esc(m.id)}">열어 보기</button></li>`).join("")}</ul>${ms.length > max ? `<span style="color:var(--ink-3);font-size:14px">외 ${ms.length - max}건 더 있어요. 위쪽 검색 칸에서 찾아보세요.</span>` : ""}`;
+}
+const HY_STOP = ["협의록","협의","회의록","회의","찾아줘","찾아","검색","관련","있어","있나","보여줘","보여","알려줘","알려","좀","내용","에","의","거","것","언제","했지","했어","했던"];
+function hyAnswer(raw){
+  const H = window.hyBot; const t = norm(raw);
+  if (!H || !H.ready()) return `협의록을 아직 불러오지 못했어요. 잠시 뒤 다시 물어보시거나, Firebase 규칙에 <b>hyeobui</b> 경로가 있는지 확인해 주세요.`;
+  const ms = H.meetings(), tasks = H.tasks(), today = fmt(new Date());
+  const open = tasks.filter(x => !x.done).sort((a,b) => (a.due || "9999").localeCompare(b.due || "9999"));
+
+  // 할 일
+  if (has(t, ["할일","해야","담당","기한","마감일","숙제","todo"])){
+    if (has(t, ["어떻게","방법","넣","적","추가","완료표시","체크하"])) return `할 일은 협의록을 쓸 때 맨 아래 <b>+ 할 일 추가</b>로 넣어요. 내용·담당자·기한을 적으면 위쪽 <b>할 일</b> 탭에 모여요.<ul><li>기한이 지나면 빨갛게, 3일 안이면 주황색으로 보여요.</li><li>왼쪽 네모를 누르면 <b>완료</b>로 표시되고, 누가 표시했는지도 남아요.</li></ul><button class="act" data-bot="hy-tasks">할 일 탭 보기</button>`;
+    const me = (() => { try { return localStorage.getItem("hyeobui-name") || ""; } catch(e){ return ""; } })();
+    if (has(t, ["내","나의"]) && !has(t, ["내용"])){
+      if (!me) return `선생님 이름을 아직 몰라요. 협의록을 한 번 쓰거나 할 일을 완료 표시하면 이름이 기억돼요.<br>지금 남은 할 일은 모두 ${open.length}개예요.${open.length ? hyTaskRows(open.slice(0, 8)) : ""}`;
+      const mine = open.filter(x => (x.who || "").includes(me) || (me && me.includes(x.who || "\u0000")));
+      return mine.length ? `<b>${esc(me)}</b> 선생님 담당으로 남은 할 일 ${mine.length}개예요.${hyTaskRows(mine)}<button class="act" data-bot="hy-tasks">할 일 탭 보기</button>`
+                         : `<b>${esc(me)}</b> 선생님 담당으로 남은 할 일은 없어요. 🎉<br><span style="color:var(--ink-3);font-size:14px">담당자 칸에 이름이 들어간 할 일만 찾아요.</span>`;
+    }
+    if (has(t, ["지난","지났","밀린","늦은","넘은","초과"])){
+      const over = open.filter(x => x.due && x.due < today);
+      return over.length ? `<span class="bad">기한이 지난 할 일</span> ${over.length}개예요.${hyTaskRows(over)}<button class="act" data-bot="hy-tasks">할 일 탭 보기</button>` : `기한이 지난 할 일은 없어요. 👍`;
+    }
+    if (has(t, ["이번주","7일","일주일","곧","다가오"])){
+      const soon = open.filter(x => x.due && x.due >= today && (parse(x.due) - parse(today)) / 864e5 <= 7);
+      return soon.length ? `7일 안에 해야 할 일 ${soon.length}개예요.${hyTaskRows(soon)}` : `7일 안에 기한인 할 일은 없어요.`;
+    }
+    return open.length ? `남은 할 일은 모두 <b>${open.length}개</b>예요. 기한이 가까운 순서예요.${hyTaskRows(open.slice(0, 8))}${open.length > 8 ? `<span style="color:var(--ink-3);font-size:14px">외 ${open.length - 8}개</span><br>` : ""}<button class="act" data-bot="hy-tasks">할 일 탭 보기</button>`
+                       : `남은 할 일이 없어요. 🎉`;
+  }
+  // 사용법
+  if (has(t, ["인쇄","프린트","출력","결재","보관"])) return `협의록을 눌러 열고 왼쪽 아래 <b>인쇄</b>를 누르면 일시·참석자·내용·결정 사항·할 일이 표 양식으로 인쇄돼요. 인쇄 창에서 <b>PDF로 저장</b>을 고르면 파일로도 보관할 수 있어요.`;
+  if (has(t, ["수정","고치","바꾸","삭제","지우"])) return `목록에서 협의록을 눌러 열고 <b>수정</b> 또는 <b>삭제</b>를 누르세요.<ul><li>비밀번호를 아는 모든 교직원이 수정할 수 있으니, 다른 분이 쓴 협의록은 협의 후에 고쳐 주세요.</li><li>마지막으로 누가 고쳤는지 협의록 아래에 남아요.</li><li>삭제하면 되돌릴 수 없어요.</li></ul>`;
+  if (has(t, ["종류","교과협의","업무협의","교직원회의","차이","구분"])) return `협의 종류는 세 가지예요.<ul><li><b>교과 협의</b>: 국어·체육처럼 교과별 협의 (교과 칸에 과목 이름)</li><li><b>업무 협의</b>: 부서·업무별 협의 (부서 칸에 교육과정부 등)</li><li><b>교직원 회의</b>: 전체 교직원 회의 (정기·임시 등)</li></ul>위쪽 동그란 버튼으로 종류별로 걸러 볼 수 있어요.`;
+  if (has(t, ["결정","결론"]) && has(t, ["어떻게","뭐","적"])) return `<b>결정 사항</b>은 협의에서 정해진 것을 한 줄씩 적는 칸이에요. 협의록을 열면 번호가 붙어 보이고, 목록에는 '결정 N'으로 개수가 보여요.`;
+  if (has(t, ["쓰","써","적어","작성","기록","올리","남기","등록","만들","만드","어떻게","방법"])) return `위쪽 <b>+ 협의 기록하기</b>를 누르세요.<ol><li><b>협의 종류</b>(교과·업무·교직원 회의)와 날짜를 고르고</li><li>제목·참석자·협의 내용을 적고</li><li><b>결정 사항</b>과 <b>할 일</b>(담당자·기한)을 한 줄씩 넣은 뒤</li><li>이름을 적고 <b>저장</b>하면 모든 교직원에게 바로 보여요.</li></ol><button class="act" data-bot="hy-new">지금 기록하기</button>`;
+
+  // 날짜·월로 찾기
+  const mm = raw.match(/(\d{1,2})\s*월/);
+  if (mm && !raw.match(/\d{1,2}\s*월\s*\d{1,2}\s*일/)){
+    const list = ms.filter(m => m.date && Number(m.date.slice(5,7)) === Number(mm[1]));
+    return list.length ? `${mm[1]}월 협의록 ${list.length}건이에요.${hyMeetList(list, 10)}` : `${mm[1]}월에 기록된 협의록이 없어요.`;
+  }
+  if (has(t, ["최근","요즘","새로","목록","이번주","지난주","오늘"])){
+    let list = ms;
+    if (has(t, ["이번주"])){ const mon = fmt(mondayOf(new Date())); list = ms.filter(m => m.date >= mon); }
+    if (has(t, ["오늘"])) list = ms.filter(m => m.date === today);
+    return list.length ? `협의록 ${list.length}건이에요. 최근 것부터 보여 드려요.${hyMeetList(list)}` : `해당하는 협의록이 없어요.`;
+  }
+  // 검색어로 찾기
+  const words = raw.replace(/[?!.,~]/g, " ").split(/\s+/).map(w => w.replace(/(을|를|이|가|은|는|에서|에|의|과|와|도|로|으로)$/, "")).filter(w => w.length >= 2 && !HY_STOP.some(s => norm(w) === s));
+  if (words.length){
+    const hits = ms.filter(m => { const hay = norm([m.title, m.group, m.content, m.attendees, ...(m.decisions||[]), ...(m.tasks||[]).map(x => x.text)].join(" ")); return words.some(w => hay.includes(norm(w))); });
+    if (hits.length) return `"${esc(words.join(" "))}"(이)가 들어간 협의록 ${hits.length}건을 찾았어요.${hyMeetList(hits)}`;
+  }
+  return null;
+}
+
+/* ── 투표 도우미 ── */
+function tvList(list, kind){
+  return `<ul>${list.map(v => {
+    const who = v.whoText;
+    let line = "";
+    if (kind === "result"){
+      const st = v.st, max = Math.max(...st.counts, 0);
+      const win = max > 0 ? st.opts.filter((_, i) => st.counts[i] === max) : [];
+      line = win.length ? `👑 <b>${esc(win.join(", "))}</b> (${max}표 / ${st.voted}명 참여)` : `참여한 사람이 없어요`;
+    } else if (v.status === "collect") line = `💡 의견 받는 중 · 의견 ${v.ideas}개`;
+    else line = `${v.st.voted} / ${v.st.total}명 참여 (${v.st.total ? Math.round(v.st.voted / v.st.total * 100) : 0}%)`;
+    return `<li><b>${esc(v.title)}</b> <span style="color:var(--ink-3);font-size:13.5px">${esc(who)}</span><br>${line}<br><button class="act" data-bot="tv-open" data-id="${esc(v.id)}">열어 보기</button></li>`;
+  }).join("")}</ul>`;
+}
+function tvAnswer(raw){
+  const T = window.tvBot; const t = norm(raw);
+  const ok = T && T.ready();
+  const all = ok ? T.list() : [];
+  const active = all.filter(v => v.status === "open" || v.status === "collect");
+  const closed = all.filter(v => v.status === "closed").sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
+  const notReady = `투표를 아직 불러오지 못했어요. 잠시 뒤 다시 물어보시거나, Firebase 규칙에 <b>tupyo</b>·<b>tupyo_pub</b> 경로가 있는지 확인해 주세요.`;
+
+  if (has(t, ["의견","아이디어","선택지부터","선택지를먼저","미리받","제안받"])) return `선택지를 의견으로 먼저 받으려면, 투표를 만들 때 <b>선택지는 어떻게 정할까요? → 💡 의견을 먼저 받기</b>를 고르세요. (투표 방식이 링크·QR일 때만 고를 수 있어요)<ol><li>링크·QR을 나눠 주면 이름 없이 의견을 내요. (한 기기에서 3개까지)</li><li>투표 창에 의견이 실시간으로 모여요. 같은 의견은 묶여서 '×3'처럼 보여요.</li><li>쓸 의견에 체크하고 <b>선택지 정하고 투표 시작</b>을 누르면 글자를 다듬어 시작할 수 있어요.</li><li>열어 둔 화면이 <b>그대로 투표 화면</b>으로 바뀌어서 링크를 다시 나눠 줄 필요가 없어요.</li></ol><button class="act" data-bot="tv-new">투표 만들기</button>`;
+  if (has(t, ["여러학년","학년여러","두학년","전학년","같이","함께","동시","5·6","56학년","합동"])) return `학생 투표에서 <b>학년 버튼을 여러 개</b> 누르면 돼요. 고른 학년마다 반 수와 반별 인원 칸이 따로 나와요.<ul><li>학생 화면에는 학년별로 반 버튼이 나뉘어 보여요.</li><li>결과표에 <b>학년별 합계</b>와 <b>전체 합계</b>가 함께 나와요.</li></ul><button class="act" data-bot="tv-new">투표 만들기</button>`;
+  if (has(t, ["교직원","교원","선생님들","직원","차이","종류","누가"]) && has(t, ["만들","어떻게","방법","차이","뭐","종류","누가","투표"]) && !has(t, ["현황","결과","진행"])) return `투표를 만들 때 맨 위에서 <b>누가 투표하나요?</b>를 골라요.<ul><li><b>🧒 학생 투표</b>: 학년(여러 학년 가능)과 반별 학생 수를 넣어요. 학생이 태블릿으로 투표하거나, 담임이 반별 표 수만 넣어요.</li><li><b>🏫 교직원 투표</b>: 교원과 직원 모두. 전체 인원수만 넣어요.</li><li><b>👩‍🏫 교원 투표</b>: 선생님만. 교원 수만 넣어요.</li></ul>교직원·교원 투표는 각자 휴대폰·PC로 링크를 열어 <b>이름 없이</b> 투표하거나, 회의에서 거수한 결과를 직접 넣을 수 있어요.<br><button class="act" data-bot="tv-new">투표 만들기</button>`;
+  if (has(t, ["링크","qr","큐알","주소","나눠","보내","공유","메신저","태블릿으로"])) return `투표를 열면 <b>링크·QR</b>이 보여요.<ul><li>학생: 교실 화면에 QR을 띄우고 태블릿 카메라로 찍게 하거나, <b>주소 복사</b>로 학급 알림장에 붙여 주세요.</li><li>교직원·교원: <b>주소 복사</b>를 눌러 메신저로 보내면 돼요.</li><li>링크로 들어오면 비밀번호 없이 바로 투표해요.</li></ul>${active.length ? `지금 진행 중인 투표예요.${tvList(active)}` : ""}`;
+  if (has(t, ["마감","끝내","종료","공개","닫"])) return `투표를 열고 <b>마감하고 결과 공개</b>를 누르세요.<ul><li>마감하면 결과 막대그래프가 공개되고, 학생·교직원이 보던 투표 화면에도 결과가 떠요.</li><li>마감 전에는 참여 인원만 보이고 결과는 보이지 않아요.</li><li>실수로 마감했으면 <b>다시 열기</b>로 다시 투표를 받을 수 있어요.</li></ul>`;
+  if (has(t, ["거수","직접입력","손들","표수","반별결과","결과입력"])) return `투표 방식에서 <b>✍️ 선생님이 반별 결과 입력</b>(교직원·교원은 <b>결과 직접 입력</b>)을 고르세요.<ol><li>각 반에서 거수 등으로 투표하고</li><li>투표 창의 표에 선택지별 표 수를 넣고 <b>저장</b></li><li>모든 반이 넣으면 <b>마감하고 결과 공개</b></li></ol>반 인원보다 많이 넣으면 저장되지 않아요.`;
+  if (has(t, ["중복","두번","여러번","한번만","또투표","다시투표"])) return `링크 투표는 <b>한 기기에서 한 번</b>만 투표돼요. 반(또는 전체) 인원만큼 투표가 차면 더 받지 않아요.<br>다만 같은 사람이 다른 기기로 또 투표하는 것까지는 막지 못해요. 공용 태블릿·교실 TV로 차례로 투표할 때는 투표 방식에서 <b>한 기기로 여러 명이 차례로</b>를 고르세요.`;
+  if (has(t, ["인원","몇명","학생수","반수"]) && has(t, ["수정","바꾸","고치","틀"])) return `투표를 열고 <b>수정</b>을 누르면 반별 인원을 고칠 수 있어요. 이미 투표가 들어왔으면 그보다 적게는 못 줄여요. 넣은 인원은 저장돼서 다음 투표에 자동으로 채워져요.`;
+  if (has(t, ["수정","고치","바꾸","삭제","지우"])) return `투표를 열고 <b>수정</b> 또는 <b>삭제</b>를 누르세요.<ul><li>표가 이미 들어온 투표는 <b>대상·학년·선택지·투표 방식</b>을 바꿀 수 없어요. 제목·설명·인원만 고칠 수 있어요.</li><li>삭제하면 표·의견·결과가 모두 지워지고 되돌릴 수 없어요.</li></ul>`;
+  if (has(t, ["결과","누가이겼","1등","몇표","어떻게됐"])){
+    if (!ok) return notReady;
+    return closed.length ? `최근 마감한 투표 결과예요.${tvList(closed.slice(0, 5), "result")}` : `아직 마감한 투표가 없어요. 진행 중인 투표는 <b>마감하고 결과 공개</b>를 눌러야 결과가 보여요.`;
+  }
+  if (has(t, ["현황","진행","참여","몇명","지금","열린","하고있"])){
+    if (!ok) return notReady;
+    return active.length ? `진행 중인 투표 ${active.length}개예요.${tvList(active)}` : `지금 진행 중인 투표가 없어요.<br><button class="act" data-bot="tv-new">투표 만들기</button>`;
+  }
+  if (has(t, ["만들","만드","올리","시작","어떻게","방법","새투표"])) return `위쪽 <b>+ 투표 만들기</b>를 누르세요.<ol><li><b>누가 투표하나요?</b> 학생 / 교직원 / 교원</li><li>학생이면 <b>학년(여러 개 가능)과 반별 학생 수</b>, 교직원·교원이면 <b>전체 인원수</b> (이름은 받지 않아요)</li><li>투표 주제와 <b>투표 방식</b>: 링크·QR로 각자 투표 / 거수 후 표 수만 입력</li><li>선택지: <b>지금 정하기</b> 또는 <b>💡 의견을 먼저 받기</b></li></ol>올리면 링크·QR이 생기고, 결과는 마감하면 공개돼요.<br><button class="act" data-bot="tv-new">지금 만들기</button>`;
+  return null;
+}
+
+/* ── 어느 도우미가 답할지 고르기 ── */
+function botAnswer(raw){
+  const t = norm(raw);
+  if (!t) return "";
+  const sec = curSec();
+  if (has(t, ["안녕","하이","hello","hi"])) return BOT_INFO[sec].hello;
+  if (has(t, ["고마","감사","땡큐"])) return `천만에요! 더 궁금한 게 있으면 언제든 물어보세요.`;
+  const want = has(t, ["투표","설문","qr","큐알"]) ? "vote"
+    : has(t, ["협의","회의록","할일","결정사항"]) ? "meet"
+    : has(t, ["특별실","컴퓨터실","강당","예약","교시"]) ? "room" : sec;
+  const run = s => s === "meet" ? hyAnswer(raw) : s === "vote" ? tvAnswer(raw) : roomAnswer(raw);
+  let ans = run(want);
+  if (ans == null && want !== sec) ans = run(sec);
+  if (ans == null) ans = `음, 그 질문은 아직 잘 모르겠어요. 😅<br>아래 버튼에서 골라 보시거나, 따로 알려 주실 내용이 있으면 요청으로 남겨 주세요.<br><button class="act" data-bot="req" data-text="${esc(raw)}">이 내용으로 요청 남기기</button>`;
+  if (want !== sec) ans += `<br><button class="act" data-bot="go" data-sec="${want}">${want === "vote" ? "🗳️ 투표" : want === "meet" ? "📝 협의록" : "🏫 특별실 예약"} 탭으로 가기</button>`;
+  return ans;
+}
+
 
 function chatPush(html, who){
   const div = document.createElement("div");
@@ -1864,8 +2025,8 @@ function openChat(){
   $("chat").classList.remove("hidden"); $("chatFab").classList.add("hidden");
   if (!chatStarted){
     chatStarted = true;
-    $("chatQuick").innerHTML = QUICK.map(q => `<button type="button">${q}</button>`).join("");
-    chatPush(`안녕하세요! <b>특별실 예약 사용 도우미</b>예요.<br>사용법을 물어보시거나, "<b>오늘 컴퓨터실 비어 있어?</b>", "<b>다음주 화요일 강당</b>"처럼 예약 현황을 물어보세요.`, "bot");
+    botSec = null; botSetSec(curSec(), false);
+    chatPush(BOT_INFO[curSec()].hello, "bot");
   }
   setTimeout(() => $("chatIn").focus(), 50);
 }
@@ -1874,17 +2035,18 @@ $("chatClose").onclick = () => { $("chat").classList.add("hidden"); $("chatFab")
 $("chatForm").onsubmit = e => { e.preventDefault(); const v = $("chatIn").value.trim(); if (!v) return; $("chatIn").value = ""; ask(v); };
 $("chatQuick").onclick = e => {
   const b = e.target.closest("button"); if (!b) return;
-  const q = b.textContent;
-  if (q === "요청 남기기") return ask("요청을 남기고 싶어요");
-  if (q === "오늘 비어 있는 시간") return ask("오늘 비어 있는 시간");
-  if (q === "이번 주 겹침 확인") return ask("이번 주 겹침 확인");
-  if (q === "교시 시간표") return ask("교시 시간표 알려줘");
-  if (q === "수정·삭제") return ask("예약 수정이나 삭제는 어떻게 해요?");
-  ask(q);
+  const pair = (QUICKS[botSec || curSec()] || []).find(([l]) => l === b.textContent);
+  ask(pair ? pair[1] : b.textContent);
 };
 $("chatLog").onclick = e => {
   const b = e.target.closest("[data-bot]"); if (!b) return;
   if (b.dataset.bot === "log") openLog(false);
+  if (b.dataset.bot === "go") showSec(b.dataset.sec);
+  if (b.dataset.bot === "hy-open"){ showSec("meet"); window.hyBot && window.hyBot.open(b.dataset.id); }
+  if (b.dataset.bot === "hy-new"){ showSec("meet"); window.hyBot && window.hyBot.create(); }
+  if (b.dataset.bot === "hy-tasks"){ showSec("meet"); window.hyBot && window.hyBot.tasksView(); }
+  if (b.dataset.bot === "tv-open"){ showSec("vote"); window.tvBot && window.tvBot.open(b.dataset.id); }
+  if (b.dataset.bot === "tv-new"){ showSec("vote"); window.tvBot && window.tvBot.create(); }
   if (b.dataset.bot === "req") openReq({ type: b.dataset.type, text: b.dataset.text });
   if (b.dataset.bot === "reserve"){
     const preset = {};
@@ -1898,6 +2060,10 @@ $("chatLog").onclick = e => {
    사이트 업데이트 내역 — 새로 바꿀 때마다 맨 위에 추가하세요
    ════════════════════════════════════════════════ */
 const CHANGELOG = [
+  { v:"2026-11-26e", title:"협의록·투표 도우미", date:"2026-11-26", items:[
+    "오른쪽 아래 <b>사용 도우미</b>가 협의록·투표 탭에서도 떠요. 지금 보고 있는 탭에 맞는 도우미로 바뀌어요.",
+    "<b>협의록 도우미</b>: “내 할 일”, “기한 지난 할 일”, “학예회 협의 찾아줘”, “11월 협의록”처럼 물어보면 바로 찾아 줘요.",
+    "<b>투표 도우미</b>: “진행 중인 투표”, “최근 결과”, “의견 먼저 받으려면?”처럼 물어보면 현황과 사용법을 알려 줘요." ]},
   { v:"2026-11-26d", title:"투표 · 여러 학년 · 의견 먼저 받기", date:"2026-11-26", items:[
     "위쪽 메뉴의 <b>🗳️ 투표</b>에서 <b>학생 투표 · 교직원 투표 · 교원 투표</b>를 올릴 수 있어요. 학생 투표는 <b>여러 학년을 함께</b> 고를 수 있어요.",
     "학생은 태블릿으로 링크·QR을 열어 반을 고르고 탭해서 투표해요. 교직원·교원은 각자 휴대폰·PC로 익명 투표해요. 거수 후 표 수만 넣을 수도 있어요.",
@@ -2353,6 +2519,14 @@ window.hyStart = async function(pw){
   store.listen(() => { render(); if (detailId) showDetail(detailId); });
 };
 window.hyStop = () => { if (unsub) unsub(); };
+window.hyBot = {
+  ready: () => ready,
+  meetings: () => meetings(),
+  tasks: () => allTasks(),
+  open: id => showDetail(id),
+  create: () => { if (!ready) return toast(hyErr || "협의록을 불러오는 중이에요"); showEditor(null); },
+  tasksView: () => { view = "tasks"; render(); }
+};
 
 $("#hyView").innerHTML = `<div class="empty"><b>불러오는 중…</b></div>`;
 })();
@@ -2367,8 +2541,8 @@ function showSec(sec){
   $("roomMain").classList.toggle("hidden", !room); $("meetMain").classList.toggle("hidden", sec !== "meet"); $("voteMain").classList.toggle("hidden", sec !== "vote");
   $("roomBtns").classList.toggle("hidden", !room); $("meetBtns").classList.toggle("hidden", sec !== "meet"); $("voteBtns").classList.toggle("hidden", sec !== "vote");
   $("adminBadge").classList.toggle("hidden", !room || !adminPw);
-  if (!room){ $("chat").classList.add("hidden"); $("chatFab").classList.add("hidden"); }
-  else if ($("chat").classList.contains("hidden")) $("chatFab").classList.remove("hidden");
+  if ($("chat").classList.contains("hidden")) $("chatFab").classList.remove("hidden");
+  window.chatSwitch && window.chatSwitch(sec);
   try { localStorage.setItem("archive-sec", sec); } catch(e){}
   const h = room ? "" : "#" + sec;
   if (location.hash !== h) history.replaceState(null, "", room ? location.pathname + location.search : h);
@@ -2941,6 +3115,13 @@ q("#tvChips").onclick = ev => {
   const s = ev.target.closest("[data-s]"); if (s){ statusF = s.dataset.s; render(); }
 };
 q("#tvView").onclick = ev => { const c = ev.target.closest(".tv-card[data-id]"); if (c) showDetail(c.dataset.id); };
+window.tvBot = {
+  ready: () => ready,
+  list: () => Object.entries(votes).map(([id, v]) => ({ id, ...v, st: stats(v, ballotsOf(id)), ideas: Object.keys(ideasOf(id)).length,
+    whoText: isStu(v) ? gradeText(v) + " 학생" : TYPES[typeOf(v)].name })),
+  open: id => showDetail(id),
+  create: () => { if (!ready) return say(failMsg || "투표를 불러오는 중이에요"); showEditor(null); }
+};
 document.addEventListener("keydown", ev => { if (ev.key === "Escape" && q("#tvModalRoot").innerHTML) closeModal(); });
 
 /* ════════════════════════════════════════════════
