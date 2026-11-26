@@ -403,6 +403,119 @@
     #hyPrint .ph{font-weight:800;margin:12pt 0 6pt}
     #hyPrint .pc{white-space:pre-wrap;border:1px solid #555;padding:8pt;min-height:60pt}
   }
+
+  /* ════════ 학년 투표 ════════ */
+  #voteMain{max-width:1080px}
+  .tv-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .tv-chip{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 16px;font-weight:700;font-size:16px;color:var(--ink-2)}
+  .tv-chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .tv-seg{display:flex;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:4px;gap:4px;margin-left:auto}
+  .tv-seg button{border:none;background:transparent;border-radius:9px;padding:7px 14px;font-weight:700;color:var(--ink-2)}
+  .tv-seg button.on{background:var(--accent);color:#fff}
+  .tv-grade{display:inline-block;border-radius:6px;padding:2px 10px;font-size:14px;font-weight:800;white-space:nowrap}
+  .tv-g1{background:var(--g1s);color:var(--g1)} .tv-g2{background:var(--g2s);color:var(--g2)} .tv-g3{background:var(--g3s);color:var(--g3)}
+  .tv-g4{background:var(--g4s);color:var(--g4)} .tv-g5{background:var(--g5s);color:var(--g5)} .tv-g6{background:var(--g6s);color:var(--g6)}
+  .tv-tag{display:inline-block;border-radius:6px;padding:2px 9px;font-size:13.5px;font-weight:700;background:#f0eee9;color:var(--ink-2)}
+  .tv-tag.open{background:#e7f4e8;color:var(--ok)}
+  .tv-tag.closed{background:#ecebe8;color:var(--ink-3)}
+  .tv-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:10px;cursor:pointer;transition:border-color .15s, box-shadow .15s}
+  .tv-card:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(43,76,126,.08)}
+  .tv-card .tv-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+  .tv-card h3{margin:0 0 10px;font-size:19px}
+  .tv-card .tv-sub{margin-left:auto;font-size:14px;color:var(--ink-3)}
+  .tv-prog{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--ink-2)}
+  .tv-track{flex:1;height:10px;background:#efede8;border-radius:999px;overflow:hidden}
+  .tv-fill{height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+  .tv-empty{text-align:center;color:var(--ink-3);padding:60px 20px;background:var(--paper);border:1.5px dashed var(--line);border-radius:14px}
+  .tv-empty b{display:block;font-size:19px;color:var(--ink-2);margin-bottom:6px}
+
+  /* 모달 */
+  .tv-ov{position:fixed;inset:0;background:rgba(20,24,30,.45);display:flex;align-items:flex-start;justify-content:center;padding:36px 16px;overflow-y:auto;z-index:60}
+  .tv-modal{background:var(--paper);border-radius:18px;width:100%;max-width:760px;padding:28px 30px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+  .tv-modal h2{font-family:var(--font-title);font-size:26px;margin:0 0 16px}
+  .tv-f{margin-bottom:18px}
+  .tv-f > label{display:block;font-weight:700;font-size:15px;margin-bottom:7px;color:var(--ink-2)}
+  .tv-f > label small{font-weight:500;color:var(--ink-3)}
+  .tv-in{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fff;outline:none;font-size:17px}
+  .tv-in:focus{border-color:var(--accent)}
+  .tv-pick{display:flex;gap:8px;flex-wrap:wrap}
+  .tv-pick button{border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 16px;font-weight:700;color:var(--ink-2)}
+  .tv-pick button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .tv-pick button small{display:block;font-weight:500;font-size:13px;opacity:.85}
+  .tv-classes{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;margin-top:10px}
+  .tv-cls{display:flex;align-items:center;gap:6px;background:var(--bg);border-radius:10px;padding:8px 10px;font-weight:700}
+  .tv-cls input{width:56px;padding:6px 8px;border:1.5px solid var(--line);border-radius:8px;text-align:center;font-size:17px;font-weight:700}
+  .tv-step{display:flex;align-items:center;gap:8px}
+  .tv-step button{width:38px;height:38px;border:1.5px solid var(--line);background:var(--paper);border-radius:9px;font-size:20px;font-weight:700;padding:0}
+  .tv-step b{min-width:52px;text-align:center;font-size:18px}
+  .tv-opts .tv-opt{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+  .tv-opts .tv-num{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+  .tv-x{border:none;background:transparent;color:var(--ink-3);font-size:18px;padding:4px 8px}
+  .tv-x:hover{color:var(--danger)}
+  .tv-add{border:1.5px dashed var(--line);background:transparent;border-radius:10px;padding:8px 14px;color:var(--ink-2);font-weight:600;width:100%}
+  .tv-add:hover{border-color:var(--accent);color:var(--accent)}
+  .tv-err{color:var(--danger);font-weight:600;min-height:22px}
+  .tv-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:22px}
+  .tv-actions .tv-left{margin-right:auto;display:flex;gap:10px;flex-wrap:wrap}
+  .tv-hint{font-size:14px;color:var(--ink-3);margin-top:6px}
+  .tv-sec{font-weight:800;font-size:17px;margin:22px 0 10px;padding-left:10px;border-left:4px solid var(--accent)}
+  .tv-desc{white-space:pre-wrap;color:var(--ink-2);margin:-6px 0 12px}
+
+  /* 학생 링크 */
+  .tv-link{display:flex;gap:18px;align-items:center;background:var(--bg);border-radius:14px;padding:16px;flex-wrap:wrap}
+  .tv-qr{background:#fff;border-radius:10px;padding:8px;line-height:0}
+  .tv-qr img,.tv-qr canvas{width:150px;height:150px;image-rendering:pixelated}
+  .tv-link .tv-url{flex:1;min-width:220px}
+  .tv-link code{display:block;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;word-break:break-all;margin:6px 0 10px}
+
+  /* 반별 표 */
+  table.tv-tb{width:100%;border-collapse:collapse;font-size:16px}
+  .tv-tb th,.tv-tb td{border-bottom:1px solid var(--line-2);padding:9px 8px;text-align:center}
+  .tv-tb th{background:#faf9f6;font-size:14px;color:var(--ink-2)}
+  .tv-tb td:first-child,.tv-tb th:first-child{text-align:left;font-weight:700}
+  .tv-tb input{width:64px;padding:6px;border:1.5px solid var(--line);border-radius:8px;text-align:center;font-size:16px}
+  .tv-tb tr.tv-bad td{background:var(--danger-soft)}
+  .tv-tb .tv-full{color:var(--ok);font-weight:700}
+
+  /* 결과 막대 */
+  .tv-res{margin:6px 0}
+  .tv-row{margin-bottom:12px}
+  .tv-row .tv-lab{display:flex;justify-content:space-between;gap:10px;font-weight:700;margin-bottom:5px}
+  .tv-row .tv-lab span{color:var(--ink-3);font-weight:600}
+  .tv-row .tv-track{height:30px;border-radius:9px}
+  .tv-row .tv-fill{border-radius:9px;background:var(--c, var(--accent))}
+  .tv-row.win .tv-lab b::after{content:" 👑"}
+  .tv-lock{background:var(--bg);border-radius:12px;padding:16px;color:var(--ink-2);text-align:center}
+
+  /* ════════ 학생 투표 화면 ════════ */
+  #tvStudent{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px 60px}
+  .tvs{width:100%;max-width:720px;text-align:center}
+  .tvs .tvs-grade{font-size:18px}
+  .tvs h1{font-family:var(--font-title);font-size:34px;margin:12px 0 6px;line-height:1.3}
+  .tvs .tvs-desc{color:var(--ink-2);white-space:pre-wrap;margin-bottom:6px}
+  .tvs .tvs-q{font-size:20px;font-weight:800;margin:26px 0 14px;color:var(--ink-2)}
+  .tvs-cls{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+  .tvs-cls button{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:26px 10px;font-size:28px;font-weight:800}
+  .tvs-cls button:active,.tvs-cls button:hover{border-color:var(--accent);color:var(--accent)}
+  .tvs-cls button:disabled{opacity:.45;cursor:not-allowed}
+  .tvs-cls button small{display:block;font-size:14px;font-weight:600;color:var(--ink-3);margin-top:4px}
+  .tvs-opts{display:grid;gap:12px}
+  .tvs-opts button{display:flex;align-items:center;gap:16px;text-align:left;background:var(--paper);border:2.5px solid var(--line);border-radius:18px;padding:20px 22px;font-size:23px;font-weight:800;line-height:1.35}
+  .tvs-opts button .n{width:42px;height:42px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+  .tvs-opts button:hover{border-color:var(--accent)}
+  .tvs-opts button.sel{border-color:var(--accent);background:var(--accent-soft)}
+  .tvs-opts button.sel .n{background:var(--accent);color:#fff}
+  .tvs-back{margin-top:18px;border:none;background:transparent;color:var(--ink-3);font-size:17px;text-decoration:underline}
+  .tvs-go{margin-top:20px;width:100%;padding:20px;font-size:24px;border-radius:16px}
+  .tvs-go:disabled{opacity:.4;cursor:not-allowed}
+  .tvs-done{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:44px 24px;margin-top:24px}
+  .tvs-done .big{font-size:64px;line-height:1}
+  .tvs-done h2{font-family:var(--font-title);font-size:30px;margin:14px 0 6px}
+  .tvs-done p{color:var(--ink-2);margin:0}
+  .tvs-res{text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:22px}
+  .tvs-res .tv-row .tv-lab{font-size:19px}
+  .tvs-res .tv-row .tv-track{height:38px}
+  @media (max-width:640px){ .tvs h1{font-size:27px} .tvs-opts button{font-size:20px;padding:16px} .tv-modal{padding:22px 16px} }
 </style>
 </head>
 <body>
@@ -422,6 +535,9 @@
 </section>
 
 <!-- 본 화면 -->
+<!-- 학생 투표 화면 (?vote=투표ID) -->
+<section id="tvStudent" class="hidden"><div class="tvs"></div></section>
+
 <section id="app" class="hidden">
   <header>
     <div>
@@ -431,6 +547,7 @@
     <nav class="secnav" id="secNav">
       <button data-sec="room" class="on">🏫 특별실 예약</button>
       <button data-sec="meet">📝 협의록 <span class="scnt hidden" id="hySecCnt"></span></button>
+      <button data-sec="vote">🗳️ 학년 투표 <span class="scnt hidden" id="tvSecCnt"></span></button>
     </nav>
     <span class="demo-badge hidden" id="demoBadge">미리보기 모드 · 이 기기에만 저장</span>
     <span class="admin-badge hidden" id="adminBadge">관리자 모드</span>
@@ -443,6 +560,9 @@
     </span>
     <span class="secbtns hidden" id="meetBtns">
     <button class="btn btn-primary" id="hyNewBtn" style="padding:12px 20px;font-size:17px">+ 협의 기록하기</button>
+    </span>
+    <span class="secbtns hidden" id="voteBtns">
+    <button class="btn btn-primary" id="tvNewBtn" style="padding:12px 20px;font-size:17px">+ 투표 만들기</button>
     </span>
     <button class="btn" id="logoutBtn">나가기</button>
   </header>
@@ -486,6 +606,11 @@
     </div>
     <div class="hchips" id="hyChips"></div>
     <div id="hyView"></div>
+  </main>
+
+  <main id="voteMain" class="hidden">
+    <div class="tv-bar" id="tvChips"></div>
+    <div id="tvView"><div class="tv-empty"><b>불러오는 중…</b></div></div>
   </main>
 </section>
 
@@ -630,10 +755,12 @@
 
 <div class="toast" id="toast"></div>
 <div id="hyModalRoot"></div>
+<div id="tvModalRoot"></div>
 <div id="hyPrint"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script>
 /* ════════════════════════════════════════════════
    1) Firebase 설정 (school 프로젝트)
@@ -1752,6 +1879,11 @@ $("chatLog").onclick = e => {
    사이트 업데이트 내역 — 새로 바꿀 때마다 맨 위에 추가하세요
    ════════════════════════════════════════════════ */
 const CHANGELOG = [
+  { v:"2026-11-26b", title:"학년 투표", date:"2026-11-26", items:[
+    "위쪽 메뉴에 <b>🗳️ 학년 투표</b>가 생겼어요. 학년과 반별 학생 수(이름 없이)를 넣고 투표 주제를 올릴 수 있어요.",
+    "<b>학생 태블릿 투표</b>: 투표를 올리면 학생용 주소와 QR이 생겨요. 학생은 비밀번호 없이 반을 고르고 탭해서 투표해요.",
+    "<b>선생님 입력</b>: 거수 등으로 투표한 뒤 담임 선생님이 반별 표 수만 넣으면 학년 합계가 나와요.",
+    "결과는 <b>마감하면</b> 공개돼요. 진행 중에는 반별 참여 인원만 보여요." ]},
   { v:"2026-11-26", title:"2026 반월 아카이브 · 협의록", date:"2026-11-26", items:[
     "이름이 <b>2026 반월 아카이브</b>로 바뀌었어요. 위쪽 메뉴에서 <b>특별실 예약</b>과 <b>협의록</b>을 골라 들어가요.",
     "<b>협의록</b>에서 교과 협의·업무 협의·교직원 회의 내용을 기록하고 함께 볼 수 있어요.",
@@ -1816,7 +1948,8 @@ async function enter(pw){
   store.listen(render);
   render();
   window.hyStart && window.hyStart(pw);
-  let sec = location.hash === "#meet" ? "meet" : "";
+  window.tvStart && window.tvStart(pw);
+  let sec = location.hash === "#meet" ? "meet" : location.hash === "#vote" ? "vote" : "";
   if (!sec){ try { sec = localStorage.getItem("archive-sec") || "room"; } catch(e){ sec = "room"; } }
   showSec(sec);
 }
@@ -2209,20 +2342,442 @@ $("#hyView").innerHTML = `<div class="empty"><b>불러오는 중…</b></div>`;
    위쪽 메뉴: 특별실 예약 ↔ 협의록
    ════════════════════════════════════════════════ */
 function showSec(sec){
-  const meet = sec === "meet";
+  if (!["room","meet","vote"].includes(sec)) sec = "room";
+  const room = sec === "room";
   document.querySelectorAll("#secNav button").forEach(b => b.classList.toggle("on", b.dataset.sec === sec));
-  $("roomMain").classList.toggle("hidden", meet); $("meetMain").classList.toggle("hidden", !meet);
-  $("roomBtns").classList.toggle("hidden", meet); $("meetBtns").classList.toggle("hidden", !meet);
-  $("adminBadge").classList.toggle("hidden", meet || !adminPw);
-  if (meet){ $("chat").classList.add("hidden"); $("chatFab").classList.add("hidden"); }
+  $("roomMain").classList.toggle("hidden", !room); $("meetMain").classList.toggle("hidden", sec !== "meet"); $("voteMain").classList.toggle("hidden", sec !== "vote");
+  $("roomBtns").classList.toggle("hidden", !room); $("meetBtns").classList.toggle("hidden", sec !== "meet"); $("voteBtns").classList.toggle("hidden", sec !== "vote");
+  $("adminBadge").classList.toggle("hidden", !room || !adminPw);
+  if (!room){ $("chat").classList.add("hidden"); $("chatFab").classList.add("hidden"); }
   else if ($("chat").classList.contains("hidden")) $("chatFab").classList.remove("hidden");
   try { localStorage.setItem("archive-sec", sec); } catch(e){}
-  if (location.hash !== (meet ? "#meet" : "")) history.replaceState(null, "", meet ? "#meet" : location.pathname + location.search);
+  const h = room ? "" : "#" + sec;
+  if (location.hash !== h) history.replaceState(null, "", room ? location.pathname + location.search : h);
 }
 $("secNav").onclick = e => { const b = e.target.closest("button[data-sec]"); if (b) showSec(b.dataset.sec); };
 </script>
 <script>
-const saved = sessionStorage.getItem("tbs-pw"); if (saved) enter(saved);
+/* ════════════════════════════════════════════════
+   학년 투표 — 2026 반월 아카이브
+   선생님 데이터: tupyo/<비밀번호>/votes, tupyo/<비밀번호>/sizes
+   학생 투표용 공개 데이터: tupyo_pub/<투표ID>/info, tupyo_pub/<투표ID>/ballots
+   (Firebase 규칙과 같아야 함)
+   ════════════════════════════════════════════════ */
+(() => {
+const TV_ROOT = "tupyo", PUB = "tupyo_pub";
+const TVDEMO = DEMO;
+const q = s => document.querySelector(s);
+const e = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const BAR = ["#2b4c7e","#c2410c","#00796b","#6d28d9","#b26a00","#1d4ed8","#be185d","#2e7d32"];
+function lsGet(k, d){ try { return localStorage.getItem(k) ?? d; } catch(x){ return d; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(x){} }
+const say = m => (typeof toast === "function" ? toast(m) : alert(m));
+
+/* ── 저장소: Firebase 또는 미리보기(이 기기 localStorage) ── */
+let fdb = null;
+const demoSubs = new Set();
+function demoTree(){ try { return JSON.parse(lsGet("tupyo-demo", "{}")) || {}; } catch(x){ return {}; } }
+function demoGet(path){ return path.split("/").reduce((o,k) => (o && typeof o === "object") ? o[k] : undefined, demoTree()) ?? null; }
+function demoApply(up){
+  const t = demoTree();
+  Object.entries(up).forEach(([path, val]) => {
+    const ks = path.split("/"); let o = t;
+    for (let i = 0; i < ks.length - 1; i++){ if (!o[ks[i]] || typeof o[ks[i]] !== "object") o[ks[i]] = {}; o = o[ks[i]]; }
+    if (val === null) delete o[ks[ks.length-1]]; else o[ks[ks.length-1]] = JSON.parse(JSON.stringify(val));
+  });
+  lsSet("tupyo-demo", JSON.stringify(t));
+  demoSubs.forEach(f => f());
+}
+const DB = {
+  init(){ if (!TVDEMO && !fdb){ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig); fdb = firebase.database(); } },
+  TS(){ return TVDEMO ? Date.now() : firebase.database.ServerValue.TIMESTAMP; },
+  key(){ return TVDEMO ? "v" + Date.now().toString(36) + Math.random().toString(36).slice(2,5) : fdb.ref(TV_ROOT).push().key; },
+  async update(up){ if (TVDEMO) return demoApply(up); await fdb.ref().update(up); },
+  async push(path, val){
+    if (TVDEMO){ demoApply({ [path + "/b" + Date.now() + Math.random().toString(36).slice(2,6)]: val }); return; }
+    await fdb.ref(path).push(val);
+  },
+  listen(path, cb, onErr){
+    if (TVDEMO){
+      const f = () => cb(demoGet(path)); demoSubs.add(f); f();
+      const h = ev => { if (ev.key === "tupyo-demo") f(); }; window.addEventListener("storage", h);
+      return () => { demoSubs.delete(f); window.removeEventListener("storage", h); };
+    }
+    const r = fdb.ref(path); const h = r.on("value", s => cb(s.val()), err => onErr && onErr(err));
+    return () => r.off("value", h);
+  },
+  async canRead(path){ if (TVDEMO) return true; try { await fdb.ref(path).limitToFirst(1).once("value"); return true; } catch(x){ return false; } }
+};
+
+/* ── 계산 도우미 ── */
+const clsKeys = v => Object.keys(v.classes || {}).sort((a,b) => Number(a.slice(1)) - Number(b.slice(1)));
+const clsName = k => k.slice(1) + "반";
+const totalOf = v => clsKeys(v).reduce((s,k) => s + Number(v.classes[k] || 0), 0);
+const optsOf = v => (Array.isArray(v.options) ? v.options : Object.values(v.options || {})).filter(x => x != null);
+function stats(v, ballots){
+  const opts = optsOf(v), per = {}, counts = opts.map(() => 0);
+  clsKeys(v).forEach(k => per[k] = { size: Number(v.classes[k] || 0), voted: 0, counts: opts.map(() => 0) });
+  if (v.mode === "teacher"){
+    Object.entries(v.tally || {}).forEach(([k, arr]) => {
+      if (!per[k]) return;
+      const a = Array.isArray(arr) ? arr : Object.values(arr || {});
+      opts.forEach((_, i) => { const n = Number(a[i] || 0); per[k].counts[i] = n; per[k].voted += n; counts[i] += n; });
+      per[k].entered = true;
+    });
+  } else {
+    Object.values(ballots || {}).forEach(b => {
+      const k = "c" + b.c; if (!per[k] || !(b.o >= 0 && b.o < opts.length)) return;
+      per[k].voted++; per[k].counts[b.o]++; counts[b.o]++;
+    });
+  }
+  const voted = counts.reduce((a,b) => a + b, 0), total = totalOf(v);
+  return { opts, per, counts, voted, total };
+}
+function resultBars(st){
+  const max = Math.max(...st.counts, 0);
+  return `<div class="tv-res">${st.opts.map((o,i) => {
+    const pct = st.voted ? Math.round(st.counts[i] / st.voted * 1000) / 10 : 0;
+    return `<div class="tv-row ${max > 0 && st.counts[i] === max ? "win" : ""}" style="--c:${BAR[i % BAR.length]}">
+      <div class="tv-lab"><b>${e(o)}</b><span>${st.counts[i]}표 · ${pct}%</span></div>
+      <div class="tv-track"><div class="tv-fill" style="width:${max ? st.counts[i] / max * 100 : 0}%"></div></div></div>`;
+  }).join("")}</div>`;
+}
+const progress = st => `<div class="tv-prog"><div class="tv-track"><div class="tv-fill" style="width:${st.total ? Math.min(100, st.voted / st.total * 100) : 0}%"></div></div><span><b>${st.voted}</b> / ${st.total}명 참여</span></div>`;
+const studentUrl = id => location.origin + location.pathname + "?vote=" + encodeURIComponent(id);
+
+/* ════════════════════════════════════════════════
+   선생님 화면 (아카이브 안 '학년 투표' 탭)
+   ════════════════════════════════════════════════ */
+let staffPw = null, votes = {}, sizes = {}, ballots = {}, bSubs = {}, ready = false, failMsg = "";
+let gradeF = "all", statusF = "open", detailId = null;
+
+window.tvStart = async function(pw){
+  DB.init();
+  const ok = await DB.canRead(`${TV_ROOT}/${pw}/votes`);
+  if (!ok){
+    failMsg = "학년 투표를 불러오지 못했어요. Firebase 규칙에 tupyo 경로가 있는지 확인해 주세요.";
+    q("#tvView").innerHTML = `<div class="tv-empty"><b>학년 투표를 불러오지 못했어요</b>Firebase 규칙에 <code>tupyo</code>와 <code>tupyo_pub</code> 경로를 추가했는지 확인해 주세요.</div>`;
+    return;
+  }
+  staffPw = pw; ready = true;
+  DB.listen(`${TV_ROOT}/${pw}/sizes`, v => { sizes = v || {}; });
+  DB.listen(`${TV_ROOT}/${pw}/votes`, v => {
+    votes = v || {};
+    // 학생 투표는 공개 경로의 표를 따로 듣기
+    Object.entries(votes).forEach(([id, vt]) => {
+      if (vt.mode !== "teacher" && !bSubs[id]) bSubs[id] = DB.listen(`${PUB}/${id}/ballots`, b => { ballots[id] = b || {}; refresh(); });
+    });
+    Object.keys(bSubs).forEach(id => { if (!votes[id] || votes[id].mode === "teacher"){ bSubs[id](); delete bSubs[id]; delete ballots[id]; } });
+    refresh();
+  });
+};
+function refresh(){
+  render();
+  if (!detailId) return;
+  if (!votes[detailId]) return closeModal();
+  const typing = document.activeElement && document.activeElement.closest && document.activeElement.closest("#tvModalRoot input, #tvModalRoot textarea");
+  if (!q(".tv-ov [data-editing]") && !typing) showDetail(detailId, true);
+}
+
+function render(){
+  const list = Object.entries(votes).map(([id,v]) => ({ id, ...v }))
+    .sort((a,b) => (a.status === "open" ? 0 : 1) - (b.status === "open" ? 0 : 1) || (b.createdAt||0) - (a.createdAt||0));
+  const openN = list.filter(v => v.status === "open").length;
+  const sb = q("#tvSecCnt"); if (sb){ sb.textContent = openN; sb.classList.toggle("hidden", !openN); }
+  q("#tvChips").innerHTML = ["all",1,2,3,4,5,6].map(g => `<button class="tv-chip ${String(gradeF)===String(g)?"on":""}" data-g="${g}">${g==="all"?"전체":g+"학년"}</button>`).join("")
+    + `<div class="tv-seg">${[["open","진행 중"],["closed","마감"],["all","모두"]].map(([k,n]) => `<button data-s="${k}" class="${statusF===k?"on":""}">${n}</button>`).join("")}</div>`;
+  const shown = list.filter(v => (gradeF === "all" || String(v.grade) === String(gradeF)) && (statusF === "all" || v.status === statusF));
+  if (!shown.length){
+    q("#tvView").innerHTML = `<div class="tv-empty"><b>${statusF === "open" ? "진행 중인 투표가 없어요" : "투표가 없어요"}</b>오른쪽 위 ‘+ 투표 만들기’로 학년 투표를 올려 보세요.</div>`;
+    return;
+  }
+  q("#tvView").innerHTML = shown.map(v => {
+    const st = stats(v, ballots[v.id]);
+    return `<div class="tv-card" data-id="${e(v.id)}">
+      <div class="tv-top"><span class="tv-grade tv-g${e(v.grade)}">${e(v.grade)}학년</span>
+        <span class="tv-tag ${v.status}">${v.status === "open" ? "진행 중" : "마감"}</span>
+        <span class="tv-tag">${v.mode === "teacher" ? "✍️ 선생님 입력" : "📱 학생 태블릿"}</span>
+        <span class="tv-sub">${e(v.author || "")}${v.createdAt ? " · " + new Date(v.createdAt).toLocaleDateString("ko-KR") : ""}</span></div>
+      <h3>${e(v.title)}</h3>
+      ${progress(st)}
+    </div>`;
+  }).join("");
+}
+
+/* ── 모달 ── */
+function closeModal(){ q("#tvModalRoot").innerHTML = ""; detailId = null; document.body.style.overflow = ""; }
+function openModal(html, keepScroll){
+  const prev = keepScroll ? (q(".tv-ov") || {}).scrollTop : 0;
+  q("#tvModalRoot").innerHTML = `<div class="tv-ov"><div class="tv-modal">${html}</div></div>`;
+  document.body.style.overflow = "hidden";
+  const ov = q(".tv-ov"); if (prev) ov.scrollTop = prev;
+  ov.addEventListener("mousedown", ev => { if (ev.target === ov) closeModal(); });
+}
+
+/* ── 상세 ── */
+function showDetail(id, keep){
+  const v = votes[id]; if (!v) return;
+  detailId = id;
+  const st = stats(v, ballots[id]);
+  const open = v.status === "open", teacher = v.mode === "teacher";
+  const ks = clsKeys(v);
+  let classTable = `<table class="tv-tb"><tr><th>반</th><th>인원</th>${teacher ? st.opts.map((o,i) => `<th>${i+1}. ${e(o)}</th>`).join("") : ""}<th>참여</th></tr>`;
+  ks.forEach(k => {
+    const p = st.per[k], bad = p.voted > p.size;
+    classTable += `<tr class="${bad ? "tv-bad" : ""}" data-k="${k}"><td>${clsName(k)}</td><td>${p.size}명</td>`;
+    if (teacher) classTable += st.opts.map((_, i) => `<td>${open ? `<input type="number" min="0" inputmode="numeric" data-i="${i}" value="${p.entered ? p.counts[i] : ""}" placeholder="-">` : p.counts[i]}</td>`).join("");
+    classTable += `<td class="${p.voted >= p.size && p.size ? "tv-full" : ""}">${p.voted}명${bad ? " ⚠ 인원 초과" : ""}</td></tr>`;
+  });
+  classTable += `<tr><td>합계</td><td>${st.total}명</td>${teacher ? st.opts.map((_, i) => `<td>${open ? "" : st.counts[i]}</td>`).join("") : ""}<td><b>${st.voted}명</b></td></tr></table>`;
+
+  openModal(`<div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+      <span class="tv-grade tv-g${e(v.grade)}">${e(v.grade)}학년</span>
+      <span class="tv-tag ${v.status}">${open ? "진행 중" : "마감"}</span>
+      <span class="tv-tag">${teacher ? "✍️ 선생님 입력" : (v.kiosk ? "📱 학생 태블릿 · 공용 기기" : "📱 학생 태블릿 · 한 기기 한 번")}</span>
+    </div>
+    <h2>${e(v.title)}</h2>
+    ${v.desc ? `<div class="tv-desc">${e(v.desc)}</div>` : ""}
+    ${progress(st)}
+
+    ${!teacher && open ? `<div class="tv-sec">학생 투표 링크</div>
+      <div class="tv-link"><div class="tv-qr" id="tvQr"></div>
+        <div class="tv-url">태블릿 카메라로 QR을 찍거나, 아래 주소를 열면 비밀번호 없이 바로 투표해요.
+          <code>${e(studentUrl(id))}</code>
+          <button class="btn btn-sm" id="tvCopy">주소 복사</button> <a class="btn btn-sm" href="${e(studentUrl(id))}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:inline-block">학생 화면 열기</a></div></div>` : ""}
+
+    <div class="tv-sec">${teacher && open ? "반별 결과 입력" : "반별 참여"}</div>
+    ${teacher && open ? `<div class="tv-hint" style="margin:-4px 0 8px">담임 선생님이 자기 반 표 수를 넣고 ‘저장’을 누르세요. 비워 둔 반은 아직 안 넣은 반이에요.</div>` : ""}
+    <div style="overflow-x:auto">${classTable}</div>
+    ${teacher && open ? `<div style="text-align:right;margin-top:10px"><button class="btn btn-primary" id="tvSaveTally" style="padding:10px 20px">반별 결과 저장</button></div>` : ""}
+
+    <div class="tv-sec">결과</div>
+    ${open ? `<div class="tv-lock">🔒 결과는 <b>마감하면</b> 공개돼요.${st.voted ? ` 지금 ${st.voted}명이 참여했어요.` : ""}</div>` : resultBars(st)}
+
+    <div class="tv-actions">
+      <div class="tv-left"><button class="btn btn-danger" id="tvDel">삭제</button><button class="btn" id="tvEdit">수정</button></div>
+      ${open ? `<button class="btn" id="tvClose" style="border-color:var(--accent);color:var(--accent)">마감하고 결과 공개</button>` : `<button class="btn" id="tvReopen">다시 열기</button>`}
+      <button class="btn btn-primary" id="tvShut">닫기</button>
+    </div></div>`, keep);
+
+  if (!teacher && open) drawQr(q("#tvQr"), studentUrl(id));
+  q("#tvShut").onclick = closeModal;
+  q("#tvEdit").onclick = () => showEditor(id);
+  q("#tvCopy") && (q("#tvCopy").onclick = async () => { try { await navigator.clipboard.writeText(studentUrl(id)); say("주소를 복사했어요"); } catch(x){ prompt("주소를 복사해 주세요", studentUrl(id)); } });
+  q("#tvDel").onclick = async () => {
+    if (!confirm(`‘${v.title}’ 투표를 지울까요?\n참여한 표와 결과도 함께 지워지고, 되돌릴 수 없어요.`)) return;
+    try { await DB.update({ [`${TV_ROOT}/${staffPw}/votes/${id}`]: null, [`${PUB}/${id}`]: null }); closeModal(); say("투표를 지웠어요"); }
+    catch(x){ say("지우지 못했어요. 다시 해 주세요."); }
+  };
+  const setStatus = async s => {
+    const up = { [`${TV_ROOT}/${staffPw}/votes/${id}/status`]: s, [`${TV_ROOT}/${staffPw}/votes/${id}/stamp`]: DB.TS() };
+    if (!teacher) up[`${PUB}/${id}/info/status`] = s;
+    try { await DB.update(up); say(s === "closed" ? "마감했어요. 결과가 공개돼요" : "투표를 다시 열었어요"); } catch(x){ say("바꾸지 못했어요. 다시 해 주세요."); }
+  };
+  q("#tvClose") && (q("#tvClose").onclick = () => { if (confirm("투표를 마감할까요?\n마감하면 결과가 공개되고 더 이상 투표할 수 없어요. (다시 열 수 있어요)")) setStatus("closed"); });
+  q("#tvReopen") && (q("#tvReopen").onclick = () => setStatus("open"));
+  q("#tvSaveTally") && (q("#tvSaveTally").onclick = async () => {
+    const up = {}; let err = "";
+    document.querySelectorAll(".tv-tb tr[data-k]").forEach(tr => {
+      const k = tr.dataset.k, ins = [...tr.querySelectorAll("input")];
+      if (ins.every(i => i.value.trim() === "")){ up[`${TV_ROOT}/${staffPw}/votes/${id}/tally/${k}`] = null; return; }
+      const arr = ins.map(i => Math.max(0, Math.floor(Number(i.value) || 0)));
+      if (arr.reduce((a,b) => a + b, 0) > st.per[k].size) err = `${clsName(k)}의 표 수가 인원(${st.per[k].size}명)보다 많아요.`;
+      up[`${TV_ROOT}/${staffPw}/votes/${id}/tally/${k}`] = arr;
+    });
+    if (err) return say(err);
+    try { await DB.update(up); say("반별 결과를 저장했어요"); } catch(x){ say("저장하지 못했어요. 다시 해 주세요."); }
+  });
+}
+
+/* ── QR (라이브러리를 못 불러오면 주소만 보여 줌) ── */
+function drawQr(el, text){
+  if (!el) return;
+  if (typeof qrcode !== "function"){ el.style.display = "none"; return; }
+  try { const qr = qrcode(0, "M"); qr.addData(text); qr.make(); el.innerHTML = qr.createImgTag(5, 4); }
+  catch(x){ el.style.display = "none"; }
+}
+
+/* ── 만들기·수정 ── */
+function showEditor(id){
+  const old = id ? votes[id] : null;
+  const st = old ? stats(old, ballots[id]) : null;
+  const locked = !!(st && st.voted > 0);     // 표가 있으면 학년·선택지·방식은 못 바꿈
+  let grade = old ? Number(old.grade) : (gradeF !== "all" ? Number(gradeF) : null);
+  let mode = old ? (old.mode || "student") : "student";
+  let kiosk = old ? !!old.kiosk : false;
+  let classes = old ? clsKeys(old).map(k => Number(old.classes[k] || 0)) : [];
+  const opts = old ? optsOf(old) : ["", ""];
+  const seedClasses = g => { const s = sizes["g" + g]; classes = s ? (Array.isArray(s) ? s : Object.values(s)).map(Number) : (classes.length ? classes : [0, 0]); };
+  if (!old && grade) seedClasses(grade);
+
+  openModal(`<div data-editing="1">
+    <h2>${old ? "투표 수정" : "투표 만들기"}</h2>
+    ${locked ? `<div class="tv-lock" style="margin-bottom:16px;text-align:left">이미 ${st.voted}명이 참여해서 <b>학년·선택지·투표 방식</b>은 바꿀 수 없어요. 제목·설명·반별 인원만 고칠 수 있어요.</div>` : ""}
+    <div class="tv-f"><label>1. 몇 학년 투표인가요?</label><div class="tv-pick" id="tvGrade"></div></div>
+    <div class="tv-f"><label>2. 반별 학생 수 <small>(이름은 넣지 않아요 · 다음에 같은 학년 투표를 만들 때 자동으로 채워져요)</small></label>
+      <div class="tv-step"><span style="font-weight:700;margin-right:6px">반 수</span><button type="button" id="tvMinus">−</button><b id="tvNcls"></b><button type="button" id="tvPlus">+</button>
+        <span class="tv-hint" id="tvTot" style="margin:0 0 0 12px"></span></div>
+      <div class="tv-classes" id="tvClasses"></div></div>
+    <div class="tv-f"><label>3. 투표 주제</label><input class="tv-in" id="tvTitle" value="${e(old ? old.title : "")}" placeholder="예: 5학년 현장체험학습 장소 정하기"></div>
+    <div class="tv-f"><label>설명 <small>(선택)</small></label><textarea class="tv-in" id="tvDescIn" rows="2" placeholder="학생들에게 보여 줄 짧은 안내">${e(old ? old.desc || "" : "")}</textarea></div>
+    <div class="tv-f"><label>선택지 <small>(2~8개)</small></label><div class="tv-opts" id="tvOpts"></div>${locked ? "" : `<button type="button" class="tv-add" id="tvOptAdd">+ 선택지 추가</button>`}</div>
+    <div class="tv-f"><label>투표 방식</label><div class="tv-pick" id="tvMode">
+      <button type="button" data-m="student">📱 학생이 태블릿으로<small>링크·QR로 직접 투표</small></button>
+      <button type="button" data-m="teacher">✍️ 선생님이 반별 결과 입력<small>거수 등으로 투표 후 표 수만 입력</small></button></div>
+      <div class="tv-pick" id="tvKiosk" style="margin-top:10px">
+      <button type="button" data-k="0">한 기기에서 한 번만<small>학생마다 자기 태블릿</small></button>
+      <button type="button" data-k="1">한 기기로 여러 명이 차례로<small>공용 태블릿·교실 TV</small></button></div></div>
+    <div class="tv-f" style="max-width:260px"><label>${old ? "수정한 사람" : "만든 사람"}</label><input class="tv-in" id="tvAuthor" value="${e(lsGet("hyeobui-name", ""))}" placeholder="이름"></div>
+    <div class="tv-err" id="tvErr"></div>
+    <div class="tv-actions"><button class="btn" id="tvCancel">취소</button><button class="btn btn-primary" id="tvSave" style="padding:12px 26px">${old ? "저장" : "투표 올리기"}</button></div>
+  </div>`);
+
+  const paintGrade = () => {
+    q("#tvGrade").innerHTML = [1,2,3,4,5,6].map(g => `<button type="button" data-g="${g}" class="${grade===g?"on":""}" ${locked && grade!==g ? "disabled" : ""}>${g}학년</button>`).join("");
+  };
+  const readClasses = () => { classes = [...document.querySelectorAll("#tvClasses input")].map(i => Math.max(0, Math.floor(Number(i.value) || 0))); };
+  const paintClasses = () => {
+    q("#tvNcls").textContent = classes.length + "개 반";
+    q("#tvClasses").innerHTML = classes.map((n,i) => `<label class="tv-cls">${i+1}반 <input type="number" min="0" inputmode="numeric" value="${n || ""}" placeholder="0">명</label>`).join("");
+    const tot = () => { readClasses(); q("#tvTot").textContent = `학년 전체 ${classes.reduce((a,b) => a + b, 0)}명`; };
+    q("#tvClasses").oninput = tot; tot();
+  };
+  const paintOpts = () => {
+    q("#tvOpts").innerHTML = opts.map((o,i) => `<div class="tv-opt"><span class="tv-num">${i+1}</span><input class="tv-in" data-i="${i}" value="${e(o)}" placeholder="선택지 ${i+1}" ${locked ? "disabled" : ""}>${!locked && opts.length > 2 ? `<button type="button" class="tv-x" data-del="${i}" title="지우기">✕</button>` : ""}</div>`).join("");
+  };
+  const paintMode = () => {
+    document.querySelectorAll("#tvMode button").forEach(b => { b.classList.toggle("on", b.dataset.m === mode); b.disabled = locked && b.dataset.m !== mode; });
+    q("#tvKiosk").classList.toggle("hidden", mode !== "student");
+    document.querySelectorAll("#tvKiosk button").forEach(b => b.classList.toggle("on", (b.dataset.k === "1") === kiosk));
+  };
+  paintGrade(); paintClasses(); paintOpts(); paintMode();
+
+  q("#tvGrade").onclick = ev => { const b = ev.target.closest("button[data-g]"); if (!b || b.disabled) return; grade = Number(b.dataset.g); if (!old) seedClasses(grade); paintGrade(); paintClasses(); };
+  q("#tvMinus").onclick = () => { readClasses(); if (classes.length > 1){ classes.pop(); paintClasses(); } };
+  q("#tvPlus").onclick = () => { readClasses(); if (classes.length < 15){ classes.push(0); paintClasses(); } };
+  q("#tvOpts").oninput = ev => { const i = ev.target.dataset.i; if (i != null) opts[i] = ev.target.value; };
+  q("#tvOpts").onclick = ev => { const d = ev.target.closest("[data-del]"); if (!d) return; opts.splice(Number(d.dataset.del), 1); paintOpts(); };
+  q("#tvOptAdd") && (q("#tvOptAdd").onclick = () => { if (opts.length >= 8) return say("선택지는 8개까지 넣을 수 있어요"); opts.push(""); paintOpts(); q(`#tvOpts input[data-i="${opts.length-1}"]`).focus(); });
+  q("#tvMode").onclick = ev => { const b = ev.target.closest("button[data-m]"); if (!b || b.disabled) return; mode = b.dataset.m; paintMode(); };
+  q("#tvKiosk").onclick = ev => { const b = ev.target.closest("button[data-k]"); if (!b) return; kiosk = b.dataset.k === "1"; paintMode(); };
+  q("#tvCancel").onclick = () => { if (old) showDetail(id); else closeModal(); };
+
+  q("#tvSave").onclick = async () => {
+    readClasses();
+    const err = m => { q("#tvErr").textContent = m; };
+    const title = q("#tvTitle").value.trim(), who = q("#tvAuthor").value.trim();
+    const cleanOpts = opts.map(o => String(o).trim()).filter(Boolean);
+    if (!grade) return err("몇 학년 투표인지 골라 주세요.");
+    if (!classes.length || classes.some(n => !n)) return err("반별 학생 수를 모두 넣어 주세요. (0명인 반이 있으면 반 수를 줄여 주세요)");
+    if (!title) return err("투표 주제를 적어 주세요.");
+    if (cleanOpts.length < 2) return err("선택지를 2개 이상 넣어 주세요.");
+    if (new Set(cleanOpts).size !== cleanOpts.length) return err("같은 선택지가 두 번 들어갔어요.");
+    if (!who) return err("이름을 적어 주세요.");
+    if (st){ const over = clsKeys(old).filter((k,i) => st.per[k] && classes[i] != null && st.per[k].voted > classes[i]); if (classes.length < clsKeys(old).filter(k => st.per[k].voted).length || over.length) return err("이미 투표한 학생 수보다 인원을 적게 넣을 수 없어요."); }
+    lsSet("hyeobui-name", who);
+    const cls = {}; classes.forEach((n,i) => cls["c" + (i+1)] = n);
+    const vid = id || DB.key();
+    const base = `${TV_ROOT}/${staffPw}/votes/${vid}`;
+    const vote = {
+      grade, classes: cls, title, desc: q("#tvDescIn").value.trim(), options: locked ? optsOf(old) : cleanOpts,
+      mode: locked ? old.mode : mode, kiosk: (locked ? old.mode : mode) === "student" ? kiosk : false,
+      status: old ? old.status : "open", author: old ? old.author : who, createdAt: old ? old.createdAt : Date.now(),
+      updatedBy: who, updatedAt: Date.now(), stamp: DB.TS()
+    };
+    if (old && old.tally) vote.tally = old.tally;
+    const up = { [base]: vote, [`${TV_ROOT}/${staffPw}/sizes/g${grade}`]: classes };
+    if (vote.mode === "student"){
+      up[`${PUB}/${vid}/info`] = { grade, classes: cls, title: vote.title, desc: vote.desc, options: vote.options, status: vote.status, kiosk: vote.kiosk };
+    } else if (old && old.mode !== "teacher"){
+      up[`${PUB}/${vid}/info`] = null;
+    }
+    q("#tvSave").disabled = true;
+    try { await DB.update(up); say(old ? "고쳤어요" : "투표를 올렸어요"); showDetail(vid); }
+    catch(x){ q("#tvSave").disabled = false; err("저장하지 못했어요. 인터넷 연결이나 Firebase 규칙을 확인해 주세요."); }
+  };
+  if (!old) setTimeout(() => (grade ? q("#tvTitle") : null)?.focus(), 50);
+}
+
+/* ── 선생님 화면 이벤트 ── */
+q("#tvNewBtn").onclick = () => { if (!ready) return say(failMsg || "학년 투표를 불러오는 중이에요"); showEditor(null); };
+q("#tvChips").onclick = ev => {
+  const g = ev.target.closest("[data-g]"); if (g){ gradeF = g.dataset.g === "all" ? "all" : Number(g.dataset.g); return render(); }
+  const s = ev.target.closest("[data-s]"); if (s){ statusF = s.dataset.s; render(); }
+};
+q("#tvView").onclick = ev => { const c = ev.target.closest(".tv-card[data-id]"); if (c) showDetail(c.dataset.id); };
+document.addEventListener("keydown", ev => { if (ev.key === "Escape" && q("#tvModalRoot").innerHTML) closeModal(); });
+
+/* ════════════════════════════════════════════════
+   학생 투표 화면 (?vote=투표ID) — 비밀번호 없이 열림
+   ════════════════════════════════════════════════ */
+const VID = new URLSearchParams(location.search).get("vote");
+window.TV_STUDENT = !!VID;
+if (VID){
+  q("#login").classList.add("hidden");
+  q("#tvStudent").classList.remove("hidden");
+  document.title = "학년 투표";
+  let info = undefined, bal = {}, step = "class", cls = null, pick = null, done = lsGet("tv-voted-" + VID, "") === "1";
+  const root = q("#tvStudent .tvs");
+  const paint = () => {
+    if (info === undefined){ root.innerHTML = `<p class="tvs-q">투표를 불러오는 중…</p>`; return; }
+    if (!info){ root.innerHTML = `<div class="tvs-done"><div class="big">🔍</div><h2>투표를 찾을 수 없어요</h2><p>선생님께 주소를 다시 받아 주세요.</p></div>`; return; }
+    const v = { ...info, mode: "student" }, st = stats(v, bal);
+    const head = `<span class="tv-grade tv-g${e(info.grade)} tvs-grade">${e(info.grade)}학년 투표</span><h1>${e(info.title)}</h1>${info.desc ? `<div class="tvs-desc">${e(info.desc)}</div>` : ""}`;
+    if (info.status !== "open"){
+      root.innerHTML = head + `<div class="tvs-res"><div class="tvs-q" style="margin-top:0">📊 투표 결과 <span style="font-weight:600;font-size:16px;color:var(--ink-3)">(${st.voted}명 참여)</span></div>${resultBars(st)}</div>`;
+      return;
+    }
+    if (done && !info.kiosk){
+      root.innerHTML = head + `<div class="tvs-done"><div class="big">🗳️</div><h2>투표를 마쳤어요!</h2><p>결과는 선생님이 투표를 마감하면 이 화면에서 볼 수 있어요.</p></div>`;
+      return;
+    }
+    if (step === "done"){
+      root.innerHTML = head + `<div class="tvs-done"><div class="big">🎉</div><h2>투표했어요!</h2><p>${info.kiosk ? "다음 친구에게 넘겨 주세요." : "결과는 선생님이 마감하면 볼 수 있어요."}</p>
+        ${info.kiosk ? `<button class="btn btn-primary tvs-go" id="tvsNext">다음 친구 투표하기</button>` : ""}</div>`;
+      q("#tvsNext") && (q("#tvsNext").onclick = () => { step = "class"; cls = null; pick = null; paint(); });
+      return;
+    }
+    if (step === "class"){
+      const ks = clsKeys(v);
+      root.innerHTML = head + `<div class="tvs-q">몇 반인가요?</div><div class="tvs-cls">${ks.map(k => {
+        const p = st.per[k], full = p.voted >= p.size;
+        return `<button data-c="${k.slice(1)}" ${full ? "disabled" : ""}>${clsName(k)}${full ? "<small>모두 투표했어요</small>" : ""}</button>`;
+      }).join("")}</div>`;
+      root.querySelector(".tvs-cls").onclick = ev => { const b = ev.target.closest("button[data-c]"); if (!b || b.disabled) return; cls = Number(b.dataset.c); step = "pick"; pick = null; paint(); };
+      return;
+    }
+    // 선택지 고르기
+    root.innerHTML = head + `<div class="tvs-q">${cls}반 · 하나를 골라 주세요</div>
+      <div class="tvs-opts">${optsOf(info).map((o,i) => `<button data-o="${i}" class="${pick===i?"sel":""}"><span class="n">${i+1}</span>${e(o)}</button>`).join("")}</div>
+      <button class="btn btn-primary tvs-go" id="tvsGo" ${pick == null ? "disabled" : ""}>${pick == null ? "하나를 골라 주세요" : "이걸로 투표하기"}</button>
+      <button class="tvs-back" id="tvsBack">← 반 다시 고르기</button>`;
+    root.querySelector(".tvs-opts").onclick = ev => { const b = ev.target.closest("button[data-o]"); if (!b) return; pick = Number(b.dataset.o); paint(); };
+    q("#tvsBack").onclick = () => { step = "class"; paint(); };
+    q("#tvsGo").onclick = async () => {
+      if (pick == null) return;
+      const p = st.per["c" + cls];
+      if (p && p.voted >= p.size){ say(`${cls}반은 모두 투표했어요`); step = "class"; return paint(); }
+      q("#tvsGo").disabled = true;
+      try {
+        await DB.push(`${PUB}/${VID}/ballots`, { c: cls, o: pick, t: DB.TS() });
+        if (!info.kiosk){ lsSet("tv-voted-" + VID, "1"); done = true; }
+        step = "done"; paint();
+      } catch(x){ q("#tvsGo").disabled = false; say("투표가 안 됐어요. 투표가 마감됐는지 선생님께 여쭤 보세요."); }
+    };
+  };
+  paint();
+  if (!TVDEMO && !(firebaseConfig.apiKey && typeof firebase !== "undefined")){ info = null; paint(); }
+  else {
+    DB.init();
+    DB.listen(`${PUB}/${VID}/info`, v => { const wasOpen = info && info.status === "open"; info = v; if (wasOpen && v && v.status !== "open") step = "class"; paint(); }, () => { info = null; paint(); });
+    DB.listen(`${PUB}/${VID}/ballots`, b => { bal = b || {}; if (step !== "pick" || (info && info.status !== "open")) paint(); }, () => {});
+  }
+}
+})();
+</script>
+<script>
+const saved = sessionStorage.getItem("tbs-pw"); if (saved && !window.TV_STUDENT) enter(saved);
 </script>
 
 </body>
