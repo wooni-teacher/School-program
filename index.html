@@ -533,6 +533,13 @@
   .tv-idea b{color:var(--accent);font-size:14px}
   .tv-idea-add{border:1.5px dashed var(--line);background:var(--paper);border-radius:10px;padding:7px 12px;font-weight:600;color:var(--ink-2)}
   .tv-idea-add:hover{border-color:var(--accent);color:var(--accent)}
+  .tv-other{display:flex;gap:10px;align-items:flex-start;margin-top:10px;background:var(--bg);border-radius:10px;padding:10px 12px;cursor:pointer}
+  .tv-other input{width:19px;height:19px;margin-top:3px;accent-color:var(--accent);flex-shrink:0}
+  .tv-other small{display:block;color:var(--ink-3);font-size:13.5px;margin-top:2px}
+  .tv-others{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);display:flex;flex-wrap:wrap;gap:6px}
+  .tv-others-h{width:100%;font-weight:800;color:var(--ink-2);margin-bottom:2px}
+  .tv-oth{background:var(--bg);border-radius:8px;padding:5px 10px;font-size:15px}
+  .tv-oth b{color:var(--accent);font-size:13px}
   .tvs-gh{font-weight:800;font-size:18px;color:var(--ink-2);text-align:left;margin:16px 0 8px}
   .tvs-idea{font-size:22px;padding:18px;text-align:center;border-radius:16px;border-width:2px}
 </style>
@@ -1853,7 +1860,7 @@ function roomAnswer(raw){
 const QUICKS = {
   room: [["예약하는 방법","예약하는 방법"],["수정·삭제","예약 수정이나 삭제는 어떻게 해요?"],["빨간 칸이 뭐예요?","빨간 칸이 뭐예요?"],["교시 시간표","교시 시간표 알려줘"],["오늘 비어 있는 시간","오늘 비어 있는 시간"],["이번 주 겹침 확인","이번 주 겹침 확인"],["요청 남기기","요청을 남기고 싶어요"]],
   meet: [["협의록 쓰는 법","협의록은 어떻게 써요?"],["남은 할 일","남은 할 일 알려줘"],["내 할 일","내 할 일 알려줘"],["기한 지난 할 일","기한 지난 할 일"],["최근 협의록","최근 협의록 보여줘"],["인쇄하기","협의록 인쇄는 어떻게 해요?"],["수정·삭제","협의록 수정이나 삭제는 어떻게 해요?"]],
-  vote: [["투표 만드는 법","투표는 어떻게 만들어요?"],["진행 중인 투표","진행 중인 투표 현황"],["최근 결과","최근 투표 결과 보여줘"],["의견 먼저 받기","선택지를 의견으로 먼저 받으려면?"],["여러 학년 투표","여러 학년이 같이 투표하려면?"],["링크·QR 나눠 주기","링크나 QR은 어떻게 나눠 줘요?"],["마감·결과 공개","마감하고 결과 공개는 어떻게 해요?"]]
+  vote: [["투표 만드는 법","투표는 어떻게 만들어요?"],["진행 중인 투표","진행 중인 투표 현황"],["최근 결과","최근 투표 결과 보여줘"],["의견 먼저 받기","선택지를 의견으로 먼저 받으려면?"],["여러 학년 투표","여러 학년이 같이 투표하려면?"],["링크·QR 나눠 주기","링크나 QR은 어떻게 나눠 줘요?"],["마감·결과 공개","마감하고 결과 공개는 어떻게 해요?"],["기타(주관식)","선택지에 주관식(기타)을 넣으려면?"]]
 };
 const BOT_INFO = {
   room: { title:"특별실 예약 도우미", sub:"사용법·예약 현황을 물어보세요", ph:"예: 오늘 컴퓨터실 비어 있어?",
@@ -1977,6 +1984,7 @@ function tvAnswer(raw){
   if (has(t, ["링크","qr","큐알","주소","나눠","보내","공유","메신저","태블릿으로"])) return `투표를 열면 <b>링크·QR</b>이 보여요.<ul><li>학생: 교실 화면에 QR을 띄우고 태블릿 카메라로 찍게 하거나, <b>주소 복사</b>로 학급 알림장에 붙여 주세요.</li><li>교직원·교원: <b>주소 복사</b>를 눌러 메신저로 보내면 돼요.</li><li>링크로 들어오면 비밀번호 없이 바로 투표해요.</li></ul>${active.length ? `지금 진행 중인 투표예요.${tvList(active)}` : ""}`;
   if (has(t, ["마감","끝내","종료","공개","닫"])) return `투표를 열고 <b>마감하고 결과 공개</b>를 누르세요.<ul><li>마감하면 결과 막대그래프가 공개되고, 학생·교직원이 보던 투표 화면에도 결과가 떠요.</li><li>마감 전에는 참여 인원만 보이고 결과는 보이지 않아요.</li><li>실수로 마감했으면 <b>다시 열기</b>로 다시 투표를 받을 수 있어요.</li></ul>`;
   if (has(t, ["거수","직접입력","손들","표수","반별결과","결과입력"])) return `투표 방식에서 <b>✍️ 선생님이 반별 결과 입력</b>(교직원·교원은 <b>결과 직접 입력</b>)을 고르세요.<ol><li>각 반에서 거수 등으로 투표하고</li><li>투표 창의 표에 선택지별 표 수를 넣고 <b>저장</b></li><li>모든 반이 넣으면 <b>마감하고 결과 공개</b></li></ol>반 인원보다 많이 넣으면 저장되지 않아요.`;
+  if (has(t, ["주관식","기타","직접쓰","직접적","서술"])) return `투표를 만들 때 선택지 아래 <b>✏️ 기타 (직접 쓰기) 선택지도 넣기</b>에 체크하세요.<ul><li>투표 화면 맨 끝에 <b>기타 (직접 쓰기)</b>가 생기고, 누르면 짧게(40자까지) 적는 칸이 열려요.</li><li>결과에서 기타는 한 선택지로 표 수가 세어지고, 아래에 <b>적은 내용이 모여</b> 보여요. 같은 내용은 ×2처럼 묶여요.</li><li>의견을 먼저 받은 투표는 <b>투표 시작</b> 화면에서 체크할 수 있어요.</li></ul><button class="act" data-bot="tv-new">투표 만들기</button>`;
   if (has(t, ["중복","두번","여러번","한번만","또투표","다시투표"])) return `링크 투표는 <b>한 기기에서 한 번</b>만 투표돼요. 반(또는 전체) 인원만큼 투표가 차면 더 받지 않아요.<br>다만 같은 사람이 다른 기기로 또 투표하는 것까지는 막지 못해요. 공용 태블릿·교실 TV로 차례로 투표할 때는 투표 방식에서 <b>한 기기로 여러 명이 차례로</b>를 고르세요.`;
   if (has(t, ["인원","몇명","학생수","반수"]) && has(t, ["수정","바꾸","고치","틀"])) return `투표를 열고 <b>수정</b>을 누르면 반별 인원을 고칠 수 있어요. 이미 투표가 들어왔으면 그보다 적게는 못 줄여요. 넣은 인원은 저장돼서 다음 투표에 자동으로 채워져요.`;
   if (has(t, ["수정","고치","바꾸","삭제","지우"])) return `투표를 열고 <b>수정</b> 또는 <b>삭제</b>를 누르세요.<ul><li>표가 이미 들어온 투표는 <b>대상·학년·선택지·투표 방식</b>을 바꿀 수 없어요. 제목·설명·인원만 고칠 수 있어요.</li><li>삭제하면 표·의견·결과가 모두 지워지고 되돌릴 수 없어요.</li></ul>`;
@@ -2060,6 +2068,9 @@ $("chatLog").onclick = e => {
    사이트 업데이트 내역 — 새로 바꿀 때마다 맨 위에 추가하세요
    ════════════════════════════════════════════════ */
 const CHANGELOG = [
+  { v:"2026-11-26f", title:"투표 · 기타(직접 쓰기) 선택지", date:"2026-11-26", items:[
+    "투표를 만들 때 <b>✏️ 기타 (직접 쓰기)</b> 선택지를 넣을 수 있어요. 고를 게 없으면 ‘기타’를 누르고 짧게 직접 적어요.",
+    "마감 후 결과에서 기타 표 수와 함께 <b>적은 내용이 모여</b> 보여요." ]},
   { v:"2026-11-26e", title:"협의록·투표 도우미", date:"2026-11-26", items:[
     "오른쪽 아래 <b>사용 도우미</b>가 협의록·투표 탭에서도 떠요. 지금 보고 있는 탭에 맞는 도우미로 바뀌어요.",
     "<b>협의록 도우미</b>: “내 할 일”, “기한 지난 할 일”, “학예회 협의 찾아줘”, “11월 협의록”처럼 물어보면 바로 찾아 줘요.",
@@ -2638,6 +2649,8 @@ const statusTag = v => `<span class="tv-tag ${e(v.status)}">${STATUS[v.status] |
 const isActive = v => v.status === "open" || v.status === "collect";
 const totalOf = v => clsKeys(v).reduce((s,k) => s + Number(v.classes[k] || 0), 0);
 const optsOf = v => (Array.isArray(v.options) ? v.options : Object.values(v.options || {})).filter(x => x != null && x !== "");
+const OTHER = "기타";
+const allOpts = v => v.other ? [...optsOf(v), OTHER] : optsOf(v);   // 기타(직접 쓰기)는 맨 끝
 const normIdea = t => String(t || "").replace(/\s+/g, " ").trim();
 function ideaGroups(ideas){
   const m = new Map();
@@ -2645,7 +2658,7 @@ function ideaGroups(ideas){
   return [...m.values()].sort((a,b) => b.n - a.n || a.txt.localeCompare(b.txt));
 }
 function stats(v, ballots){
-  const opts = optsOf(v), per = {}, counts = opts.map(() => 0);
+  const opts = allOpts(v), per = {}, counts = opts.map(() => 0), others = [];
   clsKeys(v).forEach(k => per[k] = { size: Number(v.classes[k] || 0), voted: 0, counts: opts.map(() => 0) });
   if (v.mode === "teacher"){
     Object.entries(v.tally || {}).forEach(([k, arr]) => {
@@ -2658,10 +2671,11 @@ function stats(v, ballots){
     Object.values(ballots || {}).forEach(b => {
       const k = "c" + b.c; if (!per[k] || !(b.o >= 0 && b.o < opts.length)) return;
       per[k].voted++; per[k].counts[b.o]++; counts[b.o]++;
+      if (v.other && b.o === opts.length - 1 && b.txt) others.push(String(b.txt));
     });
   }
   const voted = counts.reduce((a,b) => a + b, 0), total = totalOf(v);
-  return { opts, per, counts, voted, total };
+  return { opts, per, counts, voted, total, others };
 }
 function resultBars(st){
   const max = Math.max(...st.counts, 0);
@@ -2670,7 +2684,7 @@ function resultBars(st){
     return `<div class="tv-row ${max > 0 && st.counts[i] === max ? "win" : ""}" style="--c:${BAR[i % BAR.length]}">
       <div class="tv-lab"><b>${e(o)}</b><span>${st.counts[i]}표 · ${pct}%</span></div>
       <div class="tv-track"><div class="tv-fill" style="width:${max ? st.counts[i] / max * 100 : 0}%"></div></div></div>`;
-  }).join("")}</div>`;
+  }).join("")}${(st.others || []).length ? `<div class="tv-others"><div class="tv-others-h">✏️ 기타 의견 (${st.others.length})</div>${ideaGroups(st.others.map(x => ({ txt: x }))).map(g => `<span class="tv-oth">${e(g.txt)}${g.n > 1 ? ` <b>×${g.n}</b>` : ""}</span>`).join("")}</div>` : ""}</div>`;
 }
 const progress = st => `<div class="tv-prog"><div class="tv-track"><div class="tv-fill" style="width:${st.total ? Math.min(100, st.voted / st.total * 100) : 0}%"></div></div><span><b>${st.voted}</b> / ${st.total}명 참여</span></div>`;
 const ideaProgress = n => `<div class="tv-prog"><span>💡 지금까지 의견 <b>${n}</b>개</span></div>`;
@@ -2876,6 +2890,7 @@ function showStarter(id, seed){
     <div class="tv-hint" style="margin:-8px 0 14px">고른 의견이 선택지로 들어갔어요. 글자를 다듬거나, 지우거나, 더 넣을 수 있어요. (2~8개)</div>
     <div class="tv-opts" id="tvSOpts"></div>
     <button type="button" class="tv-add" id="tvSAdd">+ 선택지 추가</button>
+    <label class="tv-other"><input type="checkbox" id="tvSOther" ${v.other ? "checked" : ""}><span>✏️ <b>기타 (직접 쓰기)</b> 선택지도 넣기<small>고를 게 없으면 직접 적어서 투표해요.</small></span></label>
     ${allIdeas.length ? `<div class="tv-sec" style="font-size:15px">다른 의견 넣기</div><div class="tv-ideas">${allIdeas.map(t => `<button type="button" class="tv-idea-add" data-txt="${e(t)}">+ ${e(t)}</button>`).join("")}</div>` : ""}
     <div class="tv-err" id="tvSErr"></div>
     <div class="tv-actions"><button class="btn" id="tvSBack">뒤로</button><button class="btn btn-primary" id="tvSGo" style="padding:12px 24px">이 선택지로 투표 시작</button></div>
@@ -2895,15 +2910,16 @@ function showStarter(id, seed){
   });
   q("#tvSBack").onclick = () => showDetail(id);
   q("#tvSGo").onclick = async () => {
-    const clean = opts.map(normIdea).filter(Boolean);
-    if (clean.length < 2) return q("#tvSErr").textContent = "선택지를 2개 이상 넣어 주세요.";
+    const clean = opts.map(normIdea).filter(Boolean), oth = q("#tvSOther").checked;
+    if (clean.length + (oth ? 1 : 0) < 2) return q("#tvSErr").textContent = "선택지를 2개 이상 넣어 주세요.";
+    if (clean.includes(OTHER)) return q("#tvSErr").textContent = "‘기타’는 아래 체크로 넣어 주세요.";
     if (clean.length > 8) return q("#tvSErr").textContent = "선택지는 8개까지예요.";
     if (new Set(clean).size !== clean.length) return q("#tvSErr").textContent = "같은 선택지가 두 번 들어갔어요.";
-    if (!confirm(`이 선택지로 투표를 시작할까요?\n\n${clean.map((c,i) => `${i+1}. ${c}`).join("\n")}\n\n시작하면 의견 받기는 끝나요.`)) return;
+    if (!confirm(`이 선택지로 투표를 시작할까요?\n\n${[...clean, ...(oth ? ["기타 (직접 쓰기)"] : [])].map((c,i) => `${i+1}. ${c}`).join("\n")}\n\n시작하면 의견 받기는 끝나요.`)) return;
     const base = `${TV_ROOT}/${staffPw}/votes/${id}`;
     try {
-      await DB.update({ [`${base}/options`]: clean, [`${base}/status`]: "open", [`${base}/stamp`]: DB.TS(),
-        [`${PUB}/${id}/info/options`]: clean, [`${PUB}/${id}/info/status`]: "open" });
+      await DB.update({ [`${base}/options`]: clean, [`${base}/other`]: oth, [`${base}/status`]: "open", [`${base}/stamp`]: DB.TS(),
+        [`${PUB}/${id}/info/options`]: clean, [`${PUB}/${id}/info/other`]: oth, [`${PUB}/${id}/info/status`]: "open" });
       say("투표를 시작했어요"); showDetail(id);
     } catch(x){ q("#tvSErr").textContent = "시작하지 못했어요. 다시 해 주세요."; }
   };
@@ -2939,6 +2955,7 @@ function showEditor(id){
   grades.forEach(seedGrade);
   if (!old && type !== "student") seedStaff();
   const opts = old ? optsOf(old) : ["", ""];
+  let other = old ? !!old.other : false;
   if (opts.length < 2 && !(old && old.status === "collect")) while (opts.length < 2) opts.push("");
   const oldIdeas = old ? Object.keys(ideasOf(id)).length : 0;
 
@@ -2964,7 +2981,8 @@ function showEditor(id){
     <div class="tv-f" id="tvHowF"><label>선택지는 어떻게 정할까요?</label><div class="tv-pick" id="tvHow">
       <button type="button" data-h="now">📝 지금 정하기<small>선택지를 바로 넣고 투표 시작</small></button>
       <button type="button" data-h="collect">💡 의견을 먼저 받기<small>같은 링크로 의견을 모은 뒤 골라서 투표</small></button></div></div>
-    <div class="tv-f"><label id="tvOptLab"></label><div class="tv-opts" id="tvOpts"></div>${locked ? "" : `<button type="button" class="tv-add" id="tvOptAdd">+ 선택지 추가</button>`}</div>
+    <div class="tv-f"><label id="tvOptLab"></label><div class="tv-opts" id="tvOpts"></div>${locked ? "" : `<button type="button" class="tv-add" id="tvOptAdd">+ 선택지 추가</button>`}
+      <label class="tv-other"><input type="checkbox" id="tvOther" ${other ? "checked" : ""} ${locked ? "disabled" : ""}><span>✏️ <b>기타 (직접 쓰기)</b> 선택지도 넣기<small>고를 게 없으면 ‘기타’를 누르고 짧게 직접 적어요. 마감 후 결과에 적은 내용이 모여 보여요.</small></span></label></div>
     <div class="tv-f" style="max-width:260px"><label>${old ? "수정한 사람" : "만든 사람"}</label><input class="tv-in" id="tvAuthor" value="${e(lsGet("hyeobui-name", ""))}" placeholder="이름"></div>
     <div class="tv-err" id="tvErr"></div>
     <div class="tv-actions"><button class="btn" id="tvCancel">취소</button><button class="btn btn-primary" id="tvSave" style="padding:12px 26px"></button></div>
@@ -3050,6 +3068,7 @@ function showEditor(id){
   q("#tvOptAdd") && (q("#tvOptAdd").onclick = () => { if (opts.length >= 8) return say("선택지는 8개까지 넣을 수 있어요"); opts.push(""); paintOpts(); q(`#tvOpts input[data-i="${opts.length-1}"]`).focus(); });
   q("#tvMode").onclick = ev => { const b = ev.target.closest("button[data-m]"); if (!b || b.disabled) return; mode = b.dataset.m; paintMode(); paintOpts(); };
   q("#tvKiosk").onclick = ev => { const b = ev.target.closest("button[data-k]"); if (!b) return; kiosk = b.dataset.k === "1"; paintMode(); };
+  q("#tvOther").onchange = ev => { other = ev.target.checked; };
   q("#tvHow").onclick = ev => { const b = ev.target.closest("button[data-h]"); if (!b || b.disabled) return; collect = b.dataset.h === "collect"; paintMode(); paintOpts(); };
   q("#tvCancel").onclick = () => { if (old) showDetail(id); else closeModal(); };
 
@@ -3071,7 +3090,8 @@ function showEditor(id){
       cls.c1 = staffN;
     }
     if (!title) return err("투표 주제를 적어 주세요.");
-    if (!collect && cleanOpts.length < 2) return err("선택지를 2개 이상 넣어 주세요.");
+    if (!collect && cleanOpts.length + (other ? 1 : 0) < 2) return err(other ? "기타 말고 선택지를 1개 이상 넣어 주세요." : "선택지를 2개 이상 넣어 주세요.");
+    if (cleanOpts.some(o => o === OTHER)) return err("‘기타’는 아래 체크로 넣어 주세요. (직접 쓰는 칸이 함께 생겨요)");
     if (cleanOpts.length > 8) return err("선택지는 8개까지예요.");
     if (new Set(cleanOpts).size !== cleanOpts.length) return err("같은 선택지가 두 번 들어갔어요.");
     if (!who) return err("이름을 적어 주세요.");
@@ -3086,7 +3106,7 @@ function showEditor(id){
     const status = old ? old.status : (collect ? "collect" : "open");
     const vote = {
       type, grades: stu() ? grades : null, grade: stu() && grades.length === 1 ? grades[0] : null,
-      classes: cls, title, desc: q("#tvDescIn").value.trim(), options: locked ? optsOf(old) : cleanOpts,
+      classes: cls, title, desc: q("#tvDescIn").value.trim(), options: locked ? optsOf(old) : cleanOpts, other: locked ? !!old.other : other,
       mode: vmode, kiosk: vmode === "student" && stu() ? kiosk : false,
       status, author: old ? old.author : who, createdAt: old ? old.createdAt : Date.now(),
       updatedBy: who, updatedAt: Date.now(), stamp: DB.TS()
@@ -3096,7 +3116,7 @@ function showEditor(id){
     if (stu()) grades.forEach(g => up[`${TV_ROOT}/${staffPw}/sizes/g${g}`] = classMap[g]);
     else up[`${TV_ROOT}/${staffPw}/sizes/${type}`] = [staffN];
     if (vmode === "student"){
-      up[`${PUB}/${vid}/info`] = { type, grades: vote.grades, classes: cls, title: vote.title, desc: vote.desc, options: vote.options, status, kiosk: vote.kiosk };
+      up[`${PUB}/${vid}/info`] = { type, grades: vote.grades, classes: cls, title: vote.title, desc: vote.desc, options: vote.options, other: vote.other, status, kiosk: vote.kiosk };
     } else if (old && old.mode !== "teacher"){
       up[`${PUB}/${vid}/info`] = null;
     }
@@ -3134,6 +3154,7 @@ if (VID){
   q("#tvStudent").classList.remove("hidden");
   document.title = "투표";
   let info = undefined, bal = {}, step = "class", cls = null, pick = null, done = lsGet("tv-voted-" + VID, "") === "1";
+  let otherTxt = "";
   let ideaStep = "write", ideaN = Number(lsGet("tv-ideas-" + VID, "0")) || 0;
   const IDEA_MAX = 3;
   const root = q("#tvStudent .tvs");
@@ -3185,7 +3206,7 @@ if (VID){
     if (step === "done"){
       root.innerHTML = head + `<div class="tvs-done"><div class="big">🎉</div><h2>투표했어요!</h2><p>${info.kiosk ? "다음 친구에게 넘겨 주세요." : stu ? "결과는 선생님이 마감하면 볼 수 있어요." : "참여해 주셔서 고마워요. 결과는 마감되면 볼 수 있어요."}</p>
         ${info.kiosk ? `<button class="btn btn-primary tvs-go" id="tvsNext">다음 친구 투표하기</button>` : ""}</div>`;
-      q("#tvsNext") && (q("#tvsNext").onclick = () => { step = "class"; cls = null; pick = null; paint(); });
+      q("#tvsNext") && (q("#tvsNext").onclick = () => { step = "class"; cls = null; pick = null; otherTxt = ""; paint(); });
       return;
     }
     if (step === "class"){
@@ -3200,19 +3221,29 @@ if (VID){
     }
     const pf = st.per["c" + cls];
     if (!stu && pf && pf.voted >= pf.size){ root.innerHTML = head + `<div class="tvs-done"><div class="big">✅</div><h2>모든 분이 투표했어요</h2><p>정해진 인원만큼 투표가 끝났어요.</p></div>`; return; }
+    const otherIdx = optsOf(info).length;
+    const goOk = () => pick != null && (pick !== otherIdx || !!normIdea(otherTxt));
     root.innerHTML = head + `<div class="tvs-q">${stu ? groupLabel(v, "c" + cls) + " · " : ""}하나를 골라 주세요</div>
-      <div class="tvs-opts">${optsOf(info).map((o,i) => `<button data-o="${i}" class="${pick===i?"sel":""}"><span class="n">${i+1}</span>${e(o)}</button>`).join("")}</div>
-      <button class="btn btn-primary tvs-go" id="tvsGo" ${pick == null ? "disabled" : ""}>${pick == null ? "하나를 골라 주세요" : "이걸로 투표하기"}</button>
+      <div class="tvs-opts">${optsOf(info).map((o,i) => `<button data-o="${i}" class="${pick===i?"sel":""}"><span class="n">${i+1}</span>${e(o)}</button>`).join("")}${info.other ? `<button data-o="${otherIdx}" class="${pick===otherIdx?"sel":""}"><span class="n">✏️</span>기타 (직접 쓰기)</button>` : ""}</div>
+      ${info.other && pick === otherIdx ? `<input class="tv-in tvs-idea" id="tvsOther" maxlength="40" placeholder="짧게 적어 주세요" autocomplete="off" value="${e(otherTxt)}" style="margin-top:12px">` : ""}
+      <button class="btn btn-primary tvs-go" id="tvsGo" ${goOk() ? "" : "disabled"}>${pick == null ? "하나를 골라 주세요" : pick === otherIdx && !normIdea(otherTxt) ? "내용을 적어 주세요" : "이걸로 투표하기"}</button>
       ${stu ? `<button class="tvs-back" id="tvsBack">← 반 다시 고르기</button>` : ""}`;
-    root.querySelector(".tvs-opts").onclick = ev => { const b = ev.target.closest("button[data-o]"); if (!b) return; pick = Number(b.dataset.o); paint(); };
+    root.querySelector(".tvs-opts").onclick = ev => { const b = ev.target.closest("button[data-o]"); if (!b) return; pick = Number(b.dataset.o); paint(); if (pick === otherIdx && q("#tvsOther")) q("#tvsOther").focus(); };
+    if (q("#tvsOther")){
+      q("#tvsOther").oninput = ev => { otherTxt = ev.target.value; const g = q("#tvsGo"); g.disabled = !goOk(); g.textContent = goOk() ? "이걸로 투표하기" : "내용을 적어 주세요"; };
+      q("#tvsOther").onkeydown = ev => { if (ev.key === "Enter" && goOk()) q("#tvsGo").click(); };
+    }
     q("#tvsBack") && (q("#tvsBack").onclick = () => { step = "class"; paint(); });
     q("#tvsGo").onclick = async () => {
-      if (pick == null) return;
+      if (!goOk()) return;
       const p = st.per["c" + cls];
       if (p && p.voted >= p.size){ say(stu ? `${groupLabel(v, "c" + cls)}은 모두 투표했어요` : "정해진 인원만큼 투표가 끝났어요"); step = "class"; return paint(); }
       q("#tvsGo").disabled = true;
       try {
-        await DB.push(`${PUB}/${VID}/ballots`, { c: cls, o: pick, t: DB.TS() });
+        const ballot = { c: cls, o: pick, t: DB.TS() };
+        if (info.other && pick === otherIdx) ballot.txt = normIdea(otherTxt).slice(0, 40);
+        await DB.push(`${PUB}/${VID}/ballots`, ballot);
+        otherTxt = "";
         if (!info.kiosk){ lsSet("tv-voted-" + VID, "1"); done = true; }
         step = "done"; paint();
       } catch(x){ q("#tvsGo").disabled = false; say("투표가 안 됐어요. 투표가 마감됐는지 확인해 주세요."); }
