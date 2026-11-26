@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>특별실 예약</title>
+<title>2026 반월 아카이브</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
@@ -263,6 +263,146 @@
   .chat-in input:focus{border-color:var(--accent)}
   .chat-in button{border:none;background:var(--accent);color:#fff;border-radius:12px;padding:0 16px;font-weight:700}
   @media (max-width:720px){ #chat{right:12px;bottom:12px;height:calc(100vh - 24px)} #chatFab{right:14px;bottom:14px;padding:13px 18px} }
+
+  /* ════════ 협의록 (2026 반월 아카이브) ════════ */
+  :root{ --ok-soft:#e7f4e8; --warn:#b26a00; --warn-soft:#fff3dc;
+    --k-subject:#1d4ed8; --k-subject-s:#e5edff; --k-work:#00796b; --k-work-s:#e0f2f0; --k-staff:#6d28d9; --k-staff-s:#f0e8ff; }
+  #meetMain{max-width:1080px}
+  /* 위쪽 큰 메뉴: 특별실 예약 / 협의록 */
+  .secnav{display:flex;background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:4px;gap:4px;margin-left:4px}
+  header:has(#secNav){gap:10px}
+  .secnav button{border:none;background:transparent;padding:9px 16px;border-radius:10px;font-size:17px;font-weight:700;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+  .secnav button.on{background:var(--ink);color:#fff}
+  .secnav .scnt{font-size:13px;background:var(--danger);color:#fff;border-radius:999px;padding:0 8px;line-height:21px}
+  .secbtns{display:contents}
+  @media (max-width:720px){ .secnav{margin-left:0;order:5;width:100%} .secnav button{flex:1;justify-content:center} }
+  /* 툴바 */
+  .htoolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .htabs{display:flex;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:5px;gap:4px}
+  .htab{border:none;background:transparent;padding:11px 24px;border-radius:10px;font-size:18px;font-weight:700;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+  .htab.on{background:var(--accent);color:#fff}
+  .htab .hcnt{font-size:14px;background:var(--danger);color:#fff;border-radius:999px;padding:0 8px;line-height:22px}
+  .search{flex:1;min-width:200px;padding:12px 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);outline:none}
+  .search:focus{border-color:var(--accent)}
+  .hchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .hchip{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 16px;font-weight:600;font-size:16px;color:var(--ink-2)}
+  .hchip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .hchip .hdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:1px}
+
+  /* 종류 배지 */
+  .kind{display:inline-block;border-radius:6px;padding:2px 10px;font-size:14px;font-weight:700;white-space:nowrap}
+  .kind.subject{background:var(--k-subject-s);color:var(--k-subject)}
+  .kind.work{background:var(--k-work-s);color:var(--k-work)}
+  .kind.staff{background:var(--k-staff-s);color:var(--k-staff)}
+
+  /* 협의록 목록 */
+  .month{font-family:var(--font-title);font-size:21px;font-weight:700;margin:26px 0 10px;color:var(--ink-2)}
+  .month:first-child{margin-top:4px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:10px;display:flex;gap:18px;align-items:flex-start;cursor:pointer;transition:border-color .15s, box-shadow .15s}
+  .card:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(43,76,126,.08)}
+  .card .date{min-width:64px;text-align:center;border-right:1px solid var(--line-2);padding-right:16px}
+  .card .date b{display:block;font-size:26px;line-height:1.1;font-family:var(--font-title)}
+  .card .date span{font-size:14px;color:var(--ink-3)}
+  .card .body{flex:1;min-width:0}
+  .card .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px}
+  .card .group{color:var(--ink-2);font-size:15px;font-weight:600}
+  .card h3{margin:0 0 4px;font-size:19px;line-height:1.4}
+  .card .preview{color:var(--ink-3);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:14px;color:var(--ink-3)}
+  .pill{border-radius:999px;padding:1px 10px;font-weight:600}
+  .pill.open{background:var(--warn-soft);color:var(--warn)}
+  .pill.done{background:var(--ok-soft);color:var(--ok)}
+  .pill.dec{background:var(--accent-soft);color:var(--accent)}
+
+  .empty{text-align:center;color:var(--ink-3);padding:60px 20px;background:var(--paper);border:1.5px dashed var(--line);border-radius:14px}
+  .empty b{display:block;font-size:19px;color:var(--ink-2);margin-bottom:6px}
+
+  /* 할 일 모아보기 */
+  .task-sec{margin-bottom:22px}
+  .task-sec h4{margin:0 0 8px;font-size:17px;display:flex;align-items:center;gap:8px}
+  .task-sec h4 .hn{color:var(--ink-3);font-weight:500}
+  .task-sec.over h4{color:var(--danger)}
+  .trow{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px}
+  .trow.over{border-color:#f3b4b4;background:#fffafa}
+  .trow .tx{flex:1;min-width:0}
+  .trow .tx .ht{font-weight:600}
+  .trow .tx .src{font-size:14px;color:var(--ink-3);cursor:pointer}
+  .trow .tx .src:hover{color:var(--accent);text-decoration:underline}
+  .trow .who{font-size:15px;color:var(--ink-2);white-space:nowrap}
+  .trow .due{font-size:15px;font-weight:700;white-space:nowrap;min-width:84px;text-align:right}
+  .trow.done .ht{text-decoration:line-through;color:var(--ink-3)}
+  .hchk{width:26px;height:26px;border:2px solid var(--line);border-radius:7px;background:var(--paper);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;font-size:16px;color:#fff}
+  .hchk.on{background:var(--ok);border-color:var(--ok)}
+  .hchk:hover{border-color:var(--ok)}
+  .toggle-done{margin-top:8px}
+
+  /* 모달 */
+  .hoverlay{position:fixed;inset:0;background:rgba(20,24,30,.45);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;z-index:50}
+  .hmodal{background:var(--paper);border-radius:18px;width:100%;max-width:760px;padding:30px 32px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+  .hmodal h2{font-family:var(--font-title);font-size:26px;margin:0 0 18px}
+  .hmodal .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap}
+  .hmodal .actions .left{margin-right:auto;display:flex;gap:10px}
+
+  /* 입력 폼 */
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .hfield{margin-bottom:16px}
+  .hfield label{display:block;font-weight:700;font-size:15px;margin-bottom:6px;color:var(--ink-2)}
+  .hfield label small{font-weight:500;color:var(--ink-3)}
+  .hinp{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);outline:none}
+  .hinp:focus{border-color:var(--accent)}
+  textarea.hinp{resize:vertical;min-height:150px;line-height:1.6}
+  .kind-pick{display:flex;gap:8px;flex-wrap:wrap}
+  .kind-pick button{border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 16px;font-weight:700;color:var(--ink-2)}
+  .kind-pick button.on.subject{background:var(--k-subject);border-color:var(--k-subject);color:#fff}
+  .kind-pick button.on.work{background:var(--k-work);border-color:var(--k-work);color:#fff}
+  .kind-pick button.on.staff{background:var(--k-staff);border-color:var(--k-staff);color:#fff}
+  .list-rows .lr{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+  .list-rows .lr .hinp{flex:1}
+  .list-rows .lr .w-who{flex:0 0 130px}
+  .list-rows .lr .w-due{flex:0 0 160px}
+  .add-row{border:1.5px dashed var(--line);background:transparent;border-radius:10px;padding:8px 14px;color:var(--ink-2);font-weight:600;width:100%}
+  .add-row:hover{border-color:var(--accent);color:var(--accent)}
+  .err{color:var(--danger);font-weight:600;min-height:22px}
+
+  /* 상세 보기 */
+  .detail .top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px;color:var(--ink-2)}
+  .detail h2{margin-bottom:10px}
+  .hinfo{display:grid;grid-template-columns:90px 1fr;gap:6px 12px;font-size:16px;background:var(--bg);border-radius:12px;padding:14px 18px;margin-bottom:20px}
+  .hinfo dt{color:var(--ink-3);font-weight:600}
+  .hinfo dd{margin:0}
+  .sec-title{font-weight:800;font-size:17px;margin:20px 0 8px;padding-left:10px;border-left:4px solid var(--accent)}
+  .content{white-space:pre-wrap;word-break:break-word;line-height:1.75}
+  .decisions{margin:0;padding-left:0;list-style:none;counter-reset:d}
+  .decisions li{counter-increment:d;padding:8px 0 8px 36px;position:relative;border-bottom:1px solid var(--line-2)}
+  .decisions li::before{content:counter(d);position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .dtasks .trow{border-radius:10px}
+  .stamp{font-size:14px;color:var(--ink-3);margin-top:22px}
+  .hnone{color:var(--ink-3)}
+
+
+  @media (max-width:640px){
+    .frow{grid-template-columns:1fr}
+    .hmodal{padding:24px 18px}
+    .card{gap:12px;padding:14px}
+    .card .date{min-width:48px;padding-right:12px}
+    .trow{flex-wrap:wrap}
+    .list-rows .lr{flex-wrap:wrap}
+    .list-rows .lr .w-who,.list-rows .lr .w-due{flex:1 1 40%}
+  }
+
+  /* 인쇄: 협의록 한 건만 */
+  #hyPrint{display:none}
+  @media print{
+    body{background:#fff}
+    body > *:not(#hyPrint){display:none!important}
+    #hyPrint{display:block;font-size:12pt;color:#000}
+    #hyPrint h1{font-family:var(--font-title);font-size:20pt;text-align:center;margin:0 0 16pt}
+    #hyPrint table{width:100%;border-collapse:collapse;margin-bottom:14pt}
+    #hyPrint th,#hyPrint td{border:1px solid #555;padding:6pt 8pt;text-align:left;vertical-align:top}
+    #hyPrint th{background:#eee;width:16%;white-space:nowrap}
+    #hyPrint .ph{font-weight:800;margin:12pt 0 6pt}
+    #hyPrint .pc{white-space:pre-wrap;border:1px solid #555;padding:8pt;min-height:60pt}
+  }
 </style>
 </head>
 <body>
@@ -271,8 +411,8 @@
 <section id="login">
   <div class="login-card">
     <div class="school">교직원 전용</div>
-    <h1>특별실 예약</h1>
-    <p>특별실 사용 일정을 함께 확인해요</p>
+    <h1>2026 반월 아카이브</h1>
+    <p>특별실 예약과 협의록을 함께 봐요</p>
     <form id="loginForm">
       <input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" autofocus>
       <button class="btn btn-primary" type="submit">들어가기</button>
@@ -285,20 +425,29 @@
 <section id="app" class="hidden">
   <header>
     <div>
-      <h1>특별실 예약</h1>
+      <h1>2026 반월 아카이브</h1>
       <div class="sub">교직원 공유</div>
     </div>
+    <nav class="secnav" id="secNav">
+      <button data-sec="room" class="on">🏫 특별실 예약</button>
+      <button data-sec="meet">📝 협의록 <span class="scnt hidden" id="hySecCnt"></span></button>
+    </nav>
     <span class="demo-badge hidden" id="demoBadge">미리보기 모드 · 이 기기에만 저장</span>
     <span class="admin-badge hidden" id="adminBadge">관리자 모드</span>
     <div class="spacer"></div>
+    <span class="secbtns" id="roomBtns">
     <button class="btn btn-primary" id="newBtn" style="padding:12px 20px;font-size:17px">+ 예약하기</button>
     <button class="btn" id="logBtn">업데이트 내역</button>
     <button class="btn" id="reqBtn">요청하기</button>
     <button class="btn" id="adminBtn">관리자</button>
+    </span>
+    <span class="secbtns hidden" id="meetBtns">
+    <button class="btn btn-primary" id="hyNewBtn" style="padding:12px 20px;font-size:17px">+ 협의 기록하기</button>
+    </span>
     <button class="btn" id="logoutBtn">나가기</button>
   </header>
 
-  <main>
+  <main id="roomMain">
     <div class="toolbar">
       <div class="tabs" id="tabs"></div>
       <div class="weeknav">
@@ -326,6 +475,17 @@
       <span><span class="dot" style="background:repeating-linear-gradient(135deg,#f6caca 0 3px,#fbf5f4 3px 6px)"></span>공휴일·휴업일</span>
       <span style="margin-left:auto">빈칸을 누르면 바로 예약, 예약을 누르면 수정·삭제</span>
     </div>
+  </main>
+  <main id="meetMain" class="hidden">
+    <div class="htoolbar">
+      <div class="htabs">
+        <button class="htab on" data-view="list">협의록</button>
+        <button class="htab" data-view="tasks">할 일 <span class="hcnt hidden" id="hyOpenCnt"></span></button>
+      </div>
+      <input class="search" id="hySearch" placeholder="제목·내용·담당자 검색">
+    </div>
+    <div class="hchips" id="hyChips"></div>
+    <div id="hyView"></div>
   </main>
 </section>
 
@@ -469,6 +629,8 @@
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="hyModalRoot"></div>
+<div id="hyPrint"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -1590,6 +1752,10 @@ $("chatLog").onclick = e => {
    사이트 업데이트 내역 — 새로 바꿀 때마다 맨 위에 추가하세요
    ════════════════════════════════════════════════ */
 const CHANGELOG = [
+  { v:"2026-11-26", title:"2026 반월 아카이브 · 협의록", date:"2026-11-26", items:[
+    "이름이 <b>2026 반월 아카이브</b>로 바뀌었어요. 위쪽 메뉴에서 <b>특별실 예약</b>과 <b>협의록</b>을 골라 들어가요.",
+    "<b>협의록</b>에서 교과 협의·업무 협의·교직원 회의 내용을 기록하고 함께 볼 수 있어요.",
+    "협의록에 적은 <b>할 일</b>(담당자·기한)은 ‘할 일’ 탭에 모이고, 기한이 지나면 빨갛게 표시돼요." ]},
   { v:"2026-11-19b", title:"휴일을 기간으로 설정", date:"2026-11-19", items:[
     "관리자 모드 <b>휴일 관리</b>에서 시작일~끝나는 날을 정해 방학·연속 휴업일을 한 번에 넣을 수 있어요.",
     "넣은 휴일은 기간별로 묶여 보이고, 기간째로 지울 수 있어요." ]},
@@ -1649,9 +1815,413 @@ async function enter(pw){
   maybeShowLog();
   store.listen(render);
   render();
+  window.hyStart && window.hyStart(pw);
+  let sec = location.hash === "#meet" ? "meet" : "";
+  if (!sec){ try { sec = localStorage.getItem("archive-sec") || "room"; } catch(e){ sec = "room"; } }
+  showSec(sec);
 }
 $("loginForm").onsubmit = e => { e.preventDefault(); enter($("pw").value.trim()); };
-$("logoutBtn").onclick = () => { sessionStorage.removeItem("tbs-pw"); unsubs.forEach(f => f()); location.reload(); };
+$("logoutBtn").onclick = () => { sessionStorage.removeItem("tbs-pw"); unsubs.forEach(f => f()); window.hyStop && window.hyStop(); location.reload(); };
+</script>
+<script>
+/* ════════════════════════════════════════════════
+   협의록 (교과·업무 협의, 교직원 회의) — 2026 반월 아카이브
+   데이터 경로: hyeobui/<비밀번호>/meetings  (Firebase 규칙과 같아야 함)
+   ════════════════════════════════════════════════ */
+(() => {
+const HY_ROOT = "hyeobui";
+const HYDEMO = DEMO;
+const KINDS = {
+  subject: { name:"교과 협의",   groupLabel:"교과",       groupPh:"예: 국어, 체육, 영어" },
+  work:    { name:"업무 협의",   groupLabel:"업무·부서",  groupPh:"예: 교육과정부, 생활안전부" },
+  staff:   { name:"교직원 회의", groupLabel:"회의 구분",  groupPh:"예: 정기 회의, 임시 회의" }
+};
+const DOW = ["일","월","화","수","목","금","토"];
+
+/* ── 도우미 ── */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad = n => String(n).padStart(2,"0");
+const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+const parse = s => { const [y,m,d] = String(s).split("-").map(Number); return new Date(y, m-1, d); };
+const dateKo = s => { if (!s) return ""; const d = parse(s); return `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()}.(${DOW[d.getDay()]})`; };
+const shortDue = s => { const d = parse(s); return `${d.getMonth()+1}/${d.getDate()}(${DOW[d.getDay()]})`; };
+const daysBetween = (a,b) => Math.round((parse(b) - parse(a)) / 864e5);
+const arr = v => Array.isArray(v) ? v.filter(x => x != null) : (v && typeof v === "object" ? Object.values(v) : []);
+function lsGet(k, d){ try { return localStorage.getItem(k) ?? d; } catch(e){ return d; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+
+/* ════════════════════════════════════════════════
+   2) 저장소
+   ════════════════════════════════════════════════ */
+let db = null, ref = null, data = {}, unsub = null;
+
+const store = {
+  async login(pw){
+    if (HYDEMO) return true;
+    if (!pw || /[.#$\[\]\/]/.test(pw)) return false;
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    const r = db.ref(`${HY_ROOT}/${pw}/meetings`);
+    try { await r.limitToFirst(1).once("value"); } catch(e){ return false; }   // 규칙에서 막힘 = 비밀번호 틀림
+    ref = r; return true;
+  },
+  listen(cb){
+    if (HYDEMO){
+      const load = () => { try { data = JSON.parse(lsGet("hyeobui-demo", "{}")) || {}; } catch(e){ data = {}; } cb(); };
+      load(); window.addEventListener("storage", load);
+      unsub = () => window.removeEventListener("storage", load);
+      return;
+    }
+    const h = ref.on("value", s => { data = s.val() || {}; cb(); }, () => toast("연결이 끊겼어요. 다시 들어와 주세요."));
+    unsub = () => ref.off("value", h);
+  },
+  _saveDemo(){ lsSet("hyeobui-demo", JSON.stringify(data)); render(); if (detailId) showDetail(detailId); },
+  async add(obj){ if (HYDEMO){ data["d"+Date.now()] = obj; return this._saveDemo(); } await ref.push(obj); },
+  async set(id, obj){ if (HYDEMO){ data[id] = obj; return this._saveDemo(); } await ref.child(id).set(obj); },
+  async remove(id){ if (HYDEMO){ delete data[id]; return this._saveDemo(); } await ref.child(id).remove(); },
+  async setTaskDone(id, idx, done, by){
+    if (HYDEMO){ const t = arr(data[id].tasks)[idx]; t.done = done; t.doneBy = done ? by : null; data[id].tasks = arr(data[id].tasks); return this._saveDemo(); }
+    await ref.child(`${id}/tasks/${idx}`).update({ done, doneBy: done ? (by || "") : null });
+  }
+};
+
+/* ════════════════════════════════════════════════
+   3) 상태
+   ════════════════════════════════════════════════ */
+let view = "list", kindFilter = "all", query = "", showDone = false;
+
+function meetings(){
+  return Object.entries(data).map(([id,v]) => ({ id, ...v, decisions: arr(v.decisions), tasks: arr(v.tasks) }))
+    .sort((a,b) => (b.date||"").localeCompare(a.date||"") || (b.createdAt||0) - (a.createdAt||0));
+}
+function matches(m){
+  if (kindFilter !== "all" && m.kind !== kindFilter) return false;
+  if (!query) return true;
+  const hay = [m.title, m.group, m.content, m.attendees, m.author, ...m.decisions, ...m.tasks.flatMap(t => [t.text, t.who])].join(" ").toLowerCase();
+  return query.toLowerCase().split(/\s+/).filter(Boolean).every(w => hay.includes(w));
+}
+function allTasks(){
+  return meetings().flatMap(m => m.tasks.map((t, idx) => ({ ...t, idx, m })));
+}
+
+/* ════════════════════════════════════════════════
+   4) 화면 그리기
+   ════════════════════════════════════════════════ */
+function render(){
+  const open = allTasks().filter(t => !t.done).length;
+  const oc = $("#hyOpenCnt"); oc.textContent = open; oc.classList.toggle("hidden", !open);
+  const sc = $("#hySecCnt"); sc.textContent = open; sc.classList.toggle("hidden", !open);
+  document.querySelectorAll(".htab").forEach(b => b.classList.toggle("on", b.dataset.view === view));
+
+  const counts = { all: 0 }; meetings().forEach(m => { counts.all++; counts[m.kind] = (counts[m.kind]||0) + 1; });
+  $("#hyChips").innerHTML = [["all","전체",""], ...Object.entries(KINDS).map(([k,v]) => [k, v.name, `var(--k-${k})`])]
+    .map(([k,n,c]) => `<button class="hchip ${kindFilter===k?"on":""}" data-k="${k}">${c?`<span class="hdot" style="background:${c}"></span>`:""}${n} <span style="opacity:.6">${counts[k]||0}</span></button>`).join("");
+
+  if (view === "list") renderList(); else renderTasks();
+}
+
+function renderList(){
+  const list = meetings().filter(matches);
+  if (!list.length){
+    $("#hyView").innerHTML = `<div class="empty"><b>${query || kindFilter !== "all" ? "찾는 협의록이 없어요" : "아직 기록된 협의록이 없어요"}</b>오른쪽 위 ‘+ 협의 기록하기’로 첫 협의를 남겨 보세요.</div>`;
+    return;
+  }
+  let html = "", curMonth = "";
+  list.forEach(m => {
+    const d = m.date ? parse(m.date) : null;
+    const mk = d ? `${d.getFullYear()}년 ${d.getMonth()+1}월` : "날짜 없음";
+    if (mk !== curMonth){ html += `<div class="month">${mk}</div>`; curMonth = mk; }
+    const open = m.tasks.filter(t => !t.done).length, done = m.tasks.length - open;
+    html += `<div class="card" data-id="${esc(m.id)}">
+      <div class="date"><b>${d ? d.getDate() : "-"}</b><span>${d ? DOW[d.getDay()]+"요일" : ""}</span></div>
+      <div class="body">
+        <div class="top"><span class="kind ${esc(m.kind)}">${esc((KINDS[m.kind]||{}).name || "협의")}</span>${m.group ? `<span class="group">${esc(m.group)}</span>` : ""}</div>
+        <h3>${esc(m.title)}</h3>
+        ${m.content ? `<div class="preview">${esc(m.content.replace(/\s+/g," "))}</div>` : ""}
+        <div class="meta">
+          ${m.decisions.length ? `<span class="pill dec">결정 ${m.decisions.length}</span>` : ""}
+          ${open ? `<span class="pill open">할 일 ${open}</span>` : ""}
+          ${done && !open ? `<span class="pill done">할 일 모두 완료</span>` : ""}
+          ${m.author ? `<span>작성 ${esc(m.author)}</span>` : ""}
+        </div>
+      </div>
+    </div>`;
+  });
+  $("#hyView").innerHTML = html;
+}
+
+function taskRow(t, withSrc){
+  const today = todayStr();
+  const over = !t.done && t.due && t.due < today;
+  let dueTxt = "", dueColor = "var(--ink-2)";
+  if (t.due){
+    const diff = daysBetween(today, t.due);
+    dueTxt = shortDue(t.due);
+    if (!t.done){
+      if (diff < 0){ dueTxt += ` · ${-diff}일 지남`; dueColor = "var(--danger)"; }
+      else if (diff === 0){ dueTxt = "오늘까지"; dueColor = "var(--danger)"; }
+      else if (diff <= 3){ dueTxt += ` · D-${diff}`; dueColor = "var(--warn)"; }
+    }
+  } else dueTxt = `<span class="hnone">기한 없음</span>`;
+  return `<div class="trow ${over?"over":""} ${t.done?"done":""}">
+    <button class="hchk ${t.done?"on":""}" data-mid="${esc(t.m.id)}" data-idx="${t.idx}" title="${t.done?"완료 취소":"완료로 표시"}">${t.done?"✓":""}</button>
+    <div class="tx"><div class="ht">${esc(t.text)}</div>
+      ${withSrc ? `<div class="src" data-open="${esc(t.m.id)}">${esc(t.m.date ? shortDue(t.m.date) : "")} · ${esc(t.m.title)}</div>` : ""}
+      ${t.done && t.doneBy ? `<div class="src" style="cursor:default">완료 표시: ${esc(t.doneBy)}</div>` : ""}
+    </div>
+    ${t.who ? `<div class="who">👤 ${esc(t.who)}</div>` : ""}
+    <div class="due" style="color:${dueColor}">${dueTxt}</div>
+  </div>`;
+}
+
+function renderTasks(){
+  const today = todayStr();
+  const ts = allTasks().filter(t => matches(t.m) || (query && [t.text, t.who].join(" ").toLowerCase().includes(query.toLowerCase())));
+  const filtered = ts.filter(t => kindFilter === "all" || t.m.kind === kindFilter);
+  const open = filtered.filter(t => !t.done).sort((a,b) => (a.due||"9999").localeCompare(b.due||"9999"));
+  const done = filtered.filter(t => t.done);
+  const secs = [
+    ["over",  "기한 지남",     open.filter(t => t.due && t.due < today)],
+    ["week",  "7일 안",        open.filter(t => t.due && t.due >= today && daysBetween(today, t.due) <= 7)],
+    ["later", "그 뒤",         open.filter(t => t.due && daysBetween(today, t.due) > 7)],
+    ["nodue", "기한 없음",     open.filter(t => !t.due)]
+  ].filter(s => s[2].length);
+  let html = "";
+  if (!open.length) html += `<div class="empty"><b>남은 할 일이 없어요</b>협의록에 ‘할 일’을 적으면 여기에 모여요.</div>`;
+  secs.forEach(([k, name, list]) => {
+    html += `<div class="task-sec ${k}"><h4>${name} <span class="hn">${list.length}</span></h4>${list.map(t => taskRow(t, true)).join("")}</div>`;
+  });
+  if (done.length){
+    html += `<button class="btn toggle-done" id="toggleDone">${showDone ? "완료한 일 숨기기" : `완료한 일 보기 (${done.length})`}</button>`;
+    if (showDone) html += `<div class="task-sec" style="margin-top:12px">${done.map(t => taskRow(t, true)).join("")}</div>`;
+  }
+  $("#hyView").innerHTML = html;
+}
+
+/* ════════════════════════════════════════════════
+   5) 상세 보기
+   ════════════════════════════════════════════════ */
+function closeModal(){ $("#hyModalRoot").innerHTML = ""; document.body.style.overflow = ""; }
+function openModal(html){
+  $("#hyModalRoot").innerHTML = `<div class="hoverlay"><div class="hmodal">${html}</div></div>`;
+  document.body.style.overflow = "hidden";
+  $(".hoverlay").addEventListener("mousedown", e => { if (e.target.classList.contains("hoverlay")) closeModal(); });
+}
+
+let detailId = null;
+function showDetail(id){
+  const m = meetings().find(x => x.id === id);
+  if (!m){ closeModal(); detailId = null; return; }
+  detailId = id;
+  const k = KINDS[m.kind] || {};
+  openModal(`<div class="detail">
+    <div class="top"><span class="kind ${esc(m.kind)}">${esc(k.name||"협의")}</span>${m.group ? `<b>${esc(m.group)}</b>` : ""}</div>
+    <h2>${esc(m.title)}</h2>
+    <dl class="hinfo">
+      <dt>일시</dt><dd>${esc(dateKo(m.date))}${m.time ? " " + esc(m.time) : ""}</dd>
+      ${m.place ? `<dt>장소</dt><dd>${esc(m.place)}</dd>` : ""}
+      <dt>참석자</dt><dd>${m.attendees ? esc(m.attendees) : `<span class="hnone">-</span>`}</dd>
+    </dl>
+    <div class="sec-title">협의 내용</div>
+    <div class="content">${m.content ? esc(m.content) : `<span class="hnone">적힌 내용이 없어요</span>`}</div>
+    <div class="sec-title">결정 사항</div>
+    ${m.decisions.length ? `<ol class="decisions">${m.decisions.map(d => `<li>${esc(d)}</li>`).join("")}</ol>` : `<div class="hnone">없음</div>`}
+    <div class="sec-title">할 일</div>
+    <div class="dtasks">${m.tasks.length ? m.tasks.map((t,idx) => taskRow({ ...t, idx, m }, false)).join("") : `<div class="hnone">없음</div>`}</div>
+    <div class="stamp">작성 ${esc(m.author||"-")}${m.updatedBy && m.updatedAt && m.updatedAt !== m.createdAt ? ` · 마지막 수정 ${esc(m.updatedBy)} (${new Date(m.updatedAt).toLocaleDateString("ko-KR")})` : ""}</div>
+    <div class="actions">
+      <div class="left">
+        <button class="btn btn-danger" id="dDel">삭제</button>
+        <button class="btn" id="dPrint">인쇄</button>
+      </div>
+      <button class="btn" id="dEdit">수정</button>
+      <button class="btn btn-primary" id="dClose">닫기</button>
+    </div>
+  </div>`);
+  $("#dClose").onclick = () => { detailId = null; closeModal(); };
+  $("#dEdit").onclick = () => { detailId = null; showEditor(m); };
+  $("#dPrint").onclick = () => printMeeting(m);
+  $("#dDel").onclick = async () => {
+    if (!confirm(`‘${m.title}’ 협의록을 지울까요?\n지우면 되돌릴 수 없어요.`)) return;
+    try { await store.remove(m.id); detailId = null; closeModal(); toast("지웠어요"); } catch(e){ toast("지우지 못했어요. 다시 해 주세요."); }
+  };
+}
+
+/* ════════════════════════════════════════════════
+   6) 작성·수정
+   ════════════════════════════════════════════════ */
+function showEditor(m){
+  const isNew = !m;
+  m = m || { kind: kindFilter !== "all" ? kindFilter : "subject", date: todayStr(), decisions: [""], tasks: [] };
+  let kind = m.kind || "subject";
+  const author = lsGet("hyeobui-name", "");
+  openModal(`<h2>${isNew ? "협의 기록하기" : "협의록 수정"}</h2>
+    <div class="hfield"><label>협의 종류</label>
+      <div class="kind-pick" id="eKind">${Object.entries(KINDS).map(([k,v]) => `<button type="button" class="${k} ${k===kind?"on":""}" data-k="${k}">${v.name}</button>`).join("")}</div>
+    </div>
+    <div class="frow">
+      <div class="hfield"><label>날짜</label><input type="date" class="hinp" id="eDate" value="${esc(m.date||"")}"></div>
+      <div class="hfield"><label id="eGroupLabel">${KINDS[kind].groupLabel} <small>(선택)</small></label><input class="hinp" id="eGroup" value="${esc(m.group||"")}" placeholder="${KINDS[kind].groupPh}"></div>
+    </div>
+    <div class="frow">
+      <div class="hfield"><label>시간 <small>(선택)</small></label><input class="hinp" id="eTime" value="${esc(m.time||"")}" placeholder="예: 15:00~16:00"></div>
+      <div class="hfield"><label>장소 <small>(선택)</small></label><input class="hinp" id="ePlace" value="${esc(m.place||"")}" placeholder="예: 교무실, 5-1 교실"></div>
+    </div>
+    <div class="hfield"><label>제목</label><input class="hinp" id="eTitle" value="${esc(m.title||"")}" placeholder="예: 2학기 학예회 운영 협의"></div>
+    <div class="hfield"><label>참석자</label><input class="hinp" id="eAtt" value="${esc(m.attendees||"")}" placeholder="예: 5학년 담임 3명, 교무부장"></div>
+    <div class="hfield"><label>협의 내용</label><textarea class="hinp" id="eContent" placeholder="협의한 내용을 자유롭게 적어 주세요">${esc(m.content||"")}</textarea></div>
+    <div class="hfield"><label>결정 사항</label><div class="list-rows" id="eDec"></div><button type="button" class="add-row" id="eDecAdd">+ 결정 사항 추가</button></div>
+    <div class="hfield"><label>할 일 <small>(담당자·기한을 적으면 ‘할 일’ 탭에 모여요)</small></label><div class="list-rows" id="eTask"></div><button type="button" class="add-row" id="eTaskAdd">+ 할 일 추가</button></div>
+    <div class="hfield" style="max-width:260px"><label>${isNew ? "작성자" : "수정한 사람"}</label><input class="hinp" id="eAuthor" value="${esc(author)}" placeholder="이름"></div>
+    <div class="err" id="eErr"></div>
+    <div class="actions"><button class="btn" id="eCancel">취소</button><button class="btn btn-primary" id="eSave" style="padding:12px 26px">저장</button></div>`);
+
+  // 종류 선택
+  $("#eKind").onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    kind = b.dataset.k;
+    document.querySelectorAll("#eKind button").forEach(x => x.classList.toggle("on", x === b));
+    $("#eGroupLabel").innerHTML = `${KINDS[kind].groupLabel} <small>(선택)</small>`;
+    $("#eGroup").placeholder = KINDS[kind].groupPh;
+  };
+
+  // 결정 사항 줄
+  const decRow = v => { const d = document.createElement("div"); d.className = "lr";
+    d.innerHTML = `<input class="hinp" value="${esc(v)}" placeholder="결정된 내용"><button type="button" class="btn-ghost" title="지우기">✕</button>`;
+    d.querySelector("button").onclick = () => d.remove(); return d; };
+  const taskRowEl = t => { const d = document.createElement("div"); d.className = "lr";
+    d.dataset.done = t.done ? "1" : ""; d.dataset.doneBy = t.doneBy || "";
+    d.innerHTML = `<input class="hinp" data-f="text" value="${esc(t.text||"")}" placeholder="할 일"><input class="hinp w-who" data-f="who" value="${esc(t.who||"")}" placeholder="담당자"><input type="date" class="hinp w-due" data-f="due" value="${esc(t.due||"")}"><button type="button" class="btn-ghost" title="지우기">✕</button>`;
+    d.querySelector("button").onclick = () => d.remove(); return d; };
+  (m.decisions.length ? m.decisions : [""]).forEach(v => $("#eDec").appendChild(decRow(v)));
+  m.tasks.forEach(t => $("#eTask").appendChild(taskRowEl(t)));
+  $("#eDecAdd").onclick = () => { const r = decRow(""); $("#eDec").appendChild(r); r.querySelector("input").focus(); };
+  $("#eTaskAdd").onclick = () => { const r = taskRowEl({}); $("#eTask").appendChild(r); r.querySelector("input").focus(); };
+
+  $("#eCancel").onclick = () => { closeModal(); if (!isNew) showDetail(m.id); };
+  $("#eSave").onclick = async () => {
+    const title = $("#eTitle").value.trim(), date = $("#eDate").value, who = $("#eAuthor").value.trim();
+    if (!date) return $("#eErr").textContent = "날짜를 골라 주세요.";
+    if (!title) return $("#eErr").textContent = "제목을 적어 주세요.";
+    if (!who) return $("#eErr").textContent = "이름을 적어 주세요. (누가 기록했는지 보여요)";
+    const decisions = [...document.querySelectorAll("#eDec input")].map(i => i.value.trim()).filter(Boolean);
+    const tasks = [...document.querySelectorAll("#eTask .lr")].map(r => {
+      const g = f => r.querySelector(`[data-f="${f}"]`).value.trim();
+      const t = { text: g("text"), who: g("who"), due: g("due"), done: r.dataset.done === "1" };
+      if (t.done && r.dataset.doneBy) t.doneBy = r.dataset.doneBy;
+      return t;
+    }).filter(t => t.text);
+    const now = Date.now();
+    const obj = {
+      kind, date, title, time: $("#eTime").value.trim(), place: $("#ePlace").value.trim(),
+      group: $("#eGroup").value.trim(), attendees: $("#eAtt").value.trim(), content: $("#eContent").value.replace(/\s+$/,""),
+      decisions, tasks,
+      author: isNew ? who : (m.author || who), createdAt: isNew ? now : (m.createdAt || now),
+      updatedAt: now, updatedBy: who
+    };
+    lsSet("hyeobui-name", who);
+    $("#eSave").disabled = true;
+    try {
+      if (isNew) await store.add(obj); else await store.set(m.id, obj);
+      closeModal(); toast(isNew ? "협의록을 올렸어요" : "고쳤어요");
+      if (!isNew) showDetail(m.id);
+    } catch(e){ $("#eSave").disabled = false; $("#eErr").textContent = "저장하지 못했어요. 인터넷 연결을 확인해 주세요."; }
+  };
+  if (isNew) setTimeout(() => $("#eTitle").focus(), 50);
+}
+
+/* ════════════════════════════════════════════════
+   7) 인쇄
+   ════════════════════════════════════════════════ */
+function printMeeting(m){
+  const k = KINDS[m.kind] || {};
+  $("#hyPrint").innerHTML = `<h1>${esc(k.name || "협의")}록</h1>
+    <table>
+      <tr><th>일시</th><td>${esc(dateKo(m.date))}${m.time ? " " + esc(m.time) : ""}</td><th>${esc(k.groupLabel||"구분")}</th><td>${esc(m.group||"")}</td></tr>
+      <tr><th>장소</th><td>${esc(m.place||"")}</td><th>작성자</th><td>${esc(m.author||"")}</td></tr>
+      <tr><th>참석자</th><td colspan="3">${esc(m.attendees||"")}</td></tr>
+      <tr><th>제목</th><td colspan="3"><b>${esc(m.title)}</b></td></tr>
+    </table>
+    <div class="ph">협의 내용</div><div class="pc">${esc(m.content||"")}</div>
+    <div class="ph">결정 사항</div><div class="pc">${m.decisions.map((d,i) => `${i+1}. ${esc(d)}`).join("\n")}</div>
+    ${m.tasks.length ? `<div class="ph">할 일</div><table><tr><th style="width:auto">내용</th><th>담당</th><th>기한</th><th>완료</th></tr>
+      ${m.tasks.map(t => `<tr><td>${esc(t.text)}</td><td>${esc(t.who||"")}</td><td>${t.due ? esc(shortDue(t.due)) : ""}</td><td>${t.done ? "✓" : ""}</td></tr>`).join("")}</table>` : ""}`;
+  window.print();
+}
+
+
+$("#hyNewBtn").onclick = () => { if (!ready) return toast(hyErr || "협의록을 불러오는 중이에요"); showEditor(null); };
+document.querySelectorAll(".htab").forEach(b => b.onclick = () => { view = b.dataset.view; render(); });
+$("#hySearch").oninput = e => { query = e.target.value.trim(); render(); };
+$("#hyChips").onclick = e => { const b = e.target.closest(".hchip"); if (!b) return; kindFilter = b.dataset.k; render(); };
+$("#meetMain").addEventListener("click", async e => {
+  if (!ready) return;
+  const card = e.target.closest(".card[data-id]"); if (card) return showDetail(card.dataset.id);
+  const src = e.target.closest("[data-open]"); if (src) return showDetail(src.dataset.open);
+  if (e.target.id === "toggleDone"){ showDone = !showDone; return render(); }
+  const chk = e.target.closest(".hchk");
+  if (chk){
+    const m = meetings().find(x => x.id === chk.dataset.mid); if (!m) return;
+    const idx = Number(chk.dataset.idx), t = m.tasks[idx]; if (!t) return;
+    let by = lsGet("hyeobui-name", "");
+    if (!t.done && !by){ by = (prompt("완료 표시한 사람 이름을 적어 주세요") || "").trim(); if (!by) return; lsSet("hyeobui-name", by); }
+    const was = !!t.done;
+    try { await store.setTaskDone(m.id, idx, !was, by); toast(was ? "완료를 취소했어요" : "완료로 표시했어요"); }
+    catch(err){ toast("바꾸지 못했어요. 다시 해 주세요."); }
+  }
+});
+$("#hyModalRoot").addEventListener("click", async e => {
+  if (!ready) return;
+    const src = e.target.closest("[data-open]"); if (src) return showDetail(src.dataset.open);
+  if (e.target.id === "toggleDone"){ showDone = !showDone; return render(); }
+  const chk = e.target.closest(".hchk");
+  if (chk){
+    const m = meetings().find(x => x.id === chk.dataset.mid); if (!m) return;
+    const idx = Number(chk.dataset.idx), t = m.tasks[idx]; if (!t) return;
+    let by = lsGet("hyeobui-name", "");
+    if (!t.done && !by){ by = (prompt("완료 표시한 사람 이름을 적어 주세요") || "").trim(); if (!by) return; lsSet("hyeobui-name", by); }
+    const was = !!t.done;
+    try { await store.setTaskDone(m.id, idx, !was, by); toast(was ? "완료를 취소했어요" : "완료로 표시했어요"); }
+    catch(err){ toast("바꾸지 못했어요. 다시 해 주세요."); }
+  }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#hyModalRoot").innerHTML){ detailId = null; closeModal(); } });
+
+/* 로그인할 때 특별실 예약과 함께 불러와요 (같은 비밀번호) */
+let ready = false, hyErr = "";
+window.hyStart = async function(pw){
+  const ok = await store.login(pw);
+  if (!ok){
+    hyErr = "협의록을 불러오지 못했어요. Firebase 규칙에 hyeobui 경로가 있는지 확인해 주세요.";
+    $("#hyView").innerHTML = `<div class="empty"><b>협의록을 불러오지 못했어요</b>Firebase 규칙에 <code>hyeobui</code> 경로를 추가했는지 확인해 주세요.</div>`;
+    return;
+  }
+  ready = true;
+  store.listen(() => { render(); if (detailId) showDetail(detailId); });
+};
+window.hyStop = () => { if (unsub) unsub(); };
+
+$("#hyView").innerHTML = `<div class="empty"><b>불러오는 중…</b></div>`;
+})();
+
+/* ════════════════════════════════════════════════
+   위쪽 메뉴: 특별실 예약 ↔ 협의록
+   ════════════════════════════════════════════════ */
+function showSec(sec){
+  const meet = sec === "meet";
+  document.querySelectorAll("#secNav button").forEach(b => b.classList.toggle("on", b.dataset.sec === sec));
+  $("roomMain").classList.toggle("hidden", meet); $("meetMain").classList.toggle("hidden", !meet);
+  $("roomBtns").classList.toggle("hidden", meet); $("meetBtns").classList.toggle("hidden", !meet);
+  $("adminBadge").classList.toggle("hidden", meet || !adminPw);
+  if (meet){ $("chat").classList.add("hidden"); $("chatFab").classList.add("hidden"); }
+  else if ($("chat").classList.contains("hidden")) $("chatFab").classList.remove("hidden");
+  try { localStorage.setItem("archive-sec", sec); } catch(e){}
+  if (location.hash !== (meet ? "#meet" : "")) history.replaceState(null, "", meet ? "#meet" : location.pathname + location.search);
+}
+$("secNav").onclick = e => { const b = e.target.closest("button[data-sec]"); if (b) showSec(b.dataset.sec); };
+</script>
+<script>
 const saved = sessionStorage.getItem("tbs-pw"); if (saved) enter(saved);
 </script>
 
